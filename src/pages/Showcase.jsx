@@ -143,7 +143,7 @@ export default function Showcase() {
 
       <section className='mt-28 mb-40 flex flex-col items-center w-fit mx-auto'>
         <h2 className='text-[#212529] font-bold text-[40px] self-start'>Why Choose Us</h2>
-        <p className='text-[#212529] text-lg mb-5 font-normal self-start'>FlowShowcase is the partner you need for simplifying your processes, from automation to integration and beyond.</p>
+        <p className='text-[#212529] text-lg mb-5 font-normal self-start'><b>FlexFlow</b> is the partner you need for simplifying your processes, from automation to integration and beyond.</p>
         <div className='flex items-center gap-10 bg-[#e7ebfe] p-10 flex-wrap'>
           <div className='flex flex-col gap-4'>
           <HiFire size={25} className='text-[#212529] mt-[-6px]'/>
