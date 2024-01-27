@@ -101,7 +101,7 @@ export default function Showcase() {
       <div className='mt-10 md:mt-20 flex gap-5 items-start justify-center flex-wrap mb-40'>
       <div className='flex flex-col items-center px-5 w-[500px] '>
         <h2 className='text-[#212529] font-bold text-[40px] self-start'>Core Features</h2>
-        <p className='text-[#212529] text-lg mb-10'>Delve into the functionalities that set FlowShowcase apart as the ultimate platform for workflow management and optimization.</p>
+        <p className='text-[#212529] text-lg mb-10'>Delve into the functionalities that set FlexFlow apart as the ultimate platform for workflow management and optimization.</p>
         <div className='flex flex-col gap-10'>
           <div className='flex items-start gap-4'>
           <MdWork size={40} className='text-[#212529] mt-[-6px]'/>
