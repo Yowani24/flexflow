@@ -3,6 +3,9 @@ import { FiUser } from "react-icons/fi";
 import { FaUserCircle, FaBell } from "react-icons/fa";
 import { HiLogout, HiMail } from "react-icons/hi";
 import { MdWork } from "react-icons/md";
+import { IoMdCloud } from "react-icons/io";
+import { BsClockFill } from "react-icons/bs";
+import { HiFire } from "react-icons/hi2";
 
 import logo from "../assets/flexflowlogo2.png";
 
@@ -38,8 +41,8 @@ export default function Showcase() {
   }, []);
 
   const handleSairClick = (event) => {
-    event.stopPropagation(); // Stop event propagation to prevent closing the menu immediately
-    setMenuOpen(false); // Close the menu
+    event.stopPropagation();
+    setMenuOpen(false);
   };
 
   return (
@@ -98,7 +101,7 @@ export default function Showcase() {
         </div>
       </div>
 
-      <div className='mt-10 md:mt-20 flex gap-5 items-start justify-center flex-wrap mb-40'>
+      <div className='mt-10 md:mt-20 flex gap-5 items-start justify-center flex-wrap'>
       <div className='flex flex-col items-center px-5 w-[500px] '>
         <h2 className='text-[#212529] font-bold text-[40px] self-start'>Core Features</h2>
         <p className='text-[#212529] text-lg mb-10'>Delve into the functionalities that set FlexFlow apart as the ultimate platform for workflow management and optimization.</p>
@@ -137,6 +140,34 @@ export default function Showcase() {
         }}
       ></div>
       </div>
+
+      <section className='mt-28 mb-40 flex flex-col items-center w-fit mx-auto'>
+        <h2 className='text-[#212529] font-bold text-[40px] self-start'>Why Choose Us</h2>
+        <p className='text-[#212529] text-lg mb-5 font-normal self-start'>FlowShowcase is the partner you need for simplifying your processes, from automation to integration and beyond.</p>
+        <div className='flex items-center gap-10 bg-[#e7ebfe] p-10'>
+          <div className='flex flex-col gap-4'>
+          <HiFire size={25} className='text-[#212529] mt-[-6px]'/>
+          <p className='flex flex-col text-[#212529] max-w-[290px]'>
+            <span className='text-[#212529] font-medium text-lg'>Workflow Design</span>
+            Craft bespoke workflows with our intuitive design tools that adapt to your team’s specific needs and goals.
+          </p>
+          </div>
+          <div className='flex flex-col gap-4'>
+          <BsClockFill size={22} className='text-[#212529] mt-[-6px]'/>
+          <p className='flex flex-col text-[#212529] max-w-[290px]'>
+            <span className='text-[#212529] font-medium text-lg'>Cloud Access</span>
+            Access your workflows anywhere with our cloud-based platform, ensuring productivity on the go.
+          </p>
+          </div>
+          <div className='flex flex-col gap-4'>
+          <IoMdCloud size={25} className='text-[#212529] mt-[-6px]'/>
+          <p className='flex flex-col text-[#212529] max-w-[290px]'>
+            <span className='text-[#212529] font-medium text-lg'>Support 24/7</span>
+            Day or night, our dedicated support team is here to help you keep your workflows running smoothly.
+          </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
