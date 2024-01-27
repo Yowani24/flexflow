@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FiUser } from "react-icons/fi";
-import { FaUserCircle } from "react-icons/fa";
-import { HiLogout } from "react-icons/hi";
+import { FaUserCircle, FaBell } from "react-icons/fa";
+import { HiLogout, HiMail } from "react-icons/hi";
 import { MdWork } from "react-icons/md";
+
 import logo from "../assets/flexflowlogo2.png";
 
 export default function Showcase() {
@@ -110,17 +111,17 @@ export default function Showcase() {
             </p>
           </div>
           <div className='flex items-start gap-4'>
-          <MdWork size={40} className='text-[#212529] mt-[-6px]'/>
+          <HiMail size={40} className='text-[#212529] mt-[-6px]'/>
             <p className='flex flex-col text-[#212529]'>
-              <span className='text-[#212529] font-medium text-lg'>Real-time Sync</span>
-              Integrate seamlessly with real-time synchronization that keeps your team connected and on track.
+              <span className='text-[#212529] font-medium text-lg'>User Analytics</span>
+              Gain insightful analytics on user behavior to enhance your workflow efficiency and team performance.
             </p>
           </div>
           <div className='flex items-start gap-4'>
-          <MdWork size={40} className='text-[#212529] mt-[-6px]'/>
+          <FaBell size={40} className='text-[#212529] mt-[-6px]'/>
             <p className='flex flex-col text-[#212529]'>
-              <span className='text-[#212529] font-medium text-lg'>Real-time Sync</span>
-              Integrate seamlessly with real-time synchronization that keeps your team connected and on track.
+              <span className='text-[#212529] font-medium text-lg'>Data Security</span>
+              Experience top-tier data protection with our robust security framework ensuring your information remains safe.
             </p>
           </div>
           
