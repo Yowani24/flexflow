@@ -62,13 +62,14 @@ export default function Showcase() {
             alt="nature image"
           />
         </div>
-        <div ref={menuRef} className='relative flex flex-col items-center group' onClick={() => setMenuOpen(true)}>
+        <div ref={menuRef} className='relative flex flex-col items-center' onClick={() => setMenuOpen(true)}>
           <div className='w-[40px] h-[40px] cursor-pointer transition bg-slate-300 rounded-full flex items-center justify-center'>
             <FiUser color='#212529' />
           </div>
-          <div className={`flex flex-col gap-3 bg-[#f1f3fd] shadow-md shadow-indigo-200 mt-2 rounded-md transition absolute p-1 top-10 right-0 ${menuOpen ? 'flex' : 'hidden'}`}>
-            <span className='flex items-center gap-2 text-[#5a5e63] transition hover:bg-slate-200 p-1 rounded-md font-medium text-xs cursor-pointer'><FaUserCircle size={16}/>Yowani24</span>
-            <span className='flex items-center gap-2 text-[#5a5e63] transition hover:text-red-400 hover:bg-slate-200 p-1 rounded-md font-medium text-xs cursor-pointer' onClick={handleSairClick}><HiLogout size={16}/>Sair</span>
+          <div className={`flex flex-col items-start justify-between gap-3 md:bg-[#f1f3fd] w-40 h-28 shadow-md shadow-indigo-200 mt-2 rounded-md transition absolute p-2 top-10 right-0 ${menuOpen ? 'flex' : 'hidden'}`}>
+            <span className='flex items-center w-full h-[50%] gap-2 text-[#5a5e63] transition hover:bg-slate-200 p-1 px-2 rounded-md font-medium text-xs cursor-pointer'><FaUserCircle size={16}/>Yowani24</span>
+            <span className='border-t-2 border-t-gray-300 w-full'></span>
+            <span className='flex items-center w-full h-[50%] gap-2 text-[#5a5e63] transition hover:text-red-400 hover:bg-slate-200 p-1 px-2 rounded-md font-medium text-xs cursor-pointer' onClick={handleSairClick}><HiLogout size={16}/>Sair</span>
           </div>
         </div>
       </div>
@@ -93,13 +94,13 @@ export default function Showcase() {
         <p className='text-[#212529] font-bold text-4xl md:text-[40px] text-center'>Trusted by Leaders</p>
         <p className='mt-5 text-[#212529] text-xl md:text-center'>Our commitment to excellence is reflected in the company we keep. Discover the industry giants who rely on <b>FlexFlow</b>.</p>
       </div>
-      <div className='flex items-center w-full justify-center'>
+      {/* <div className='flex items-center w-full justify-center'>
         <div className="sliding-container faded flex items-center justify-center gap-8 w-[70%]">
           <div className="sliding-word text-[#212529]">Empresa A</div>
           <div className="sliding-word text-[#212529]">Empresa B</div>
           <div className="sliding-word text-[#212529]">Empresa C</div>
         </div>
-      </div>
+      </div> */}
 
       <div className='mt-10 md:mt-20 flex gap-5 items-start justify-center flex-wrap'>
       <div className='flex flex-col items-center px-5 w-[500px] '>
@@ -142,7 +143,7 @@ export default function Showcase() {
       </div>
 
       <section className='mt-28 mb-40 flex flex-col items-center w-fit mx-auto'>
-        <h2 className='text-[#212529] font-bold text-[40px] self-start'>Why Choose Us</h2>
+        <h2 className='text-[#212529] font-bold text-[40px] self-start'>Why FlexFlow</h2>
         <p className='text-[#212529] text-lg mb-5 font-normal self-start'><b>FlexFlow</b> is the partner you need for simplifying your processes, from automation to integration and beyond.</p>
         <div className='flex items-center gap-10 bg-[#e7ebfe] p-10 flex-wrap'>
           <div className='flex flex-col gap-4'>
@@ -156,7 +157,7 @@ export default function Showcase() {
           <BsClockFill size={22} className='text-[#212529] mt-[-6px]'/>
           <p className='flex flex-col text-[#212529] max-w-[290px]'>
             <span className='text-[#212529] font-medium text-lg'>Cloud Access</span>
-            Access your workflows anywhere with our cloud-based platform, ensuring productivity on the go.
+            Access your workflows anywhere with our cloud-based platform, ensuring productivity on the go. 
           </p>
           </div>
           <div className='flex flex-col gap-4'>

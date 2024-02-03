@@ -1,14 +1,20 @@
 import { useState } from 'react'
 import './App.css'
-import Showcase from './pages/Showcase'
+import KanbanView from './components/KanbanView'
+import Header from './components/Header'
+import SideBar from './components/SideBar'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-   <div className='text-red-400 h-full'>
-    <Showcase/>
-   </div>
+  <div className="flex h-screen">
+    <SideBar/>
+
+    <div className="w-[90%] h-full md:ml-auto overflow-y-auto">
+      <Header/>
+      <KanbanView/>
+      
+    </div>
+  </div>
   )
 }
 
