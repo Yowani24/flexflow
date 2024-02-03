@@ -9,7 +9,7 @@ function App() {
   <div className="flex h-screen">
     <SideBar/>
 
-    <div className="w-[90%] h-full md:ml-auto overflow-y-auto">
+    <div className="w-[100%] md:w-[90%] h-full md:ml-auto overflow-y-auto">
       <Header/>
       <KanbanView/>
       
