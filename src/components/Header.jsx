@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-import logo from "../assets/logo.png";
+import logo from "../assets/logo3.png";
 
 export default function Header() {
   return (

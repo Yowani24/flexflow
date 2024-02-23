@@ -10,6 +10,7 @@ import { FaUsersGear } from "react-icons/fa6";
 import { Tabs, TabsBody, TabPanel } from "@material-tailwind/react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import DashboardView from "./components/DashboardView";
+import OverAllUserManagement from "./components/OverAllUserManagement";
 
 const queryClient = new QueryClient();
 
@@ -27,7 +28,7 @@ const data = [
   {
     value: "management",
     icon: <FaUsersGear size={20} />,
-    component: <></>,
+    component: <OverAllUserManagement />,
   },
 ];
 

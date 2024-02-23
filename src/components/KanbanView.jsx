@@ -18,7 +18,7 @@ export default function KanbanView() {
   return (
     <div className="relative">
       {data.map((item) => (
-        <div className="flex flex-col px-4 w-full" key={item.id}>
+        <div className="flex flex-col pr-5 w-full" key={item.id}>
           <div className="flex  items-center justify-between pr-2 bg-white w-full rounded-lg overflow-hidden">
             <Breadcrumbs className="bg-white">
               <SiOnlyoffice />
