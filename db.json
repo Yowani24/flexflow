@@ -8,41 +8,124 @@
           "id": "1",
           "task_name": "Implement authentication system",
           "reference_link": "https://phoenixrising.com/auth-docs",
-          "responsible": ["Eva", "Michael"],
+          "responsible": [
+            {
+              "id": "1",
+              "name": "Eva",
+              "email": "eva@example.com",
+              "role": "Developer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            }
+          ],
           "priority": "high",
-          "description": "Develop a robust authentication system to ensure secure access for users."
+          "description": "Develop a robust authentication system to ensure secure access for users.",
+          "progress": 45,
+          "subactivities": [
+            {
+              "id": 1,
+              "text": "Implement two-factor authentication for added security.",
+              "started": true,
+              "paused": false,
+              "done": true
+            },
+            {
+              "id": 2,
+              "text": "Integrate OAuth for seamless third-party login support.",
+              "started": false,
+              "paused": false,
+              "done": false
+            }
+          ]
         },
         {
           "id": "2",
           "task_name": "Design homepage layout",
           "reference_link": "https://phoenixrising.com/homepage-design",
-          "responsible": ["Sophia", "David"],
+          "responsible": [
+            {
+              "id": "1",
+              "name": "David",
+              "email": "david@example.com",
+              "role": "Designer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            },
+            {
+              "id": "2",
+              "name": "Sophia",
+              "email": "sophia@example.com",
+              "role": "Designer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            }
+          ],
           "priority": "medium",
-          "description": "Create an attractive and user-friendly layout for the homepage."
+          "description": "Create an attractive and user-friendly layout for the homepage.",
+          "progress": 80,
+          "subactivities": []
         },
         {
           "id": "3",
           "task_name": "Optimize database queries",
           "reference_link": "https://phoenixrising.com/db-optimization",
-          "responsible": ["Ethan", "Olivia"],
+          "responsible": [
+            {
+              "id": "1",
+              "name": "Olivia",
+              "email": "olivia@example.com",
+              "role": "Database Administrator",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            },
+            {
+              "id": "2",
+              "name": "Ethan",
+              "email": "ethan@example.com",
+              "role": "Database Administrator",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            }
+          ],
           "priority": "high",
-          "description": "Enhance database performance by optimizing SQL queries."
+          "description": "Enhance database performance by optimizing SQL queries.",
+          "progress": 20,
+          "subactivities": [
+            {
+              "id": 1,
+              "text": "Identify frequently accessed queries for optimization.",
+              "started": true,
+              "paused": false,
+              "done": true
+            },
+            {
+              "id": 2,
+              "text": "Index frequently queried columns to improve search speed.",
+              "started": true,
+              "paused": false,
+              "done": false
+            },
+            {
+              "id": 3,
+              "text": "Rewrite complex queries for better performance.",
+              "started": false,
+              "paused": false,
+              "done": false
+            }
+          ]
         },
         {
           "id": "4",
           "task_name": "Implement payment gateway integration",
           "reference_link": "https://phoenixrising.com/payment-gateway",
-          "responsible": ["Daniel", "Emma"],
-          "priority": "high",
-          "description": "Integrate a secure payment gateway for processing transactions."
-        },
-        {
-          "id": "5",
-          "task_name": "Conduct security audit",
-          "reference_link": "https://phoenixrising.com/security-audit",
-          "responsible": ["Liam", "Ava"],
-          "priority": "high",
-          "description": "Perform a comprehensive security audit to identify and address vulnerabilities."
+          "responsible": [
+            {
+              "id": "1",
+              "name": "Daniel",
+              "email": "daniel@example.com",
+              "role": "Developer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            }
+          ],
+          "priority": "low",
+          "description": "Integrate a secure payment gateway for processing transactions.",
+          "progress": 65,
+          "subactivities": []
         }
       ]
     },
@@ -54,41 +137,142 @@
           "id": "1",
           "task_name": "Develop user profile module",
           "reference_link": "https://nebulaquest.com/user-profile",
-          "responsible": ["Noah", "Sophia"],
-          "priority": "high",
-          "description": "Create a module for users to manage their profiles and settings."
+          "responsible": [
+            {
+              "id": "1",
+              "name": "Sophia",
+              "email": "sophia@example.com",
+              "role": "Developer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            },
+            {
+              "id": "2",
+              "name": "Noah",
+              "email": "noah@example.com",
+              "role": "Developer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            }
+          ],
+          "priority": "low",
+          "description": "Create a module for users to manage their profiles and settings.",
+          "progress": 30,
+          "subactivities": []
         },
         {
           "id": "2",
           "task_name": "Implement search functionality",
           "reference_link": "https://nebulaquest.com/search-functionality",
-          "responsible": ["James", "Charlotte"],
-          "priority": "medium",
-          "description": "Enable users to search for content within the platform efficiently."
+          "responsible": [
+            {
+              "id": "1",
+              "name": "James",
+              "email": "james@example.com",
+              "role": "Developer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            }
+          ],
+          "priority": "high",
+          "description": "Enable users to search for content within the platform efficiently.",
+          "progress": 75,
+          "subactivities": [
+            {
+              "id": 1,
+              "text": "Implement advanced search filters.",
+              "started": true,
+              "paused": true,
+              "done": false
+            },
+            {
+              "id": 2,
+              "text": "Optimize search indexing for faster results.",
+              "started": true,
+              "paused": false,
+              "done": false
+            }
+          ]
         },
         {
           "id": "3",
           "task_name": "Design mobile app interface",
           "reference_link": "https://nebulaquest.com/mobile-app-design",
-          "responsible": ["William", "Mia"],
-          "priority": "high",
-          "description": "Create a visually appealing and intuitive interface for the mobile app."
+          "responsible": [
+            {
+              "id": "1",
+              "name": "William",
+              "email": "william@example.com",
+              "role": "Designer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            }
+          ],
+          "priority": "medium",
+          "description": "Create a visually appealing and intuitive interface for the mobile app.",
+          "progress": 50,
+          "subactivities": []
         },
         {
           "id": "4",
           "task_name": "Implement push notifications",
           "reference_link": "https://nebulaquest.com/push-notifications",
-          "responsible": ["Benjamin", "Amelia"],
-          "priority": "high",
-          "description": "Set up push notifications to keep users informed about important updates."
+          "responsible": [
+            {
+              "id": "1",
+              "name": "Benjamin",
+              "email": "benjamin@example.com",
+              "role": "Developer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            },
+            {
+              "id": "2",
+              "name": "Amelia",
+              "email": "amelia@example.com",
+              "role": "Developer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            }
+          ],
+          "priority": "low",
+          "description": "Set up push notifications to keep users informed about important updates.",
+          "progress": 85,
+          "subactivities": []
         },
         {
           "id": "5",
           "task_name": "Test scalability of backend infrastructure",
           "reference_link": "https://nebulaquest.com/backend-scalability",
-          "responsible": ["Lucas", "Isabella"],
-          "priority": "high",
-          "description": "Evaluate the ability of the backend infrastructure to handle increasing loads."
+          "responsible": [
+            {
+              "id": "1",
+              "name": "Isabella",
+              "email": "isabella@example.com",
+              "role": "Tester",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            },
+            {
+              "id": "2",
+              "name": "Lucas",
+              "email": "lucas@example.com",
+              "role": "Tester",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            }
+          ],
+          "priority": "medium",
+          "description": "Evaluate the ability of the backend infrastructure to handle increasing loads.",
+          "progress": 10,
+          "subactivities": [
+            {
+              "id": 1,
+              "text": "Simulate high traffic scenarios for load testing.",
+              "started": true,
+              "paused": false,
+              "done": true
+            },
+            {
+              "id": 2,
+              "text": "Identify potential scalability bottlenecks.",
+              "started": true,
+              "paused": false,
+              "done": false
+            }
+          ]
         }
       ]
     },
@@ -100,41 +284,91 @@
           "id": "1",
           "task_name": "Develop content management system",
           "reference_link": "https://infinityhorizon.com/cms",
-          "responsible": ["Alexander", "Emily"],
-          "priority": "high",
-          "description": "Build a flexible and user-friendly content management system for publishing content."
+          "responsible": [
+            {
+              "id": "1",
+              "name": "Alexander",
+              "email": "alexander@example.com",
+              "role": "Developer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            },
+            {
+              "id": "2",
+              "name": "Emily",
+              "email": "emily@example.com",
+              "role": "Developer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            },
+            {
+              "id": "3",
+              "name": "Sofia",
+              "email": "sofia@example.com",
+              "role": "Developer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            }
+          ],
+          "priority": "medium",
+          "description": "Build a flexible and user-friendly content management system for publishing content.",
+          "progress": 70,
+          "subactivities": [
+            {
+              "id": 1,
+              "text": "Implement version control for content revisions.",
+              "started": true,
+              "paused": false,
+              "done": false
+            },
+            {
+              "id": 2,
+              "text": "Integrate WYSIWYG editor for easy content creation.",
+              "started": false,
+              "paused": false,
+              "done": false
+            },
+            {
+              "id": 3,
+              "text": "Create customizable templates for different content types.",
+              "started": false,
+              "paused": false,
+              "done": false
+            }
+          ]
         },
         {
           "id": "2",
           "task_name": "Implement e-commerce functionality",
           "reference_link": "https://infinityhorizon.com/e-commerce",
-          "responsible": ["Jack", "Avery"],
-          "priority": "medium",
-          "description": "Integrate an e-commerce platform to facilitate online transactions."
+          "responsible": [
+            {
+              "id": "1",
+              "name": "Jack",
+              "email": "jack@example.com",
+              "role": "Developer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            }
+          ],
+          "priority": "high",
+          "description": "Integrate an e-commerce platform to facilitate online transactions.",
+          "progress": 40,
+          "subactivities": []
         },
         {
           "id": "3",
           "task_name": "Design landing page",
           "reference_link": "https://infinityhorizon.com/landing-page",
-          "responsible": ["Jacob", "Sofia"],
-          "priority": "high",
-          "description": "Create an engaging and conversion-focused landing page for the website."
-        },
-        {
-          "id": "4",
-          "task_name": "Implement user feedback system",
-          "reference_link": "https://infinityhorizon.com/feedback-system",
-          "responsible": ["Luke", "Evelyn"],
-          "priority": "high",
-          "description": "Set up a mechanism for collecting and analyzing user feedback."
-        },
-        {
-          "id": "5",
-          "task_name": "Optimize website performance",
-          "reference_link": "https://infinityhorizon.com/performance-optimization",
-          "responsible": ["Henry", "Scarlett"],
-          "priority": "high",
-          "description": "Improve website speed and responsiveness through performance optimization techniques."
+          "responsible": [
+            {
+              "id": "1",
+              "name": "Jacob",
+              "email": "jacob@example.com",
+              "role": "Designer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            }
+          ],
+          "priority": "low",
+          "description": "Create an engaging and conversion-focused landing page for the website.",
+          "progress": 95,
+          "subactivities": []
         }
       ]
     },
@@ -146,41 +380,66 @@
           "id": "1",
           "task_name": "Develop real-time chat feature",
           "reference_link": "https://eclipseedge.com/chat-feature",
-          "responsible": ["Logan", "Madison"],
+          "responsible": [
+            {
+              "id": "1",
+              "name": "Madison",
+              "email": "madison@example.com",
+              "role": "Developer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            },
+            {
+              "id": "2",
+              "name": "Logan",
+              "email": "logan@example.com",
+              "role": "Developer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            }
+          ],
           "priority": "high",
-          "description": "Create a real-time chat feature to enable instant communication between users."
+          "description": "Create a real-time chat feature to enable instant communication between users.",
+          "progress": 15,
+          "subactivities": [
+            {
+              "id": 1,
+              "text": "Implement message encryption for security.",
+              "started": true,
+              "paused": false,
+              "done": false
+            },
+            {
+              "id": 2,
+              "text": "Design chat interface for ease of use.",
+              "started": false,
+              "paused": false,
+              "done": false
+            }
+          ]
         },
         {
           "id": "2",
           "task_name": "Implement data encryption",
           "reference_link": "https://eclipseedge.com/data-encryption",
-          "responsible": ["Gabriel", "Chloe"],
-          "priority": "medium",
-          "description": "Enhance data security by implementing encryption techniques for sensitive information."
-        },
-        {
-          "id": "3",
-          "task_name": "Design user dashboard",
-          "reference_link": "https://eclipseedge.com/user-dashboard",
-          "responsible": ["Jackson", "Lily"],
-          "priority": "high",
-          "description": "Create a dashboard interface for users to manage their activities and settings."
-        },
-        {
-          "id": "4",
-          "task_name": "Integrate social media sharing",
-          "reference_link": "https://eclipseedge.com/social-sharing",
-          "responsible": ["Carter", "Grace"],
-          "priority": "high",
-          "description": "Allow users to share content from the platform on various social media channels."
-        },
-        {
-          "id": "5",
-          "task_name": "Conduct accessibility audit",
-          "reference_link": "https://eclipseedge.com/accessibility-audit",
-          "responsible": ["Owen", "Zoe"],
-          "priority": "high",
-          "description": "Evaluate the platform's accessibility and make necessary improvements for inclusivity."
+          "responsible": [
+            {
+              "id": "1",
+              "name": "Gabriel",
+              "email": "gabriel@example.com",
+              "role": "Developer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            },
+            {
+              "id": "2",
+              "name": "Chloe",
+              "email": "chloe@example.com",
+              "role": "Developer",
+              "photo_url": "https://source.unsplash.com/random/200x200/?portrait"
+            }
+          ],
+          "priority": "low",
+          "description": "Enhance data security by implementing encryption techniques for sensitive information.",
+          "progress": 55,
+          "subactivities": []
         }
       ]
     }

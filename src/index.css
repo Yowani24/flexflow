@@ -33,6 +33,7 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
@@ -41,11 +42,36 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.faded{
-position: relative;
+.participants_scrollBarStyles::-webkit-scrollbar {
+  display: none;
+}
+/* width */
+.scrollBarStyles::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.scrollBarStyles::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+.scrollBarStyles::-webkit-scrollbar-thumb {
+  background: rgb(227, 226, 226);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.scrollBarStyles::-webkit-scrollbar-thumb:hover {
+  background: #a5a5a5;
+}
+
+.faded {
+  position: relative;
 }
 .faded::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   z-index: 1;
@@ -54,7 +80,7 @@ position: relative;
   background: linear-gradient(to left, #f1f3fd4f, #f1f3fd);
 }
 .faded::after {
-  content: '';
+  content: "";
   position: absolute;
   right: 0;
   z-index: 1;
@@ -65,10 +91,7 @@ position: relative;
 
 .dinacolor {
   background: #9b59b6;
-  background: 
-    radial-gradient(
-     at center, #3498db, #9b59b6
-    );
+  background: radial-gradient(at center, #3498db, #9b59b6);
 }
 
 .sliding-container {
@@ -88,7 +111,6 @@ position: relative;
     transform: translateX(-950%);
   }
 }
-
 
 @media (prefers-color-scheme: light) {
   :root {
