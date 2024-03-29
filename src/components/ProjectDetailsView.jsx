@@ -1,8 +1,14 @@
 import React from "react";
-import { Dialog, DialogHeader, DialogBody } from "@material-tailwind/react";
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  Chip,
+  Button,
+} from "@material-tailwind/react";
 import { IoCloseSharp } from "react-icons/io5";
 import TaskCard from "./TaskCard";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo3.png";
 
 export default function ProjectDetailsView({
   projectData,
@@ -10,7 +16,7 @@ export default function ProjectDetailsView({
   icon,
   status,
   disabledProps,
-  progressStatus,
+  task_progress,
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -19,7 +25,15 @@ export default function ProjectDetailsView({
   return (
     <>
       <div
-        className="text-sm w-28 tracking-wide bg-gray-200 hover:bg-blue-gray-100 transition-all rounded-md p-2 gap-1 flex flex-col items-center justify-center cursor-pointer"
+        className={`text-sm w-28 tracking-wide ${
+          task_progress === "ongoing"
+            ? "bg-[#E1F5FE]"
+            : task_progress === "paused"
+            ? "bg-[#FFF3E0]"
+            : task_progress === "completed"
+            ? "bg-[#E8F5E9]"
+            : ""
+        } hover:bg-blue-gray-100 transition-all rounded-md p-2 gap-1 flex flex-col items-center justify-center cursor-pointer`}
         onClick={status > 0 ? handleOpen : () => {}}
       >
         {icon}
@@ -27,6 +41,7 @@ export default function ProjectDetailsView({
           <span className="font-semibold">{status}</span> {value}
         </p>
       </div>
+
       <Dialog
         size="xxl"
         open={open}
@@ -40,7 +55,7 @@ export default function ProjectDetailsView({
             alt="nature image"
           />
           <p className="text-gray-600 font-medium text-xl">
-            {projectData.map((item) => item.project_name)} - P568
+            {projectData.map((item) => item.name)}
           </p>
           <div
             onClick={handleOpen}
@@ -54,18 +69,21 @@ export default function ProjectDetailsView({
             {projectData.map((item) =>
               item.tasks
                 .filter(
-                  (filtered_task) => filtered_task.priority === progressStatus
+                  (filter_task) =>
+                    filter_task.progressStatus === task_progress &&
+                    filter_task.responsibles.length > 0
                 )
                 .map((task) => (
                   <TaskCard
                     key={task.id}
                     taskId={task.id}
-                    task_name={task.task_name}
+                    task_status={task.status}
+                    task_name={task.title}
                     description={task.description}
                     priority={task.priority}
-                    responsible={task.responsible}
+                    responsibles={task.responsibles}
                     progress={task.progress}
-                    subactivities={task.subactivities}
+                    subtasks={task.sub_tasks}
                     reference_link={task.reference_link}
                     disabledProps={disabledProps}
                     disabledSpecificProps="true"

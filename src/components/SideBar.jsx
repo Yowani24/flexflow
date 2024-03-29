@@ -1,11 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import { TbLogout } from "react-icons/tb";
-import { TabsHeader, Tab } from "@material-tailwind/react";
+import {
+  TabsHeader,
+  Tab,
+  Menu,
+  MenuHandler,
+  Typography,
+  MenuItem,
+  MenuList,
+  Popover,
+  PopoverHandler,
+  Button,
+  PopoverContent,
+} from "@material-tailwind/react";
+import { FaRegUserCircle } from "react-icons/fa";
+import AnimatedDialog from "./AnimatedDialog";
+import ProfileEditComponent from "./ProfileEditComponent";
+import { RiBardLine } from "react-icons/ri";
+import { useLang } from "../../hook/LangContext";
+import { HiHome } from "react-icons/hi2";
+import { Link, useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
+import useFetchData from "../../hook/useFetchData";
 
 export default function SideBar({ data }) {
+  const { setEnterprise_referenceId, refetch } = useFetchData();
+  const { translations } = useLang();
+  const [showButton, setShowButton] = useState(false);
+  const userString = localStorage.getItem("user");
+  const user = userString ? JSON.parse(userString) : null;
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("enterprise_referenceId");
+    setEnterprise_referenceId([]);
+    localStorage.removeItem("selectedProject");
+    navigate("/login");
+  };
+
   return (
-    <div className="hidden md:w-[10%] h-full fixed top-0 left-0 overflow-y-auto md:flex items-start justify-center">
+    <div className="hidden md:w-[10%] h-full fixed top-0 left-0 overflow-y-auto md:flex items-start justify-center z-40">
       <div className="relative flex flex-col items-center py-5 justify-start gap-4 bg-[rgb(21,22,25)] w-[60%] h-[80%] mt-[112px] rounded-lg">
+        <Link to={"/"} onClick={() => localStorage.removeItem("reloadCalled")}>
+          <div className="hover:bg-gray-900 text-white cursor-pointer bottom-5 w-10 h-10 rounded-lg flex items-center justify-center">
+            <HiHome size={20} />
+          </div>
+        </Link>
         <div className="flex flex-col items-center justify-start gap-4">
           <TabsHeader
             className="bg-transparent"
@@ -16,6 +60,7 @@ export default function SideBar({ data }) {
             <div className="flex flex-col items-center justify-start gap-4">
               {data.map(({ icon, value }) => (
                 <Tab
+                  onClick={() => refetch()}
                   key={value}
                   value={value}
                   className=" hover:bg-gray-900 text-white cursor-pointer transition-all w-10 h-10 rounded-lg flex items-center justify-center"
@@ -26,9 +71,48 @@ export default function SideBar({ data }) {
             </div>
           </TabsHeader>
         </div>
-        <div className="hover:bg-gray-900 text-red-200 cursor-pointer absolute bottom-5 w-10 h-10 rounded-lg flex items-center justify-center">
-          <TbLogout size={20} />
+        <div className="hover:bg-gray-900 text-white cursor-pointer bottom-5 w-10 h-10 rounded-lg flex items-center justify-center">
+          <RiBardLine size={20} />
         </div>
+        <div className="z-50">
+          <AnimatedDialog
+            title={translations.editing_profile}
+            showButtonProps={showButton}
+            customButtonProps={
+              <div className="hover:bg-gray-900 text-white cursor-pointer bottom-5 w-10 h-10 rounded-lg flex items-center justify-center">
+                <FaRegUserCircle size={20} />
+              </div>
+            }
+            children={
+              <ProfileEditComponent
+                showButtonProps={setShowButton}
+                photoRUL={user?.photoRUL}
+                name={user.displayName}
+                email={user.email}
+                role={user?.role}
+              />
+            }
+          />
+        </div>
+
+        <Popover placement="right">
+          <PopoverHandler>
+            <div className="hover:bg-gray-900 text-red-200 cursor-pointer absolute bottom-5 w-10 h-10 rounded-lg flex items-center justify-center">
+              <TbLogout size={20} />
+            </div>
+          </PopoverHandler>
+          <PopoverContent className="z-50 p-0 flex flex-col items-center gap-4 border-[5px] border-gray-300">
+            <Button
+              className="text-sm text-red-300 cursor-pointer capitalize "
+              onClick={() => {
+                handleLogout();
+                localStorage.removeItem("reloadCalled");
+              }}
+            >
+              Sair
+            </Button>
+          </PopoverContent>
+        </Popover>
       </div>
     </div>
   );

@@ -11,17 +11,18 @@ import {
 } from "@material-tailwind/react";
 
 const prioridade = [
-  { id: "1", value: "Urgente" },
-  { id: "2", value: "Alta" },
-  { id: "3", value: "Normal" },
-  { id: "4", value: "Baixa" },
+  { id: "1", label: "Alta", value: "high" },
+  { id: "2", label: "Mediana", value: "medium" },
+  { id: "3", label: "Baixa", value: "low" },
 ];
 
-export default function PriorityComponent({ priority, disabledSpecificProps }) {
-  const [selectedOption, setSelectedOption] = useState("Selec. prioridade");
-
+export default function PriorityComponent({
+  priority,
+  disabledSpecificProps,
+  handlePriorityUpdate,
+}) {
   const handleMenuItemClick = (value) => {
-    setSelectedOption(value);
+    handlePriorityUpdate(value);
   };
 
   return (
@@ -34,12 +35,10 @@ export default function PriorityComponent({ priority, disabledSpecificProps }) {
               color={
                 priority.toLowerCase() === "high"
                   ? "red"
-                  : priority.toLowerCase() === "alta"
-                  ? "orange"
                   : priority.toLowerCase() === "medium"
-                  ? "cyan"
+                  ? "orange"
                   : priority.toLowerCase() === "low"
-                  ? "gray"
+                  ? "cyan"
                   : ""
               }
             />
@@ -48,17 +47,15 @@ export default function PriorityComponent({ priority, disabledSpecificProps }) {
           ${
             priority.toLowerCase() === "high"
               ? "bg-red-400"
-              : priority.toLowerCase() === "alta"
-              ? "bg-orange-400"
               : priority.toLowerCase() === "medium"
-              ? "bg-cyan-400"
+              ? "bg-orange-400"
               : priority.toLowerCase() === "low"
-              ? "bg-gray-400"
+              ? "bg-cyan-400"
               : ""
           }
           `}
             >
-              {priority}{" "}
+              {priority}
               {disabledSpecificProps ? (
                 ""
               ) : (
@@ -76,18 +73,16 @@ export default function PriorityComponent({ priority, disabledSpecificProps }) {
             >
               <TbFlag3Filled
                 color={
-                  item.value.toLowerCase() === "urgente"
+                  item.label.toLowerCase() === "alta"
                     ? "red"
-                    : item.value.toLowerCase() === "alta"
+                    : item.label.toLowerCase() === "mediana"
                     ? "orange"
-                    : item.value.toLowerCase() === "normal"
+                    : item.label.toLowerCase() === "baixa"
                     ? "cyan"
-                    : item.value.toLowerCase() === "baixa"
-                    ? "gray"
                     : ""
                 }
               />
-              {item.value}
+              {item.label}
             </MenuItem>
           ))}
         </MenuList>
