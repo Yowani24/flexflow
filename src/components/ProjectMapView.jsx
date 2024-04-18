@@ -265,11 +265,11 @@ const ProjectMapView = ({ projectData, projectName }) => {
         <ProjectSpecification
           projectName={projectName}
           buttonProps={
-            <Button className="bg-gray-900 flex items-center gap-2 rounded-full px-2 py-1">
+            <Button className="bg-gray-900 flex items-center gap-2 rounded-lg px-2 py-1">
               <span className="text-white text-xs normal-case">
                 {translations.specification}
               </span>
-              <TbListDetails color="white" size={20} />
+              <TbListDetails color="white" size={16} />
             </Button>
           }
         />

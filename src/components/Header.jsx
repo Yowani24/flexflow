@@ -14,7 +14,7 @@ import logo from "../assets/logo16.png";
 import { IoLanguageSharp } from "react-icons/io5";
 import useFetchData from "../../hook/useFetchData";
 import { RxGear } from "react-icons/rx";
-import { GoBellFill } from "react-icons/go";
+import NotificationMenuComponent from "./NotificationMenuComponent";
 
 export default function Header() {
   const { data } = useFetchData();
@@ -50,9 +50,10 @@ export default function Header() {
       </Menu>
     );
   };
+
   return (
     <div className="h-30 bg-white fixed top-0 left-0 w-full z-30 flex flex-col items-center justify-between">
-      <div className="h-16 bg-white w-full z-10 flex items-center justify-between px-10">
+      <div className="conaheader h-16 bg-white w-full z-10 flex items-center justify-between px-10">
         <img
           className="h-11 w-fit object-cover object-center cursor-pointer"
           src={logo}
@@ -62,24 +63,29 @@ export default function Header() {
           <div className="flex items-center gap-10">
             <LanguageChangeComponent />
             <div className="flex items-center gap-2">
-              <div className="bg-white rounded-full text-gray-600 w-8 h-8 flex items-center justify-center shadow-md cursor-pointer">
-                <GoBellFill size={25} />
-              </div>
-
-              {user?.photoURL ? (
-                <Avatar
-                  variant="rounded"
-                  alt="tania andrew"
-                  size="xs"
-                  className="cursor-pointer"
-                  src={user?.photoURL}
-                />
+              <NotificationMenuComponent />
+              {data?.some(
+                (enterpriseData) => enterpriseData.email !== user.email
+              ) ? (
+                <>
+                  {user?.photoURL ? (
+                    <Avatar
+                      variant="rounded"
+                      alt="tania andrew"
+                      size="xs"
+                      className="cursor-pointer"
+                      src={user?.photoURL}
+                    />
+                  ) : (
+                    <FaCircleUser size={27} color="lightgray" />
+                  )}
+                </>
               ) : (
-                <FaCircleUser size={30} color="lightgray" />
+                ""
               )}
 
-              <div className="bg-white rounded-full text-gray-600 w-8 h-8 flex items-center justify-center shadow-md cursor-pointer">
-                <RxGear size={25} />
+              <div className="bg-white rounded-full text-gray-600 w-7 h-7 flex items-center justify-center shadow-md cursor-pointer">
+                <RxGear size={22} />
               </div>
             </div>
           </div>

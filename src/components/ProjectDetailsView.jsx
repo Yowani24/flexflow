@@ -5,10 +5,14 @@ import {
   DialogBody,
   Chip,
   Button,
+  Typography,
 } from "@material-tailwind/react";
-import { IoCloseSharp } from "react-icons/io5";
+import { IoCheckmarkDoneCircleOutline, IoCloseSharp } from "react-icons/io5";
 import TaskCard from "./TaskCard";
 import logo from "../assets/logo3.png";
+import { TbProgress } from "react-icons/tb";
+import { MdOutlineMotionPhotosPaused } from "react-icons/md";
+import { useLang } from "../../hook/LangContext";
 
 export default function ProjectDetailsView({
   projectData,
@@ -18,29 +22,32 @@ export default function ProjectDetailsView({
   disabledProps,
   task_progress,
 }) {
+  const { translations } = useLang();
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => setOpen((cur) => !cur);
 
   return (
     <>
-      <div
-        className={`text-sm w-28 tracking-wide ${
-          task_progress === "ongoing"
-            ? "bg-[#E1F5FE]"
-            : task_progress === "paused"
-            ? "bg-[#FFF3E0]"
-            : task_progress === "completed"
-            ? "bg-[#E8F5E9]"
-            : ""
-        } hover:bg-blue-gray-100 transition-all rounded-md p-2 gap-1 flex flex-col items-center justify-center cursor-pointer`}
-        onClick={status > 0 ? handleOpen : () => {}}
-      >
-        {icon}
-        <p>
-          <span className="font-semibold">{status}</span> {value}
-        </p>
-      </div>
+      <Typography className="opacity-80 hover:opacity-100 font-bold cursor-pointer">
+        <Chip
+          variant="ghost"
+          size="lg"
+          icon={icon}
+          value={`${value}: ${status}`}
+          color={
+            task_progress === "ongoing"
+              ? "blue"
+              : task_progress === "paused"
+              ? "amber"
+              : task_progress === "completed"
+              ? "green"
+              : ""
+          }
+          onClick={status > 0 ? handleOpen : () => {}}
+          className="w-32 h-14 text-center rounded-lg capitalize text-xs"
+        />
+      </Typography>
 
       <Dialog
         size="xxl"

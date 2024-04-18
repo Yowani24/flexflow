@@ -1,12 +1,21 @@
 import React from "react";
-import { Card, CardBody } from "@material-tailwind/react";
+import {
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel,
+  Typography,
+} from "@material-tailwind/react";
+import {
+  Square3Stack3DIcon,
+  UserGroupIcon,
+  BriefcaseIcon,
+} from "@heroicons/react/24/solid";
 
 import useFetchData from "../../hook/useFetchData";
 import MembersTable from "./MembersTable";
 import ProjectsTable from "./ProjectsTable";
-import { BsBuildingsFill } from "react-icons/bs";
-import { FaUsers } from "react-icons/fa6";
-import { VscProject } from "react-icons/vsc";
 import { useLang } from "../../hook/LangContext";
 import ClientsTable from "./ClientsTable";
 
@@ -16,50 +25,64 @@ export default function OverAllUserManagement() {
 
   if (isLoading) return <p>Carregando dados...</p>;
 
+  const tabsData = [
+    {
+      label: translations.members,
+      value: "members",
+      icon: UserGroupIcon,
+      component: <MembersTable />,
+      quantity: allMembers.length,
+    },
+    {
+      label: translations.projects,
+      value: "profile",
+      icon: Square3Stack3DIcon,
+      component: <ProjectsTable data={data} />,
+      quantity: data.map((item) => item.projects.length),
+    },
+    {
+      label: translations.clients,
+      value: "settings",
+      icon: BriefcaseIcon,
+      component: <ClientsTable data={allClients} />,
+      quantity: allClients.length,
+    },
+  ];
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    // set loading...
+
+    await fetch("/api/email", {
+      method: "POST",
+      body: JSON.stringify(),
+    });
+  }
+
   return (
-    <div className="px-5 md:pr-10 mb-16 z-50">
-      <Card className="mb-5 w-full h-fit">
-        <CardBody className="h-full">
-          <div className="flex items-center justify-between md:px-40 gap-5 flex-wrap h-fit w-full">
-            <div className="flex-col gap-2 flex items-center justify-center">
-              <p>{translations.members}</p>
-
-              <div className="border-2 w-fit h-12 rounded-full flex items-center justify-between gap-5 px-4">
-                <div className="flex items-center -space-x-4 text-3xl font-medium">
-                  {allMembers.length}
-                </div>
-                <FaUsers size={20} />
+    <div className="px-2 md:pr-10 mb-16 z-50">
+      <Tabs value="members">
+        <TabsHeader>
+          {tabsData.map(({ label, value, icon, quantity }) => (
+            <Tab key={value} value={value}>
+              <div className="flex items-center gap-2">
+                {React.createElement(icon, { className: "w-5 h-5" })}
+                {label}{" "}
+                <Typography className="text-gray-500" variant="small">
+                  {quantity}
+                </Typography>
               </div>
-            </div>
-
-            <div className="flex-col gap-2 flex items-center justify-center">
-              <p>{translations.projects}</p>
-
-              <div className="border-2 w-fit h-12 rounded-full flex items-center justify-between gap-5 px-4">
-                <div className="flex items-center -space-x-4 text-3xl font-medium">
-                  {data.map((item) => item.projects.length)}
-                </div>
-                <VscProject size={20} />
-              </div>
-            </div>
-            <div className="flex-col gap-2 flex items-center justify-center">
-              <p>{translations.clients}</p>
-
-              <div className="border-2 w-fit h-12 rounded-full flex items-center justify-between gap-5 px-4">
-                <div className="flex items-center -space-x-4 text-3xl font-medium">
-                  {allClients.length}
-                </div>
-                <BsBuildingsFill size={20} />
-              </div>
-            </div>
-          </div>
-        </CardBody>
-      </Card>
-
-      <MembersTable />
-      <ProjectsTable data={data} />
-
-      <ClientsTable data={allClients} />
+            </Tab>
+          ))}
+        </TabsHeader>
+        <TabsBody className="z-50">
+          {tabsData.map(({ value, component }) => (
+            <TabPanel key={value} value={value} className="">
+              {component}
+            </TabPanel>
+          ))}
+        </TabsBody>
+      </Tabs>
     </div>
   );
 }

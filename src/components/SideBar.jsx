@@ -39,6 +39,7 @@ export default function SideBar({ data }) {
     localStorage.removeItem("enterprise_referenceId");
     setEnterprise_referenceId([]);
     localStorage.removeItem("selectedProject");
+    localStorage.removeItem("pageReloaded");
     navigate("/login");
   };
 
@@ -71,7 +72,7 @@ export default function SideBar({ data }) {
             </div>
           </TabsHeader>
         </div>
-        <div className="hover:bg-gray-900 text-white cursor-pointer bottom-5 w-10 h-10 rounded-lg flex items-center justify-center">
+        <div className="hover:bg-gray-900 text-white cursor-not-allowed bottom-5 w-10 h-10 rounded-lg flex items-center justify-center">
           <RiBardLine size={20} />
         </div>
         <div className="z-50">

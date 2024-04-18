@@ -43,21 +43,21 @@ export default function OverAllInformation({ projectData, projectName }) {
     {
       id: "1",
       value: translations.in_progress,
-      icon: <TbProgress color="cyan" size={20} />,
+      icon: <TbProgress color="cyan" size={24} />,
       status: inProgressTasks,
       task_progress: "ongoing",
     },
     {
       id: "2",
       value: translations.paused,
-      icon: <MdOutlineMotionPhotosPaused color="brown" size={20} />,
+      icon: <MdOutlineMotionPhotosPaused color="brown" size={24} />,
       status: pausedTasks,
       task_progress: "paused",
     },
     {
       id: "3",
       value: translations.completed,
-      icon: <IoCheckmarkDoneCircleOutline color="green" size={20} />,
+      icon: <IoCheckmarkDoneCircleOutline color="green" size={24} />,
       status: completedTasks,
       task_progress: "completed",
     },
@@ -70,7 +70,7 @@ export default function OverAllInformation({ projectData, projectName }) {
           <p>{translations.participants}</p>
 
           <div className="border-2 border-cyan-200 w-fit h-12 rounded-full flex items-center justify-between gap-5 px-4">
-            <div className="flex items-center -space-x-4 text-3xl font-medium">
+            {/* <div className="flex items-center -space-x-4 text-3xl font-medium">
               {projectData.map((project) => {
                 const responsiblesDisplayed = new Set();
                 return project.tasks.map((task) => {
@@ -90,34 +90,32 @@ export default function OverAllInformation({ projectData, projectName }) {
                           if (!responsiblesDisplayed.has(user.email)) {
                             responsiblesDisplayed.add(user.email);
                             return (
-                              <>
-                                <Tooltip
-                                  key={user.id}
-                                  content={user.name}
-                                  animate={{
-                                    mount: { scale: 1, y: 0 },
-                                    unmount: { scale: 0, y: 25 },
-                                  }}
-                                >
-                                  {user.photo_url ? (
-                                    <Avatar
-                                      variant="circular"
-                                      alt={user.name}
-                                      size="sm"
-                                      className="border-2 border-white hover:z-10 focus:z-10"
-                                      src={user.photo_url}
-                                    />
-                                  ) : (
-                                    <FaCircleUser size={34} />
-                                  )}
-                                </Tooltip>
-                              </>
+                              <Tooltip
+                                key={user.id}
+                                content={user.name}
+                                animate={{
+                                  mount: { scale: 1, y: 0 },
+                                  unmount: { scale: 0, y: 25 },
+                                }}
+                              >
+                                {user.photo_url ? (
+                                  <Avatar
+                                    variant="circular"
+                                    alt={user.name}
+                                    size="sm"
+                                    className="border-2 border-white hover:z-10 min-w-9 min-h-9 focus:z-10"
+                                    src={user.photo_url}
+                                  />
+                                ) : (
+                                  <FaCircleUser size={34} />
+                                )}
+                              </Tooltip>
                             );
                           }
-                          return null;
+                          return "";
                         })}
                       </div>
-                      <div className=" ml-1">
+                       <div className=" ml-1 z-50 bg-green-400 h-11 w-full">
                         {current_users.length > 3 ? (
                           <Typography className="">
                             + {current_users.length - 3}
@@ -125,12 +123,12 @@ export default function OverAllInformation({ projectData, projectName }) {
                         ) : (
                           ""
                         )}
-                      </div>
+                      </div> 
                     </div>
                   );
                 });
               })}
-            </div>
+            </div> */}
 
             <FaUsers size={20} />
           </div>
@@ -168,28 +166,36 @@ export default function OverAllInformation({ projectData, projectName }) {
           <div className="flex-col gap-0 h-24 mt-4 flex items-center justify-center">
             <p>{translations.progress}</p>
             <CircularProgressComponent
-              progressValue={projectData.map((item) => {
-                if (item.tasks) {
-                  const relevantTasks = item.tasks.filter(
-                    (task) => task.responsibles.length > 0
-                  );
-                  if (relevantTasks.length > 0) {
-                    const totalProgress = relevantTasks.reduce(
-                      (accumulator, currentItem) =>
-                        accumulator + currentItem.progress,
-                      0
-                    );
-                    const averageProgress = Math.ceil(
-                      totalProgress / relevantTasks.length
-                    );
-                    return averageProgress;
-                  } else {
-                    return 0;
-                  }
-                } else {
-                  return null;
-                }
-              })}
+              progressValue={
+                projectData.length
+                  ? projectData.map((item) => {
+                      if (item.tasks) {
+                        const relevantTasks = item.tasks.filter(
+                          (task) => task.responsibles.length > 0
+                        );
+                        if (relevantTasks.length > 0) {
+                          const totalProgress = relevantTasks.reduce(
+                            (accumulator, currentItem) =>
+                              accumulator + currentItem.progress,
+                            0
+                          );
+                          const averageProgress = Math.ceil(
+                            totalProgress / relevantTasks.length
+                          );
+                          return averageProgress;
+                        } else {
+                          return 0;
+                        }
+                      } else {
+                        return null;
+                      }
+                    })
+                  : 0
+              }
+              progressValueSize={15}
+              progressLineSize={5}
+              circularLineSize={10}
+              progressDiametroSize={70}
             />
           </div>
           <div className="flex-col gap-2 h-24 flex items-center justify-center">
@@ -198,7 +204,7 @@ export default function OverAllInformation({ projectData, projectName }) {
               <p>{translations.client}</p>
             </div>
             <div className="border-2 border-cyan-200 w-fit px-10 h-12 rounded-full flex items-center justify-cente gap-2">
-              {projectData.map((item) => (
+              {projectData?.map((item) => (
                 <>
                   {item.client_name
                     ? allClients

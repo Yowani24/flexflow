@@ -39,8 +39,6 @@ const allClients = [
 
 export default function useFetchData() {
   const [allMembers, setAllMembers] = useState([]);
-  const [fetched, setFetched] = useState(true);
-
   const [enterprise_referenceId, setEnterprise_referenceId] = useState(
     localStorage.getItem("enterprise_referenceId") || null
   );
@@ -55,20 +53,17 @@ export default function useFetchData() {
     localStorage.getItem("current_user_enterprise_referenceId") || null
   );
 
-  // const refreshPage = () => {};
   const userString = localStorage.getItem("user");
 
   useEffect(() => {
     if (userString) {
       const userData = JSON.parse(userString);
-      setEnterprise_referenceId(userData.uid); // Assuming uid is the property you want to store
+      setEnterprise_referenceId(userData.uid);
       setUser_enterprise_referenceId(userData.email);
-      localStorage.setItem("enterprise_referenceId", userData.uid); // Storing only the UID, adjust if necessary
+      localStorage.setItem("enterprise_referenceId", userData.uid);
       localStorage.setItem("user_enterprise_referenceId", userData.email);
     }
   }, []);
-
-  // console.log("AQUI VAMOS:", user_enterprise_referenceId);
 
   const { data, isLoading, error, refetch } = useQuery(
     "enterprise",
@@ -99,28 +94,27 @@ export default function useFetchData() {
   }, [data, setCurrent_user_enterprise_referenceId]);
 
   useEffect(() => {
-    // console.log("AQUI VAMOS:", current_user_enterprise_referenceId);
-  }, [current_user_enterprise_referenceId]);
+    const colRef = collection(
+      db,
+      `members_${
+        current_user_enterprise_referenceId?.length == 0
+          ? enterprise_referenceId
+          : current_user_enterprise_referenceId
+      }`
+    );
 
-  const colRef = collection(
-    db,
-    `members_${
-      current_user_enterprise_referenceId?.length == 0
-        ? enterprise_referenceId
-        : current_user_enterprise_referenceId
-    }`
-  );
-
-  onSnapshot(colRef, (snapshot) => {
-    if (fetched) {
+    const unsubscribe = onSnapshot(colRef, (snapshot) => {
       let dados = [];
       snapshot.docs.forEach((doc) => {
         dados.push({ ...doc.data(), id: doc.id });
       });
       setAllMembers(dados);
-      setFetched(false);
-    }
-  });
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [current_user_enterprise_referenceId, enterprise_referenceId]);
 
   const handleCreateEnterprise = useMutation({
     mutationFn: async (values) => {
@@ -138,7 +132,9 @@ export default function useFetchData() {
 
   const handleUpdateEnterpriseMembers = useMutation({
     mutationFn: async ({ id, responsibles }) => {
-      return await axios.patch(`${api_url}/enterprise/${id}`, { responsibles });
+      return await axios.patch(`${api_url}/enterprise/${id}`, {
+        responsibles: responsibles,
+      });
     },
     onSuccess: () => {
       refetch();
@@ -204,6 +200,33 @@ export default function useFetchData() {
   const handleDeleteTask = useMutation({
     mutationFn: async (taskId) => {
       return await axios.delete(`${api_url}/task/${taskId}`);
+    },
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const handleUpdateTaskDeadline = useMutation({
+    mutationFn: async ({ id, deadline }) => {
+      return await axios.patch(`${api_url}/task/${id}`, { deadline });
+      // .then((response) => response.data);
+    },
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const handleUpdateTaskReferenceLink = useMutation({
+    mutationFn: async ({ id, reference_link }) => {
+      return await axios
+        .patch(`${api_url}/task/${id}`, { reference_link })
+        .then((response) => response.data);
     },
     onSuccess: () => {
       refetch();
@@ -351,6 +374,7 @@ export default function useFetchData() {
     handleDeleteProject,
     handleCreateEnterprise,
     handleUpdateTaskStatus,
+    handleUpdateTaskDeadline,
     handleUpdateSubtaskPause,
     handleUpdateTaskProgress,
     handleUpdateSubtaskStart,
@@ -359,6 +383,7 @@ export default function useFetchData() {
     handleUpdateProjectProgress,
     handleUpdateSubtaskComplete,
     handleUpdateTaskResponsibles,
+    handleUpdateTaskReferenceLink,
     handleUpdateEnterpriseMembers,
   };
 }

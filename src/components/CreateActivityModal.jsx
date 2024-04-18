@@ -17,6 +17,7 @@ import DateComponent from "./DateComponent";
 import { IoMdCheckmark } from "react-icons/io";
 import useFetchData from "../../hook/useFetchData";
 import { useLang } from "../../hook/LangContext";
+import AudioTranscription from "./AudioTranscription";
 
 const prioridade = [
   { id: "1", label: "Alta", value: "high" },
@@ -25,7 +26,7 @@ const prioridade = [
 ];
 
 const CreateActivityModal = ({ projectId }) => {
-  const { allMembers, isLoading, handleCreateTask } = useFetchData();
+  const { allMembers, isLoading, handleCreateTask, refetch } = useFetchData();
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
   const { translations } = useLang();
@@ -93,13 +94,14 @@ const CreateActivityModal = ({ projectId }) => {
         projectId: projectId,
       });
       handleresetForm();
+      refetch();
     } catch (error) {
       console.error(error.message);
     }
   };
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
   };
 
   const handleDescriptionChange = (event) => {
@@ -141,52 +143,52 @@ const CreateActivityModal = ({ projectId }) => {
             transform,
           }}
         >
-          <div className="fixed inset-0 flex items-center justify-center transition-all z-50">
-            <div className="fixed inset-0 bg-black opacity-50"></div>
+          <div className="fixed inset-0 flex items-center justify-center transition-all z-50 w-full">
+            <div className="fixed inset-0 bg-black opacity-50 w-full"></div>
             <form
               onSubmit={handleSubmit}
-              className="relative flex flex-col justify-between bg-white p-5 rounded-lg z-10 w-[90%] md:w-[45%] h-[80%]"
+              className="relative flex flex-col bg-white p-5 rounded-lg z-10 w-[90%] md:w-[60%] h-[80%]"
             >
-              <div>
-                <div className="flex items-start justify-between w-full">
-                  <p className="text-gray-600 font-medium text-xl">
-                    {translations.creating_activity}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      type="submit"
-                      disabled={isLoading}
-                      className="bg-green-400 hover:bg-green-500 group transition-all border-none min-w-8 h-8 flex items-center justify-center rounded-full cursor-pointer"
-                    >
-                      <IoMdCheckmark
-                        size={18}
-                        className="text-white transition-all"
-                      />
-                    </Button>
-                    <div
-                      onClick={() => setShowDialog(false)}
-                      className="bg-gray-200 group transition-all hover:bg-[rgb(122,114,219)] min-w-8 h-8 flex items-center justify-center rounded-full cursor-pointer"
-                    >
-                      <IoCloseSharp className="text-gray-600 group-hover:text-white transition-all" />
-                    </div>
+              <div className="flex items-start justify-between border-b-2 pb-4 border-gray-20 w-full">
+                <p className="text-gray-600 font-medium text-xl">
+                  {translations.creating_activity}
+                </p>
+                <div className="flex items-center gap-2">
+                  <Button
+                    type="submit"
+                    disabled={isLoading || title.length === 0}
+                    className="bg-green-400 hover:bg-green-500 group transition-all border-none min-w-8 h-8 flex items-center justify-center rounded-full cursor-pointer"
+                  >
+                    <IoMdCheckmark
+                      size={18}
+                      className="text-white transition-all"
+                    />
+                  </Button>
+                  <div
+                    onClick={() => setShowDialog(false)}
+                    className="bg-gray-200 group transition-all hover:bg-[rgb(122,114,219)] min-w-8 h-8 flex items-center justify-center rounded-full cursor-pointer"
+                  >
+                    <IoCloseSharp className="text-gray-600 group-hover:text-white transition-all" />
                   </div>
                 </div>
-                <div className="px-0 md:px-4 border-t-2 border-gray-200 mt-4">
-                  <div className="flex flex-col gap-1 mt-5">
+              </div>
+              <div className=" participants_scrollBarStyles relative overflow-y-scroll w-full pt-5">
+                <div className="px-0 md:px-4">
+                  <div className="flex flex-col gap-1">
                     <span>{translations.name}</span>
                     <Input
                       label={translations.task_name}
                       value={title}
-                      onChange={handleTitleChange}
+                      onChange={(e) => {
+                        if (!/^\s+$/.test(e.target.value)) {
+                          handleTitleChange(e);
+                        }
+                      }}
                       required
                     />
                   </div>
-                  <div className="flex justify-end mb-4 mt-5 w-full">
-                    <Button className="p-1 rounded-full border-none bg-deep-purple-300 normal-case tracking-wide flex items-center gap-2">
-                      <RiBardLine size={16} />
-                      {translations.transcribe_audio}
-                      <GiSoundOn size={18} />
-                    </Button>
+                  <div className="flex justify-end mb-4 w-full">
+                    <AudioTranscription setDescription={setDescription} />
                   </div>
                   <Textarea
                     variant="static"
@@ -195,7 +197,11 @@ const CreateActivityModal = ({ projectId }) => {
                     color="blue-gray"
                     className="w-ful h-[14rem]"
                     value={description}
-                    onChange={handleDescriptionChange}
+                    onChange={(e) => {
+                      if (!/^\s+$/.test(e.target.value)) {
+                        handleDescriptionChange(e);
+                      }
+                    }}
                   />
                   <div className="flex flex-col gap-1 mt-5">
                     <span>{translations.responsible}</span>
@@ -236,7 +242,11 @@ const CreateActivityModal = ({ projectId }) => {
                     <Input
                       label={translations.reference_link}
                       value={referenceLink}
-                      onChange={handleReferenceLinkChange}
+                      onChange={(e) => {
+                        if (!/^\s+$/.test(e.target.value)) {
+                          handleReferenceLinkChange(e);
+                        }
+                      }}
                     />
                   </div>
                   <div className="flex items-center gap-10 mt-5">
@@ -307,7 +317,7 @@ const CreateActivityModal = ({ projectId }) => {
                       <span>{translations.deadline}</span>
                       <DateComponent setDeadlineTime={setDeadlineTime} />
                     </div>
-                  </div>{" "}
+                  </div>
                 </div>
               </div>
             </form>

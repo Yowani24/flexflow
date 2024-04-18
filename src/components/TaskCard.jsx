@@ -27,6 +27,8 @@ export default function TaskCard({
 }) {
   const { allMembers } = useFetchData();
   const { translations } = useLang();
+  const userString = localStorage.getItem("user");
+  const currentUser = userString ? JSON.parse(userString) : null;
   return (
     <div
       className={`flex flex-col justify-between w-[100%] md:w-80 h-44 rounded-xl p-3 min-pb-4 bg-white shadow-md hover:shadow-xl transition-all border-l-[5px] ${
@@ -42,7 +44,7 @@ export default function TaskCard({
       <div className="flex items-start justify-between">
         <span className="text-[#858484] text-lg normal-case font-medium">
           {/* {task_name.toLowerCase()} */}
-          {task_name.length > 65
+          {task_name.length > 60
             ? task_name.substring(0, 50) + "..."
             : task_name.toLowerCase()}
         </span>
@@ -115,7 +117,9 @@ export default function TaskCard({
                 .map((user) => (
                   <Tooltip
                     key={user.id}
-                    content={user.name}
+                    content={
+                      user.email === currentUser.email ? "Eu" : user.name
+                    }
                     animate={{
                       mount: { scale: 1, y: 0 },
                       unmount: { scale: 0, y: 25 },

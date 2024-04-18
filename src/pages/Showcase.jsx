@@ -2,11 +2,12 @@ import React from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import logo from "../assets/logo16.png";
-import { Button } from "@material-tailwind/react";
+import { Button, Typography } from "@material-tailwind/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLang } from "../../hook/LangContext";
 import showcaseImage4 from "../assets/showcaseImage4.png";
 import bluedots from "../assets/bluedots.png";
+import { FaLinkedin } from "react-icons/fa";
 
 export default function Showcase() {
   const userString = localStorage.getItem("user");
@@ -35,7 +36,7 @@ export default function Showcase() {
   };
 
   return (
-    <div className="bg-[#f1f3fd] md:px-36 h-screen pt-[5%]">
+    <div className="showcase_bg bg-[#f1f3fd] md:px-36 min-h-screen pt-[5%]">
       <div className="flex items-center justify-center">
         <img
           className="h-16 w-fit object-cover object-center cursor-pointer"
@@ -59,22 +60,28 @@ export default function Showcase() {
               {translations.get_started}
             </Button>
           </Link>
-          {/* {renderLogoutButton()} */}
         </div>
-        {/* <div
-          className="h-[500px] w-[400px] rounded-md"
-          style={{
-            backgroundImage: `url(https://images.unsplash.com/photo-1558655146-364adaf1fcc9?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`,
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-          }}
-        ></div> */}
         <img
           className="h-[400px] rounded-lg object-cover object-center"
           src={showcaseImage4}
           alt="nature image"
         />
+      </div>
+      <div className="absolute left-[2%] bottom-[.8%] flex items-end gap-2">
+        <Typography
+          variant="small"
+          className="text-white text-xs flex items-end gap-2"
+        >
+          <span>Made with 💚 by</span>{" "}
+          <a
+            className="flex items-center text-white hover:text-white"
+            href="https://www.linkedin.com/in/jo%C3%A3o-augusto-da-costa-535b30196/"
+            target="_blank"
+          >
+            <FaLinkedin size={15} className="mb-[3px] mr-[2px]" />
+            João A. da Costa
+          </a>
+        </Typography>
       </div>
     </div>
   );

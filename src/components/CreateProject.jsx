@@ -16,6 +16,7 @@ import useFetchData from "../../hook/useFetchData";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useLang } from "../../hook/LangContext";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function CreateProject() {
   const { data, handleCreateProject, allClients } = useFetchData();
@@ -23,6 +24,14 @@ export default function CreateProject() {
   const [open, setOpen] = useState(false);
   const userString = localStorage.getItem("user");
   const enterprise_referenceId = userString ? JSON.parse(userString) : null;
+
+  const notify = () => toast.success("Successfully toasted!");
+
+  //   <ToastBar
+  //   toast={t}
+  //   style={{}} // Overwrite styles
+  //   position="top-center" // Used to adapt the animation
+  // />
 
   const enterpriseId = data.map((item) => item.id);
 
@@ -43,6 +52,7 @@ export default function CreateProject() {
         handleCreateProject.mutate(values);
         resetForm();
         handleOpen();
+        notify();
       } catch (error) {
         console.error(error.message);
       }
@@ -77,6 +87,10 @@ export default function CreateProject() {
                 <Typography variant="h5" color="blue-gray">
                   {translations.creating_project}
                 </Typography>
+                <div>
+                  <button onClick={notify}>Make me a toast</button>
+                  <Toaster />
+                </div>
 
                 <div className="flex items-center gap-2 self-end">
                   <Button

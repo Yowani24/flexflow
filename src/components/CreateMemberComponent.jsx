@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSpring, animated } from "@react-spring/web";
 import { IoCloseSharp } from "react-icons/io5";
 import { IoMdCheckmark } from "react-icons/io";
-import { Button, Input, Option, Select } from "@material-tailwind/react";
+import {
+  Button,
+  Input,
+  Option,
+  Select,
+  Typography,
+} from "@material-tailwind/react";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
@@ -33,6 +39,8 @@ const CreateMemberComponent = ({
   const [responsibles, setResponsibles] = useState([]);
   const [userPermission, setUserPermission] = useState("operator");
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isEmailAlreadyExist, setIsEmailAlreadyExist] = useState(false);
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
   const password = "admin@123";
@@ -56,6 +64,12 @@ const CreateMemberComponent = ({
       }
     },
   });
+
+  const resetValues = () => {
+    setName("");
+    setEmail("");
+    setRole("");
+  };
 
   const handleItemClick = (email) => {
     setEmail(email);
@@ -88,7 +102,8 @@ const CreateMemberComponent = ({
         role,
         photo_url: user_photo_url,
         permission: userPermission,
-        enterpriseCode: "Ainda por setar o valor...",
+        // enterpriseCode: "Ainda por setar o valor...",
+        user_credential: credential.user.uid,
       });
 
       await updateProfile(auth.currentUser, { displayName: name });
@@ -96,10 +111,24 @@ const CreateMemberComponent = ({
       console.log("User registration successful!");
       setLoading(false);
       onClose();
+      resetValues();
     } catch (error) {
-      console.error("Error during user registration:", error);
+      console.error(error);
+      setErrorMessage(error.message);
       setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    if (currentResponsibles.flat().includes(email)) {
+      setIsEmailAlreadyExist(true);
+    } else {
+      setIsEmailAlreadyExist(false);
+    }
+  }, [email, currentResponsibles]);
+
+  const handleResetErrorMessage = () => {
+    setErrorMessage("");
   };
 
   return (
@@ -136,7 +165,7 @@ const CreateMemberComponent = ({
             } absolute`}
           >
             <div className="flex items-center justify-between mb-5">
-              <h6>Criando membro</h6>
+              <h6>Criando membro - {isEmailAlreadyExist ? "true" : "false"}</h6>
               <div className="flex items-center gap-2 self-end">
                 {showButtonProps && (
                   <div
@@ -177,7 +206,11 @@ const CreateMemberComponent = ({
                   name="name"
                   required
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => {
+                    if (!/^\s+$/.test(e.target.value)) {
+                      setName(e.target.value);
+                    }
+                  }}
                 />
               </div>
               <div className="w-full">
@@ -185,8 +218,20 @@ const CreateMemberComponent = ({
                   label="email"
                   required
                   value={email}
-                  onChange={(e) => handleItemClick(e.target.value)}
+                  onChange={(e) => {
+                    if (!/^\s+$/.test(e.target.value)) {
+                      handleItemClick(e.target.value);
+                    }
+                  }}
+                  onInput={handleResetErrorMessage}
+                  className={`${isEmailAlreadyExist ? "text-orange-500" : ""}`}
                 />
+                <Typography
+                  variant="small"
+                  className="text-xs text-red-400 ml-3 mt-1"
+                >
+                  {isEmailAlreadyExist ? "Email já cadastrado!" : ""}
+                </Typography>
               </div>
               <div className="flex flex-col items-start gap-5 w-full">
                 <Select
@@ -201,7 +246,6 @@ const CreateMemberComponent = ({
                     </Option>
                   ))}
                 </Select>
-
                 <Select
                   label="User permission"
                   name="userPermission"
@@ -214,6 +258,15 @@ const CreateMemberComponent = ({
                     </Option>
                   ))}
                 </Select>
+                <Typography
+                  variant="small"
+                  className="text-center text-xs text-red-200 w-full"
+                >
+                  {errorMessage ===
+                  "Firebase: Error (auth/email-already-in-use)."
+                    ? "Email já cadastrado!"
+                    : errorMessage}
+                </Typography>
               </div>
             </div>
           </form>

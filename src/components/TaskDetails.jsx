@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { LiaHourglassStartSolid } from "react-icons/lia";
 import { MdDeleteForever, MdMotionPhotosPause, MdRemove } from "react-icons/md";
@@ -31,12 +31,17 @@ import { useSpring, animated } from "@react-spring/web";
 import { DescriptionModal } from "./DescriptionModal";
 import AddParticipantComponent from "./AddParticipantComponent";
 import { VscReferences } from "react-icons/vsc";
+import { MdEditCalendar } from "react-icons/md";
+import { FaLink } from "react-icons/fa";
 import PriorityComponent from "./PriorityComponent";
 import useFetchData from "../../hook/useFetchData";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useLang } from "../../hook/LangContext";
 import RemoveParticipantComponent from "./RemoveParticipantComponent";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import CommentPopover from "./CommentPopover";
 
 const TaskDetails = ({
   taskId,
@@ -67,13 +72,30 @@ const TaskDetails = ({
     handleUpdateProjectProgress,
     handleUpdateTaskPriority,
     handleUpdateTaskResponsibles,
+    handleUpdateTaskDeadline,
   } = useFetchData();
   const { translations } = useLang();
   const [showDialog, setShowDialog] = useState(false);
   const [completionPercentageState, setCompletionPercentageState] = useState(0);
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
+  const currentUser = userString ? JSON.parse(userString) : null;
   const refetchData = () => {};
+
+  const ExampleCustomInput = forwardRef(({ onClick }, ref) => (
+    <div
+      onClick={onClick}
+      ref={ref}
+      className="bg-light-blue-200 hover:bg-light-blue-300 transition-all shadow-sm hover:shadow-md active:bg-light-blue-500 text-white gap-1 text-xs px-2 w-fit h-6 cursor-pointer rounded-full flex items-center justify-center"
+    >
+      {disabledSpecificProps ? (
+        ""
+      ) : (
+        <MdEditCalendar className="cursor-pointer" />
+      )}{" "}
+      Edit
+    </div>
+  ));
 
   const statusUpdateOptions = [
     { id: "1", option: translations.active, value: true },
@@ -105,6 +127,7 @@ const TaskDetails = ({
   const handleDeleteTaskFn = (id) => {
     try {
       handleDeleteTask.mutate(id);
+      setShowDialog(false);
     } catch (error) {
       console.error(error.message);
     }
@@ -199,6 +222,13 @@ const TaskDetails = ({
     handleUpdateSubtaskComplete.mutate({
       id: id,
       completed: completed,
+    });
+  };
+
+  const updateTaskDeadline = (date) => {
+    handleUpdateTaskDeadline.mutate({
+      id: taskId,
+      deadline: date.toISOString(),
     });
   };
 
@@ -345,19 +375,17 @@ const TaskDetails = ({
                       <span className="font-semibold">
                         {deadline ? format(deadline, "MMM dd") : ""}
                       </span>
-                    </Typography>
+                    </Typography>{" "}
                     {disabledProps ? (
-                      <>
-                        {disabledSpecificProps ? (
-                          ""
-                        ) : (
-                          <FiEdit3 className="cursor-pointer" />
-                        )}
-                      </>
+                      <DatePicker
+                        onChange={(date) => updateTaskDeadline(date)}
+                        customInput={<ExampleCustomInput />}
+                      />
                     ) : (
                       ""
                     )}
                   </div>
+
                   <div className="flex items-center gap-2">
                     {reference_link?.length ? (
                       <a href={`https://${reference_link}`} target="_blank">
@@ -374,7 +402,20 @@ const TaskDetails = ({
                         {disabledSpecificProps ? (
                           ""
                         ) : (
-                          <FiEdit3 className="cursor-pointer" />
+                          <CommentPopover
+                            trigger={
+                              <div className="bg-light-blue-200 hover:bg-light-blue-300 transition-all shadow-sm hover:shadow-md active:bg-light-blue-500 text-white gap-1 text-xs px-2 w-fit h-6 cursor-pointer rounded-full flex items-center justify-center">
+                                {disabledSpecificProps ? (
+                                  ""
+                                ) : (
+                                  <FaLink className="cursor-pointer" />
+                                )}{" "}
+                                Edit
+                              </div>
+                            }
+                            currentLink={reference_link}
+                            TaskId={taskId}
+                          />
                         )}
                       </>
                     ) : (
@@ -475,11 +516,16 @@ const TaskDetails = ({
                       placeholder={translations.fragment_your_activity}
                       name="title"
                       className="w-full md:w-[250px] bg-white px-2 h-9 border-2 rounded-md border-[#11BEF4]"
-                      onChange={Formik.handleChange}
+                      onChange={(e) => {
+                        if (!/^\s+$/.test(e.target.value)) {
+                          Formik.handleChange(e);
+                        }
+                      }}
                       value={Formik.values.title}
                     />
                     <Button
                       type="submit"
+                      disabled={Formik.values.title.length === 0}
                       className="w-full md:w-[100px] h-9 px-2 py-0 bg-[#11BEF4] text-xs capitalize transition-all"
                     >
                       {translations.add}
@@ -506,6 +552,10 @@ const TaskDetails = ({
                         (subtast) =>
                           subtast.user_created === user.email ||
                           data.some((item) => item.email === user.email)
+                      )
+                      .sort(
+                        (a, b) =>
+                          new Date(a.created_at) - new Date(b.created_at)
                       )
                       .map((item) => (
                         <div
@@ -653,7 +703,11 @@ const TaskDetails = ({
                             .map((user) => (
                               <Tooltip
                                 key={user.id}
-                                content={user.name}
+                                content={
+                                  user.email === currentUser.email
+                                    ? "Eu"
+                                    : user.name
+                                }
                                 animate={{
                                   mount: { scale: 1, y: 0 },
                                   unmount: { scale: 0, y: 25 },
@@ -699,17 +753,22 @@ const TaskDetails = ({
                     ""
                   )}{" "}
                 </div>
-
-                {data.some(
-                  (enterpriseData) => enterpriseData.email !== user.email
-                ) ? (
-                  ""
+                {disabledProps ? (
+                  <>
+                    {data.some(
+                      (enterpriseData) => enterpriseData.email !== user.email
+                    ) ? (
+                      ""
+                    ) : (
+                      <RemoveParticipantComponent
+                        responsibles={responsibles}
+                        allResponsibles={allMembers}
+                        taskId={taskId}
+                      />
+                    )}
+                  </>
                 ) : (
-                  <RemoveParticipantComponent
-                    responsibles={responsibles}
-                    allResponsibles={allMembers}
-                    taskId={taskId}
-                  />
+                  ""
                 )}
               </div>
             </div>

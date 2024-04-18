@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Tabs, TabsBody, TabPanel } from "@material-tailwind/react";
 import { FadeLoader } from "react-spinners";
 import DashboardView from "../components/DashboardView";
@@ -41,17 +41,27 @@ const tabData = [
 export default function EntryPage() {
   const { isLoading } = useFetchData();
   const reloadCalled = useRef(false);
+  const [pageReloaded, setPageReloaded] = useState(
+    localStorage.getItem("pageReloaded", false) || null
+  );
+
+  // useEffect(() => {
+  //   const wasReloaded = localStorage.getItem("reloadCalled");
+  //   if (!reloadCalled.current && !wasReloaded && !pageReloaded) {
+  //     window.location.reload();
+  //     reloadCalled.current = true;
+  //     localStorage.setItem("reloadCalled", true);
+  //     localStorage.setItem("pageReloaded", true);
+  //   }
+  // }, []);
 
   useEffect(() => {
-    const wasReloaded = localStorage.getItem("reloadCalled");
-    if (!reloadCalled.current && !wasReloaded) {
+    if (!pageReloaded) {
       window.location.reload();
-      reloadCalled.current = true;
-      localStorage.setItem("reloadCalled", true);
+      localStorage.setItem("pageReloaded", true);
     }
   }, []);
 
-  window.re;
   return (
     <Tabs value="dashboard" orientation="vertical">
       {isLoading ? (
