@@ -67,7 +67,7 @@ export default function Showcase() {
           alt="nature image"
         />
       </div>
-      <div className="absolute left-[2%] bottom-[.8%] flex items-end gap-2">
+      <div className="absolute hidden md:flex left-[2%] bottom-[.8%] items-end gap-2">
         <Typography
           variant="small"
           className="text-white text-xs flex items-end gap-2"
