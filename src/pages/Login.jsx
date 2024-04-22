@@ -70,7 +70,7 @@ export default function Login() {
           onSubmit={handleSubmit}
           className="bg-blue-gray-100 p-4 py-8 rounded-xl flex flex-col gap-5 backdrop-blur-md bg-white/70 shadow-md"
         >
-          <Typography className="mb-5">
+          <Typography className="mb-5 text-gray-700">
             {translations.log_in_with_your_account}
           </Typography>
           <div className="w-72">
