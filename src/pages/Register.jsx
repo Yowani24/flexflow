@@ -247,7 +247,9 @@ export default function Register() {
           </Button>
         </form>
         <Link to="/login" className="flex">
-          <Typography className="mt-5">{translations.login}</Typography>
+          <Typography className="mt-5 text-gray-700">
+            {translations.login}
+          </Typography>
         </Link>
       </div>
     </div>
