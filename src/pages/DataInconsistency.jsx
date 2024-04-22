@@ -5,7 +5,7 @@ import logo from "../assets/logo16.png";
 
 export default function DataInconsistency() {
   return (
-    <div className="w-full h-screen bg-[#F5F7FA] flex flex-col items-center pt-40">
+    <div className="w-full h-screen bg-[#F5F7FA] flex flex-col items-center pt-40 px-4">
       <div className="mb-10">
         <img
           className="h-11 w-fit object-cover object-center cursor-pointer"
