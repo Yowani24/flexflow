@@ -1,22 +1,17 @@
 import React from "react";
-import {
-  Avatar,
-  CardBody,
-  Tooltip,
-  Typography,
-} from "@material-tailwind/react";
+import { CardBody } from "@material-tailwind/react";
 import { TbProgress } from "react-icons/tb";
 import { MdOutlineMotionPhotosPaused } from "react-icons/md";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import ProjectDetailsView from "./ProjectDetailsView";
 import { BsBuildingsFill } from "react-icons/bs";
 import useFetchData from "../../hook/useFetchData";
-import { FaCircleUser, FaUsers } from "react-icons/fa6";
+import { FaUsers } from "react-icons/fa6";
 import { useLang } from "../../hook/LangContext";
 import CircularProgressComponent from "./CircularProgressComponent";
 
 export default function OverAllInformation({ projectData, projectName }) {
-  const { allClients, allMembers } = useFetchData();
+  const { allClients } = useFetchData();
   const { translations } = useLang();
 
   const inProgressTasks = projectData.map(
@@ -70,66 +65,6 @@ export default function OverAllInformation({ projectData, projectName }) {
           <p>{translations.participants}</p>
 
           <div className="border-2 border-cyan-200 w-fit h-12 rounded-full flex items-center justify-between gap-5 px-4">
-            {/* <div className="flex items-center -space-x-4 text-3xl font-medium">
-              {projectData.map((project) => {
-                const responsiblesDisplayed = new Set();
-                return project.tasks.map((task) => {
-                  const responsibles = new Set(
-                    Array.isArray(task.responsibles)
-                      ? task.responsibles
-                      : [task.responsibles]
-                  );
-
-                  const current_users = allMembers.filter((member) =>
-                    responsibles.has(member.email)
-                  );
-                  return (
-                    <div className="flex items-center">
-                      <div className="flex items-center -space-x-4">
-                        {current_users.slice(0, 3).map((user) => {
-                          if (!responsiblesDisplayed.has(user.email)) {
-                            responsiblesDisplayed.add(user.email);
-                            return (
-                              <Tooltip
-                                key={user.id}
-                                content={user.name}
-                                animate={{
-                                  mount: { scale: 1, y: 0 },
-                                  unmount: { scale: 0, y: 25 },
-                                }}
-                              >
-                                {user.photo_url ? (
-                                  <Avatar
-                                    variant="circular"
-                                    alt={user.name}
-                                    size="sm"
-                                    className="border-2 border-white hover:z-10 min-w-9 min-h-9 focus:z-10"
-                                    src={user.photo_url}
-                                  />
-                                ) : (
-                                  <FaCircleUser size={34} />
-                                )}
-                              </Tooltip>
-                            );
-                          }
-                          return "";
-                        })}
-                      </div>
-                       <div className=" ml-1 z-50 bg-green-400 h-11 w-full">
-                        {current_users.length > 3 ? (
-                          <Typography className="">
-                            + {current_users.length - 3}
-                          </Typography>
-                        ) : (
-                          ""
-                        )}
-                      </div> 
-                    </div>
-                  );
-                });
-              })}
-            </div> */}
-
             <FaUsers size={20} />
           </div>
         </div>

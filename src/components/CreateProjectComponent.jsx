@@ -27,7 +27,7 @@ const CreateProjectComponent = ({
   const userString = localStorage.getItem("user");
   const enterprise_referenceId = userString ? JSON.parse(userString) : null;
 
-  const enterpriseId = data.map((item) => item.id);
+  const enterpriseId = data?.map((item) => item.id);
 
   const openDialog = () => {
     setIsVisible(true);
@@ -42,7 +42,7 @@ const CreateProjectComponent = ({
       name: "",
       client_name: "",
       user_created: enterprise_referenceId.email,
-      enterpriseId: parseInt(enterpriseId.join("")),
+      enterpriseId: parseInt(enterpriseId?.join("")),
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Required"),
@@ -72,7 +72,7 @@ const CreateProjectComponent = ({
   return (
     <>
       <div className="" onClick={openDialog}>
-        {data.some(
+        {data?.some(
           (enterpriseData) =>
             enterpriseData.email !== enterprise_referenceId.email
         ) ? (

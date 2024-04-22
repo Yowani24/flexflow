@@ -68,6 +68,10 @@ button:focus-visible {
   background: #a5a5a5;
 }
 
+.session_expired_bg_image {
+  background-color: #8bc6ec;
+  background-image: linear-gradient(135deg, #8bc6ec 33%, #9599e2 100%);
+}
 .boxShadow {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px;
 }

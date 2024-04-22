@@ -6,6 +6,7 @@ import useFetchData from "../../hook/useFetchData";
 import CreateActivityModal from "./CreateActivityModal";
 import { SiOnlyoffice } from "react-icons/si";
 import { BiFilter } from "react-icons/bi";
+import { ImFilter } from "react-icons/im";
 import { useLang } from "../../hook/LangContext";
 import CreateProjectComponent from "./CreateProjectComponent";
 import no_data_icon from "../assets/no_data3.png";
@@ -47,9 +48,9 @@ export default function KanbanView() {
           <Button
             variant="outlined"
             size="sm"
-            className="rounded-md border-gray-400 text-gray-900 text-xs normal-case flex items-center gap-2 tracking-wider font-medium p-0 px-2 w-filt"
+            className="rounded-md shadow-sm min-w-6 min-h-6 border-gray-300 hover:border-gray-600 transition-all text-gray-600 hover:text-gray-900 text-xs normal-case flex items-center gap-2 tracking-wider font-medium p-0 px-2 w-filt"
           >
-            <BiFilter size={18} /> Filter project
+            <ImFilter size={12} />
           </Button>
         </MenuHandler>
         <MenuList>
@@ -77,7 +78,7 @@ export default function KanbanView() {
       </Menu>
     );
   };
-  const user_data = data.map((enterprise) =>
+  const user_data = data?.map((enterprise) =>
     enterprise.projects
       .filter(
         (project) =>
@@ -93,13 +94,13 @@ export default function KanbanView() {
 
   return (
     <div className="relative">
-      {data.map((enterptise_data) =>
+      {data?.map((enterptise_data) =>
         enterptise_data.projects.length === 0 ? (
           <div className="flex flex-col items-center justify-center w-full h-fit py-2 px-10 md:pr-[10%] pt-[10%]">
             <Typography className="text-center">
               {translations.create_projects_and_track_them_here}
             </Typography>
-            {data.some(
+            {data?.some(
               (enterpriseData) => enterpriseData.email !== user.email
             ) ? (
               "Nemhuma atividade atribuída à você no momento."
@@ -112,7 +113,7 @@ export default function KanbanView() {
             <CreateProjectComponent
               customButtonProps={
                 <img
-                  className="w-28 cursor-pointer object-cover object-center"
+                  className="w-16 cursor-pointer object-cover object-center"
                   src={no_data_icon}
                   alt="nature image"
                 />
@@ -121,7 +122,7 @@ export default function KanbanView() {
           </div>
         ) : (
           <>
-            {data.map((enterprise) =>
+            {data?.map((enterprise) =>
               enterprise.email === user.email ? (
                 ""
               ) : (
@@ -145,7 +146,7 @@ export default function KanbanView() {
                 </>
               )
             )}
-            {data.map((enterprise) =>
+            {data?.map((enterprise) =>
               enterprise.projects
                 .filter(
                   (project) =>
@@ -171,7 +172,7 @@ export default function KanbanView() {
                         customButtonProps={
                           <Button
                             variant="outlined"
-                            className="rounded-md border-gray-400 text-xs normal-case tracking-wider font-medium p-0 px-2 w-filt"
+                            className="rounded-md min-h-[22px] shadow-sm border-gray-300 hover:border-gray-600 transition-all text-gray-600 hover:text-gray-900 text-xs normal-case tracking-wider font-medium p-0 px-2 w-filt"
                             size="sm"
                           >
                             + {translations.add_project}
@@ -222,7 +223,7 @@ export default function KanbanView() {
                         </span>
                       </Breadcrumbs>
                       <div className="flex items-center gap-5">
-                        {data.some(
+                        {data?.some(
                           (enterpriseData) =>
                             enterpriseData.email !== user.email
                         ) ? (
@@ -245,7 +246,7 @@ export default function KanbanView() {
                     <div className="flex flex-wrap gap-5 md:gap-4 pt-8 pb-10 md:pl-0">
                       {priority === "over_view" ? (
                         <>
-                          {data.map((enterpriseData) =>
+                          {data?.map((enterpriseData) =>
                             enterpriseData.responsibles.includes(user.email) ? (
                               <>
                                 {item.tasks

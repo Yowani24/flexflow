@@ -3,11 +3,6 @@ import { TbLogout } from "react-icons/tb";
 import {
   TabsHeader,
   Tab,
-  Menu,
-  MenuHandler,
-  Typography,
-  MenuItem,
-  MenuList,
   Popover,
   PopoverHandler,
   Button,
@@ -20,28 +15,17 @@ import { RiBardLine } from "react-icons/ri";
 import { useLang } from "../../hook/LangContext";
 import { HiHome } from "react-icons/hi2";
 import { Link, useNavigate } from "react-router-dom";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
 import useFetchData from "../../hook/useFetchData";
+import { useAuthContext } from "../../auth/AuthContext";
 
 export default function SideBar({ data }) {
-  const { setEnterprise_referenceId, refetch } = useFetchData();
+  const { refetch } = useFetchData();
+  const { handleLogout } = useAuthContext();
+  const navigate = useNavigate();
   const { translations } = useLang();
   const [showButton, setShowButton] = useState(false);
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    await signOut(auth);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("enterprise_referenceId");
-    setEnterprise_referenceId([]);
-    localStorage.removeItem("selectedProject");
-    localStorage.removeItem("pageReloaded");
-    navigate("/login");
-  };
 
   return (
     <div className="hidden md:w-[10%] h-full fixed top-0 left-0 overflow-y-auto md:flex items-start justify-center z-40">
@@ -107,7 +91,7 @@ export default function SideBar({ data }) {
               className="text-sm text-red-300 cursor-pointer capitalize "
               onClick={() => {
                 handleLogout();
-                localStorage.removeItem("reloadCalled");
+                navigate("/");
               }}
             >
               Sair

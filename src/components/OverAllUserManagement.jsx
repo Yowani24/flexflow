@@ -38,7 +38,7 @@ export default function OverAllUserManagement() {
       value: "profile",
       icon: Square3Stack3DIcon,
       component: <ProjectsTable data={data} />,
-      quantity: data.map((item) => item.projects.length),
+      quantity: data?.map((item) => item.projects.length),
     },
     {
       label: translations.clients,
@@ -49,15 +49,15 @@ export default function OverAllUserManagement() {
     },
   ];
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    // set loading...
+  // async function handleSubmit(e) {
+  //   e.preventDefault();
+  //   // set loading...
 
-    await fetch("/api/email", {
-      method: "POST",
-      body: JSON.stringify(),
-    });
-  }
+  //   await fetch("/api/email", {
+  //     method: "POST",
+  //     body: JSON.stringify(),
+  //   });
+  // }
 
   return (
     <div className="px-2 md:pr-10 mb-16 z-50">

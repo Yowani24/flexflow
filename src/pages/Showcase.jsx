@@ -6,7 +6,6 @@ import { Button, Typography } from "@material-tailwind/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLang } from "../../hook/LangContext";
 import showcaseImage4 from "../assets/showcaseImage4.png";
-import bluedots from "../assets/bluedots.png";
 import { FaLinkedin } from "react-icons/fa";
 
 export default function Showcase() {

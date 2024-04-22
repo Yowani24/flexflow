@@ -76,20 +76,20 @@ export default function ProjectsTable({ data }) {
           </div>
         </div>
       </CardHeader>
-      {data.flatMap((proj_data) =>
+      {data?.flatMap((proj_data) =>
         proj_data.projects.length === 0 ? (
           <div className="flex flex-col items-center justify-center w-full h-fit py-4">
             <CreateProjectComponent
               customButtonProps={
                 <img
-                  className=" w-20 cursor-pointer object-cover object-center"
+                  className=" w-16 cursor-pointer object-cover object-center"
                   src={no_data_Icon}
                   alt="nature image"
                 />
               }
             />
 
-            {data.some(
+            {data?.some(
               (enterpriseData) => enterpriseData.email !== user.email
             ) ? (
               <div className="text-gray-500 text-sm flex flex-col  items-center gap-2">
@@ -103,7 +103,7 @@ export default function ProjectsTable({ data }) {
                 </Typography>
               </div>
             ) : (
-              <Typography variant="h6" color="gray" className="mt-2">
+              <Typography variant="small" color="gray" className="mt-2">
                 Comece a criar seus projetos
               </Typography>
             )}
@@ -135,7 +135,7 @@ export default function ProjectsTable({ data }) {
                         .toLowerCase()
                         .startsWith(targetName.toLocaleLowerCase())
                     )
-                    .flatMap((item) =>
+                    ?.flatMap((item) =>
                       item.projects.map((project) => (
                         <tr
                           key={project.id}

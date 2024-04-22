@@ -42,7 +42,7 @@ export default function MembersTable() {
                 </span>
               </Button>
             }
-            currentResponsibles={data.map((item) => item.responsibles)}
+            currentResponsibles={data?.map((item) => item.responsibles)}
           />
         </div>
 
@@ -59,11 +59,13 @@ export default function MembersTable() {
       {allMembers.length === 0 ? (
         <div className="flex flex-col items-center justify-center w-full h-fit py-4">
           <img
-            className="w-20 object-cover object-center"
+            className="w-16 object-cover object-center"
             src={no_data_Icon}
             alt="nature image"
           />
-          <Typography className="">{translations.no_members}</Typography>
+          <Typography variant="small" color="gray" className="">
+            {translations.no_members}
+          </Typography>
         </div>
       ) : (
         <CardBody className="relative w-full flex gap-5 md:gap-5 flex-wrap participants_scrollBarStyles overflow-y-scroll overflow-x-hidden h-[400px] px-3">
@@ -84,7 +86,7 @@ export default function MembersTable() {
                       <Card
                         className={`w-[140px] min-h-40 max-h-40 bg-white p-4 border-t-2 border-gray-50 ${
                           user.email === responsible.email ||
-                          data.some(
+                          data?.some(
                             (enterprise) =>
                               enterprise.email === user.email &&
                               enterprise.responsibles.includes(

@@ -57,6 +57,7 @@ const TaskDetails = ({
   buttonProps,
   disabledProps,
   disabledSpecificProps,
+  closeModalAfterAddUser,
 }) => {
   const {
     data,
@@ -81,6 +82,10 @@ const TaskDetails = ({
   const user = userString ? JSON.parse(userString) : null;
   const currentUser = userString ? JSON.parse(userString) : null;
   const refetchData = () => {};
+
+  const closeModal = () => {
+    setShowDialog(false);
+  };
 
   const ExampleCustomInput = forwardRef(({ onClick }, ref) => (
     <div
@@ -746,6 +751,8 @@ const TaskDetails = ({
                           responsibles={responsibles}
                           allResponsibles={allMembers}
                           taskId={taskId}
+                          closeModalAfterAddUser={closeModalAfterAddUser}
+                          closeModal={closeModal}
                         />
                       )}
                     </>
@@ -760,11 +767,19 @@ const TaskDetails = ({
                     ) ? (
                       ""
                     ) : (
-                      <RemoveParticipantComponent
-                        responsibles={responsibles}
-                        allResponsibles={allMembers}
-                        taskId={taskId}
-                      />
+                      <>
+                        {responsibles.length === 0 ? (
+                          ""
+                        ) : (
+                          <RemoveParticipantComponent
+                            responsibles={responsibles}
+                            allResponsibles={allMembers}
+                            task_status={task_status}
+                            taskId={taskId}
+                            closeModal={closeModal}
+                          />
+                        )}
+                      </>
                     )}
                   </>
                 ) : (

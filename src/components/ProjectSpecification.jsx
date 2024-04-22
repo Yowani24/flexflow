@@ -1,27 +1,19 @@
 import React, { useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { useSpring, animated } from "@react-spring/web";
-import { Stepper, Step, Button, Typography } from "@material-tailwind/react";
+import { Typography } from "@material-tailwind/react";
 import {
   CogIcon,
   UserIcon,
   BuildingLibraryIcon,
 } from "@heroicons/react/24/outline";
-import { MdRocketLaunch } from "react-icons/md";
-import { TbAdjustmentsCode } from "react-icons/tb";
-import { GrTestDesktop } from "react-icons/gr";
-import { TbProgress } from "react-icons/tb";
 
-const TaskDetails = ({ buttonProps, projectName }) => {
+import { LuListTodo } from "react-icons/lu";
+import BacklogCard from "./BacklogCard";
+import ProjectStepperComponent from "./ProjectStepperComponent";
+
+const TaskDetails = ({ buttonProps, projectName, projectData }) => {
   const [showDialog, setShowDialog] = useState(false);
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [isFirstStep, setIsFirstStep] = React.useState(false);
-  const [isSecondStep, setIsSecondStep] = React.useState(false);
-  const [isThirdStep, setIsThirdStep] = React.useState(false);
-  const [isLastStep, setIsLastStep] = React.useState(false);
-
-  // const handleNext = () => !isLastStep && setActiveStep((cur) => cur + 1);
-  // const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
 
   const { opacity, transform } = useSpring({
     opacity: showDialog ? 1 : 0,
@@ -32,7 +24,6 @@ const TaskDetails = ({ buttonProps, projectName }) => {
       }
     },
   });
-
   return (
     <>
       <div className="rounded-full" onClick={() => setShowDialog(true)}>
@@ -56,9 +47,9 @@ const TaskDetails = ({ buttonProps, projectName }) => {
             transform,
           }}
         >
-          <div className="fixed inset-0 flex items-center justify-center transition-all z-50">
+          <div className="main_div fixed inset-0 flex items-center justify-center transition-all z-50">
             <div className="fixed inset-0 bg-black opacity-50 transition-all"></div>
-            <div className="relative flex flex-col justify-start bg-white p-5 rounded-lg z-50 w-[90%] md:w-[60%] h-[80%] transition-all">
+            <div className="relative flex flex-col justify-between bg-[#F5F7FA] p-5 rounded-lg z-50 w-[90%] md:w-[70%] h-[80%] transition-all">
               <div className="flex items-start justify-between w-full transition-all">
                 <p className="text-gray-600 font-medium text-xl">
                   {projectName}
@@ -70,97 +61,32 @@ const TaskDetails = ({ buttonProps, projectName }) => {
                   <IoCloseSharp className="text-gray-600 group-hover:text-white transition-all" />
                 </div>
               </div>
-              <div className="bg-gray-100 w-full h-44 rounded-md mt-5">
+              <div className="w-full min-h-36 rounded-md mt-5 left-0 z-50">
                 <div className="w-full px-24 py-4">
-                  <Stepper
-                    activeStep={activeStep}
-                    isLastStep={(value) => setIsLastStep(value)}
-                    // isSecondStep={(value) => setIsSecondStep(value)}
-                    // isThirdStep={(value) => setIsThirdStep(value)}
-                    isFirstStep={(value) => setIsFirstStep(value)}
-                  >
-                    <Step onClick={() => setActiveStep(0)}>
-                      <TbProgress className="h-5 w-5" />
-                      <div className="absolute -bottom-[4.5rem] w-max text-center">
-                        <Typography
-                          variant="h6"
-                          color={activeStep === 0 ? "blue-gray" : "gray"}
-                          className="text-lg"
-                        >
-                          Development
-                        </Typography>
-                        <Typography
-                          color={activeStep === 0 ? "blue-gray" : "gray"}
-                          className="font-normal text-xs"
-                        >
-                          from <span className="font-semibold">Apr 14</span> to{" "}
-                          <span className="font-semibold">Apr 30</span>
-                        </Typography>
-                      </div>
-                    </Step>
-                    <Step onClick={() => setActiveStep(1)}>
-                      <GrTestDesktop className="h-5 w-5" />
-                      <div className="absolute -bottom-[4.5rem] w-max text-center">
-                        <Typography
-                          variant="h6"
-                          color={activeStep === 1 ? "blue-gray" : "gray"}
-                        >
-                          Beta
-                        </Typography>
-                        <Typography
-                          color={activeStep === 1 ? "blue-gray" : "gray"}
-                          className="font-normal text-xs"
-                        >
-                          from <span className="font-semibold">Apr 14</span> to{" "}
-                          <span className="font-semibold">Apr 30</span>
-                        </Typography>
-                      </div>
-                    </Step>
-                    <Step onClick={() => setActiveStep(2)}>
-                      <TbAdjustmentsCode className="h-5 w-5" />
-                      <div className="absolute -bottom-[4.5rem] w-max text-center">
-                        <Typography
-                          variant="h6"
-                          color={activeStep === 2 ? "blue-gray" : "gray"}
-                        >
-                          Final development
-                        </Typography>
-                        <Typography
-                          color={activeStep === 2 ? "blue-gray" : "gray"}
-                          className="font-normal text-xs"
-                        >
-                          from <span className="font-semibold">Apr 14</span> to{" "}
-                          <span className="font-semibold">Apr 30</span>
-                        </Typography>
-                      </div>
-                    </Step>
-                    <Step onClick={() => setActiveStep(3)}>
-                      <MdRocketLaunch className="h-5 w-5" />
-                      <div className="absolute -bottom-[4.5rem] w-max text-center">
-                        <Typography
-                          variant="h6"
-                          color={activeStep === 3 ? "blue-gray" : "gray"}
-                        >
-                          Launch
-                        </Typography>
-                        <Typography
-                          color={activeStep === 3 ? "blue-gray" : "gray"}
-                          className="font-normal text-xs"
-                        >
-                          from <span className="font-semibold">Apr 14</span> to{" "}
-                          <span className="font-semibold">Apr 30</span>
-                        </Typography>
-                      </div>
-                    </Step>
-                  </Stepper>
-                  {/* <div className="mt-32 flex justify-between">
-                    <Button onClick={handlePrev} disabled={isFirstStep}>
-                      Prev
-                    </Button>
-                    <Button onClick={handleNext} disabled={isLastStep}>
-                      Next
-                    </Button>
-                  </div> */}
+                  <ProjectStepperComponent projectData={projectData} />
+                </div>
+              </div>
+              <Typography variant="h6" className="flex items-center gap-1 py-2">
+                <LuListTodo size={21} className="text-blue-800 mb-[1px]" />{" "}
+                Backlog{" "}
+                {`(${projectData?.map(
+                  (project) =>
+                    project.tasks.filter(
+                      (task) => task.responsibles.length === 0
+                    ).length
+                )})`}
+              </Typography>
+              <div className="participants_scrollBarStyles relative overflow-y-scroll flex flex-col h-full py-2">
+                <div className="flex items-start flex-wrap gap-4">
+                  {projectData.map((project) =>
+                    project.tasks
+                      .filter((task) => task.responsibles.length === 0)
+                      .sort(
+                        (a, b) =>
+                          new Date(a.created_at) - new Date(b.created_at)
+                      )
+                      .map((item) => <BacklogCard taskData={item} />)
+                  )}
                 </div>
               </div>
             </div>

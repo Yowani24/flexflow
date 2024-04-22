@@ -10,8 +10,31 @@ import useFetchData from "../../hook/useFetchData";
 import { CgUserRemove } from "react-icons/cg";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 
-export default function RemoveParticipantComponent({ responsibles, taskId }) {
-  const { handleUpdateTaskResponsibles, allMembers } = useFetchData();
+export default function RemoveParticipantComponent({
+  taskId,
+  responsibles,
+  task_status,
+  closeModal,
+}) {
+  const { handleUpdateTaskResponsibles, handleUpdateTaskStatus, allMembers } =
+    useFetchData();
+
+  const handleRemoveResponsibles = (user) => {
+    handleUpdateTaskResponsibles.mutate({
+      id: taskId,
+      responsible: [...responsibles.filter((email) => email !== user.email)],
+    });
+
+    handleUpdateTaskStatus.mutate(
+      {
+        id: taskId,
+        status: responsibles.length === 0,
+        progressStatus:
+          task_status && responsibles.length < 0 ? "ongoing" : "paused",
+      },
+      responsibles.length === 0 ? closeModal() : ""
+    );
+  };
   return (
     <Menu
       dismiss={{
@@ -40,15 +63,7 @@ export default function RemoveParticipantComponent({ responsibles, taskId }) {
                 <MenuItem
                   key={user.id}
                   className="flex bg-white gap-2 hover:bg-red-50 border-none"
-                  onClick={() =>
-                    handleUpdateTaskResponsibles.mutate({
-                      id: taskId,
-                      responsible: [
-                        ...responsibles.filter((email) => email !== user.email),
-                      ],
-                      status: responsibles.length == 0 ? false : true,
-                    })
-                  }
+                  onClick={() => handleRemoveResponsibles(user)}
                 >
                   <Avatar
                     variant="circular"

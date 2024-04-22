@@ -42,7 +42,7 @@ export default function ClientsTable() {
             {translations.clients}
           </Typography>
 
-          {data.some(
+          {data?.some(
             (enterpriseData) => enterpriseData.email !== user.email
           ) ? (
             ""
@@ -90,7 +90,7 @@ export default function ClientsTable() {
                     .toLowerCase()
                     .startsWith(targetName.toLocaleLowerCase())
                 )
-                .map((client) => (
+                ?.map((client) => (
                   <tr
                     key={client.id}
                     className="boxShadow hover:bg-blue-gray-50 transition-all w-full bg-white flex items-center justify-between mt-2 rounded-lg overflow-hidden"
@@ -124,7 +124,7 @@ export default function ClientsTable() {
                     </td>
 
                     <td className="py-2 border-none w-[100px] flex justify-end mr-2 text-md">
-                      {data.some(
+                      {data?.some(
                         (enterpriseData) => enterpriseData.email !== user.email
                       ) ? (
                         ""

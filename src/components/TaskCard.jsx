@@ -43,7 +43,6 @@ export default function TaskCard({
     >
       <div className="flex items-start justify-between">
         <span className="text-[#858484] text-lg normal-case font-medium">
-          {/* {task_name.toLowerCase()} */}
           {task_name.length > 60
             ? task_name.substring(0, 50) + "..."
             : task_name.toLowerCase()}

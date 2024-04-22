@@ -45,7 +45,7 @@ const CreateMemberComponent = ({
   const user = userString ? JSON.parse(userString) : null;
   const password = "admin@123";
 
-  const enterpriseId = data.map((item) => item.id);
+  const enterpriseId = data?.map((item) => item.id);
 
   const openDialog = () => {
     setIsVisible(true);
@@ -120,7 +120,7 @@ const CreateMemberComponent = ({
   };
 
   useEffect(() => {
-    if (currentResponsibles.flat().includes(email)) {
+    if (currentResponsibles?.flat().includes(email)) {
       setIsEmailAlreadyExist(true);
     } else {
       setIsEmailAlreadyExist(false);
@@ -134,7 +134,7 @@ const CreateMemberComponent = ({
   return (
     <>
       <div className="" onClick={openDialog}>
-        {data.some((enterpriseData) => enterpriseData.email !== user.email) ? (
+        {data?.some((enterpriseData) => enterpriseData.email !== user.email) ? (
           ""
         ) : (
           <>{customButtonProps}</>
@@ -165,7 +165,7 @@ const CreateMemberComponent = ({
             } absolute`}
           >
             <div className="flex items-center justify-between mb-5">
-              <h6>Criando membro - {isEmailAlreadyExist ? "true" : "false"}</h6>
+              <h6>Criando membro</h6>
               <div className="flex items-center gap-2 self-end">
                 {showButtonProps && (
                   <div

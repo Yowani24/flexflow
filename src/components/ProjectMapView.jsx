@@ -106,7 +106,9 @@ const ProjectMapView = ({ projectData, projectName }) => {
             name: translations.development,
             id: "development",
             parent: "new_project",
-            start: Math.floor(Date.parse(null)),
+            start: Math.floor(
+              Date.parse(projectData.map((item) => item.created_at))
+            ),
             end: Math.floor(Date.parse(endD)),
             completed: {
               amount: projectProgress ? projectProgress / 100 : 0,
@@ -264,6 +266,7 @@ const ProjectMapView = ({ projectData, projectName }) => {
       <div className="w-full flex justify-end">
         <ProjectSpecification
           projectName={projectName}
+          projectData={projectData}
           buttonProps={
             <Button className="bg-gray-900 flex items-center gap-2 rounded-lg px-2 py-1">
               <span className="text-white text-xs normal-case">

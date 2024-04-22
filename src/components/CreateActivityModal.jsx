@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { Button, Input, Textarea } from "@material-tailwind/react";
-import { RiAddFill } from "react-icons/ri";
 import { Select, Option } from "@material-tailwind/react";
 import { TbFlag3Filled } from "react-icons/tb";
 import { useSpring, animated } from "@react-spring/web";
-import { GiSoundOn } from "react-icons/gi";
-import { RiBardLine } from "react-icons/ri";
 import {
   Menu,
   MenuHandler,
@@ -18,6 +15,7 @@ import { IoMdCheckmark } from "react-icons/io";
 import useFetchData from "../../hook/useFetchData";
 import { useLang } from "../../hook/LangContext";
 import AudioTranscription from "./AudioTranscription";
+import toast, { Toaster } from "react-hot-toast";
 
 const prioridade = [
   { id: "1", label: "Alta", value: "high" },
@@ -48,7 +46,6 @@ const CreateActivityModal = ({ projectId }) => {
   const [addList, setAddList] = useState([]);
 
   const handleItemClick = (value, id, email) => {
-    // setMembers(...members, email);
     setAddList([...addList, value]);
     setResponsibles([...responsibles, email]);
   };
@@ -95,6 +92,7 @@ const CreateActivityModal = ({ projectId }) => {
       });
       handleresetForm();
       refetch();
+      // toast.success("Atividade criada com sucesso!");
     } catch (error) {
       console.error(error.message);
     }
@@ -118,12 +116,11 @@ const CreateActivityModal = ({ projectId }) => {
     <>
       <Button
         onClick={() => setShowDialog(true)}
-        className="items-center hidden md:flex py-0 text-sm px-2 rounded-full bg-gray-500"
+        variant="outlined"
+        className="hidden md:flex items-center shadow-sm rounded-md min-h-[22px] border-gray-300 outline-none outline-0 hover:border-gray-600 transition-all text-gray-600 hover:text-gray-900 text-xs normal-case tracking-wider font-medium p-0 px-2 w-filt"
+        size="sm"
       >
-        <RiAddFill size={18} />
-        <span className="text-xs capitalize">
-          {translations.create_activity}
-        </span>
+        + {translations.create_activity}
       </Button>
 
       {showDialog && (
@@ -163,7 +160,9 @@ const CreateActivityModal = ({ projectId }) => {
                       size={18}
                       className="text-white transition-all"
                     />
+                    {/* <Toaster /> */}
                   </Button>
+
                   <div
                     onClick={() => setShowDialog(false)}
                     className="bg-gray-200 group transition-all hover:bg-[rgb(122,114,219)] min-w-8 h-8 flex items-center justify-center rounded-full cursor-pointer"

@@ -10,6 +10,7 @@ import { RxDashboard } from "react-icons/rx";
 import SideBar from "../components/SideBar";
 import Header from "../components/Header";
 import useFetchData from "../../hook/useFetchData";
+import { useNavigate } from "react-router-dom";
 
 const override = {
   display: "block",
@@ -39,21 +40,11 @@ const tabData = [
 ];
 
 export default function EntryPage() {
-  const { isLoading } = useFetchData();
-  const reloadCalled = useRef(false);
+  const { isLoading, error } = useFetchData();
+  const navigate = useNavigate();
   const [pageReloaded, setPageReloaded] = useState(
     localStorage.getItem("pageReloaded", false) || null
   );
-
-  // useEffect(() => {
-  //   const wasReloaded = localStorage.getItem("reloadCalled");
-  //   if (!reloadCalled.current && !wasReloaded && !pageReloaded) {
-  //     window.location.reload();
-  //     reloadCalled.current = true;
-  //     localStorage.setItem("reloadCalled", true);
-  //     localStorage.setItem("pageReloaded", true);
-  //   }
-  // }, []);
 
   useEffect(() => {
     if (!pageReloaded) {
@@ -61,6 +52,10 @@ export default function EntryPage() {
       localStorage.setItem("pageReloaded", true);
     }
   }, []);
+
+  if (error) {
+    navigate("/data_inconsistency");
+  }
 
   return (
     <Tabs value="dashboard" orientation="vertical">

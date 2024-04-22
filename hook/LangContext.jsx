@@ -12,7 +12,6 @@ export const LangProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // Load translations based on the selected language
     const loadTranslations = async () => {
       try {
         const response = await import(

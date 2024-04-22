@@ -38,7 +38,7 @@ export default function DashboardView() {
     localStorage.setItem("selectedProject", selectedProject);
   };
 
-  const projectData = data.flatMap((item) =>
+  const projectData = data?.flatMap((item) =>
     item.projects.filter((project) => project.name === projectName)
   );
 
@@ -53,7 +53,7 @@ export default function DashboardView() {
 
   return (
     <div className="flex flex-col px-5 pb-10 md:px-0 md:pr-10">
-      {data.flatMap((enterprise) =>
+      {data?.flatMap((enterprise) =>
         enterprise.projects.length === 0 ? (
           <Card className="flex items-start justify-start flex-col flex-wrap p-4">
             <div className="flex items-center">
@@ -63,7 +63,7 @@ export default function DashboardView() {
                 alt="nature image"
               />
 
-              {data.some(
+              {data?.some(
                 (enterpriseData) =>
                   enterpriseData.email !== enterprise_referenceId.email
               ) ? (
@@ -80,7 +80,7 @@ export default function DashboardView() {
               )}
             </div>
             <div className="flex items-center ml-3 flex-wrap w-full gap-2">
-              {data.some(
+              {data?.some(
                 (enterpriseData) =>
                   enterpriseData.email !== enterprise_referenceId.email
               ) ? (
@@ -127,7 +127,7 @@ export default function DashboardView() {
           </Card>
         )
       )}
-      {projectData.length ? (
+      {projectData?.length ? (
         <>
           <div className="hidden md:flex w-full">
             <ProjectMapView

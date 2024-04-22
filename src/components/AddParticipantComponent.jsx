@@ -15,6 +15,8 @@ export default function AddParticipantComponent({
   responsibles,
   allResponsibles,
   taskId,
+  closeModalAfterAddUser,
+  closeModal,
 }) {
   const { handleUpdateTaskResponsibles } = useFetchData();
   const [filteredMember, setFilteredMember] = useState("");
@@ -49,10 +51,13 @@ export default function AddParticipantComponent({
               key={responsible.id}
               className="flex bg-white gap-2"
               onClick={() =>
-                handleUpdateTaskResponsibles.mutate({
-                  id: taskId,
-                  responsible: [...responsibles, responsible.email],
-                })
+                handleUpdateTaskResponsibles.mutate(
+                  {
+                    id: taskId,
+                    responsible: [...responsibles, responsible.email],
+                  },
+                  closeModalAfterAddUser ? closeModal() : null
+                )
               }
             >
               <Avatar

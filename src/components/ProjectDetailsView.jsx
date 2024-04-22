@@ -92,7 +92,8 @@ export default function ProjectDetailsView({
                     progress={task.progress}
                     subtasks={task.sub_tasks}
                     reference_link={task.reference_link}
-                    disabledProps={disabledProps}
+                    // disabledProps={disabledProps}
+                    // disabledProps={true}
                     disabledSpecificProps="true"
                   />
                 ))
