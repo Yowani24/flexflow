@@ -112,7 +112,7 @@ export default function Login() {
           </Typography>
         </form>
         <Link to="/register" className="flex">
-          <Typography className="mt-5 text-gray-900">
+          <Typography className="mt-5 text-gray-900 font-medium">
             {translations.register}
           </Typography>
         </Link>
