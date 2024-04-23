@@ -5,10 +5,10 @@ import { Breadcrumbs, Button, Typography } from "@material-tailwind/react";
 import useFetchData from "../../hook/useFetchData";
 import CreateActivityModal from "./CreateActivityModal";
 import { SiOnlyoffice } from "react-icons/si";
-import { BiFilter } from "react-icons/bi";
 import { ImFilter } from "react-icons/im";
 import { useLang } from "../../hook/LangContext";
 import CreateProjectComponent from "./CreateProjectComponent";
+import ProjectSpecification from "./ProjectSpecification";
 import no_data_icon from "../assets/no_data3.png";
 import no_data_icon2 from "../assets/no_data5.png";
 import {
@@ -29,7 +29,7 @@ export default function KanbanView() {
 
   if (isLoading) return <p>Carregando dados...</p>;
 
-  const handleCheckboxChange = (project) => {
+  const handleCheckboxChange = ({ project }) => {
     if (filtered_project === project.name) {
       setFiltered_project(null);
     } else {
@@ -86,7 +86,7 @@ export default function KanbanView() {
       )
       .filter(
         (project) =>
-          project.tasks.some((task) =>
+          project.tasks?.some((task) =>
             task.responsibles.includes(user.email)
           ) || project.user_created === user.email
       )
@@ -155,7 +155,7 @@ export default function KanbanView() {
                 )
                 .filter(
                   (project) =>
-                    project.tasks.some((task) =>
+                    project.tasks?.some((task) =>
                       task.responsibles.includes(user.email)
                     ) || project.user_created === user.email
                 )
@@ -235,12 +235,22 @@ export default function KanbanView() {
                           />
                         )}
 
-                        <div className="flex group items-center justify-center min-w-7 min-h-7 group bg-gray-200 transition-all hover:bg-[rgb(191,199,244)] cursor-pointer rounded-full">
-                          <CgMenuGridO
-                            size={20}
-                            className="text-[#707070] group-hover:text-white transition-all"
-                          />
-                        </div>
+                        <ProjectSpecification
+                          projectName={item.name}
+                          projectData={data?.flatMap((project_enterprise) =>
+                            project_enterprise.projects.filter(
+                              (proj) => proj.name === item.name
+                            )
+                          )}
+                          buttonProps={
+                            <div className="flex group items-center justify-center min-w-7 min-h-7 group bg-gray-200 transition-all hover:bg-[rgb(191,199,244)] cursor-pointer rounded-full">
+                              <CgMenuGridO
+                                size={20}
+                                className="text-[#707070] group-hover:text-white transition-all"
+                              />
+                            </div>
+                          }
+                        />
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-5 md:gap-4 pt-8 pb-10 md:pl-0">
@@ -280,25 +290,29 @@ export default function KanbanView() {
                               </>
                             ) : (
                               <>
-                                {item.tasks.map((task, index) => (
-                                  <TaskCard
-                                    key={task.id}
-                                    data={data}
-                                    projectId={item.id}
-                                    taskId={task.id}
-                                    task_status={task.status}
-                                    task_name={task.title}
-                                    description={task.description}
-                                    priority={task.priority}
-                                    responsibles={task.responsibles}
-                                    progress={task.progress}
-                                    progressStatus={task.progressStatus}
-                                    subtasks={task.sub_tasks}
-                                    deadline={task.deadline}
-                                    reference_link={task.reference_link}
-                                    refetch={refetch}
-                                  />
-                                ))}
+                                {item.tasks
+                                  ?.filter(
+                                    (tasks) => tasks.responsibles.length > 0
+                                  )
+                                  .map((task, index) => (
+                                    <TaskCard
+                                      key={task.id}
+                                      data={data}
+                                      projectId={item.id}
+                                      taskId={task.id}
+                                      task_status={task.status}
+                                      task_name={task.title}
+                                      description={task.description}
+                                      priority={task.priority}
+                                      responsibles={task.responsibles}
+                                      progress={task.progress}
+                                      progressStatus={task.progressStatus}
+                                      subtasks={task.sub_tasks}
+                                      deadline={task.deadline}
+                                      reference_link={task.reference_link}
+                                      refetch={refetch}
+                                    />
+                                  ))}
                               </>
                             )
                           )}

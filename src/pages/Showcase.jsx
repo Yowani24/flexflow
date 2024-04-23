@@ -77,7 +77,7 @@ export default function Showcase() {
           <span>Made with 💚 by</span>{" "}
           <a
             className="flex items-center text-white hover:text-white"
-            href="https://www.linkedin.com/in/jo%C3%A3o-augusto-da-costa-535b30196/"
+            href="https://www.linkedin.com/in/joão-augusto-da-costa-535b30196"
             target="_blank"
           >
             <FaLinkedin size={15} className="mb-[3px] mr-[2px]" />

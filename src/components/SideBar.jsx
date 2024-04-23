@@ -77,8 +77,8 @@ export default function SideBar({ data }) {
               <ProfileEditComponent
                 showButtonProps={setShowButton}
                 photoRUL={user?.photoRUL}
-                name={user.displayName}
-                email={user.email}
+                name={user?.displayName}
+                email={user?.email}
                 role={user?.role}
               />
             }
