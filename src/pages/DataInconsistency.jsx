@@ -2,6 +2,7 @@ import { Card, Typography } from "@material-tailwind/react";
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo16.png";
+import { HiShieldExclamation } from "react-icons/hi2";
 
 export default function DataInconsistency() {
   return (
@@ -14,7 +15,9 @@ export default function DataInconsistency() {
         />
       </div>
       <Card className=" p-4 px-10">
-        <Typography className="text-3xl">Ops!</Typography>
+        <Typography className="text-3xl self-center">
+          <HiShieldExclamation className="text-orange-400" />
+        </Typography>
         <Typography className="text-center text-lg mt-5">
           Houve uma inconsistência ao carregar os dados.
         </Typography>

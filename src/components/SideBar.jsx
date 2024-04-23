@@ -27,6 +27,11 @@ export default function SideBar({ data }) {
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
 
+  const handleSignout = () => {
+    handleLogout();
+    navigate("/login");
+  };
+
   return (
     <div className="hidden md:w-[10%] h-full fixed top-0 left-0 overflow-y-auto md:flex items-start justify-center z-40">
       <div className="relative flex flex-col items-center py-5 justify-start gap-4 bg-[rgb(21,22,25)] w-[60%] h-[80%] mt-[112px] rounded-lg">
@@ -89,10 +94,7 @@ export default function SideBar({ data }) {
           <PopoverContent className="z-50 p-0 flex flex-col items-center gap-4 border-[5px] border-gray-300">
             <Button
               className="text-sm text-red-300 cursor-pointer capitalize "
-              onClick={() => {
-                handleLogout();
-                navigate("/");
-              }}
+              onClick={handleSignout}
             >
               Sair
             </Button>

@@ -391,6 +391,11 @@ const DetailsModal = ({
                                         subtask.user_created ===
                                         memberData.email
                                     )
+                                    .sort(
+                                      (a, b) =>
+                                        new Date(a.created_at) -
+                                        new Date(b.created_at)
+                                    )
                                     .map((subtask) => (
                                       <Card
                                         htmlFor="item-1"

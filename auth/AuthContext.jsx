@@ -9,7 +9,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const auth = getAuth();
   const [session, setSession] = useState(null);
-  const { setEnterprise_referenceId } = useFetchData();
+  const { data, isLoading, error, setEnterprise_referenceId } = useFetchData();
   const navigate = useNavigate();
   let logoutTimer;
 
@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
     await signOut(auth);
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    setSession(null);
     localStorage.removeItem("enterprise_referenceId");
     setEnterprise_referenceId([]);
     localStorage.removeItem("selectedProject");
@@ -35,6 +36,37 @@ export const AuthProvider = ({ children }) => {
       }, 24 * 60 * 60 * 1000);
     }
   };
+
+  useEffect(() => {
+    if (isLoading && !data) {
+      return;
+    }
+
+    const userJSON = localStorage.getItem("user");
+    if (!userJSON) {
+      return;
+    }
+
+    const user = JSON.parse(userJSON);
+    const { uid, email } = user;
+
+    // if (!data) {
+    //   return;
+    // }
+
+    const hasAccess = data.some(
+      (entry) =>
+        entry.enterprise_uid.includes(uid) || entry.responsibles.includes(email)
+    );
+
+    if (error) {
+      navigate("/data_inconsistency");
+    } else if (hasAccess) {
+      return;
+    } else if (userJSON && !hasAccess) {
+      navigate("/recreate_account");
+    }
+  }, [isLoading, data, navigate, error]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {

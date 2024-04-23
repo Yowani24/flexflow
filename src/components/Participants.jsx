@@ -71,7 +71,10 @@ export default function Participants({ projectData }) {
                   </div>
 
                   <div className="bg-white rounded-t-md p-1 md:max-w-[270px] self-start">
-                    <Typography variant="h6" className="text-gray-800">
+                    <Typography
+                      variant="h6"
+                      className="text-gray-800 normal-case first-letter:uppercase"
+                    >
                       {task.title.length > 60
                         ? task.title.substring(0, 30) + "..."
                         : task.title.toLowerCase()}
