@@ -4,10 +4,25 @@ import logo from "../assets/logo16.png";
 import { HiShieldExclamation } from "react-icons/hi2";
 import { useAuthContext } from "../../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { deleteUser, getAuth } from "firebase/auth";
 
 export default function RecreateAccount() {
   const { handleLogout } = useAuthContext();
   const navigate = useNavigate();
+
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  const handleDeleteUserAccout = () => {
+    deleteUser(user)
+      .then(() => {
+        console.log("user deleted!");
+        navigate("/register");
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
 
   const handleSignout = () => {
     handleLogout();
@@ -38,6 +53,7 @@ export default function RecreateAccount() {
         </Typography>
         <div className="self-center flex items-center gap-5">
           <Button
+            onClick={handleDeleteUserAccout}
             variant="text"
             className="bg-[#9599e2] hover:bg-[#6268df] normal-case border-none text-white hover:text-white font-medium text-md w-fit self-center mt-10 p-5 py-1 rounded-md shadow-sm hover:shadow-md"
           >

@@ -281,7 +281,7 @@ const TaskDetails = ({
           <div className="fixed inset-0 flex items-center justify-center transition-all z-50">
             <div className="fixed inset-0 bg-black opacity-50 transition-all"></div>
 
-            <div className="relative flex flex-col justify-start bg-white p-5 rounded-lg z-10 w-[90%] md:w-[60%] h-[80%] transition-all">
+            <div className="relative flex flex-col justify-start bg-white p-5 rounded-lg z-10 w-[90%] md:w-[70%] h-[80%] transition-all">
               <div className="flex items-start justify-between w-full transition-all">
                 <p className="text-gray-600 font-medium text-xl">{task_name}</p>
                 <div className="flex items-center gap-2">

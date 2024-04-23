@@ -15,7 +15,7 @@ import { BsCheck } from "react-icons/bs";
 import logo from "../assets/logo16.png";
 
 export default function Register() {
-  const { handleCreateEnterprise } = useFetchData();
+  const { data, handleCreateEnterprise } = useFetchData();
   const { translations } = useLang();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
