@@ -50,9 +50,9 @@ export default function Showcase() {
         <div className="flex flex-col items-center px-5 w-[500px]">
           <p className="text-[#212529] font-bold text-4xl md:text-[70px] leading-none text-left">
             {translations.innovate_with}{" "}
-            <span className="text-deep-purple-900">Se</span>
-            <span className="text-yellow-900">m</span>
-            <span className="text-light-blue-800">ba</span>
+            <span className="text-[#556df1]">Se</span>
+            <span className="text-[#d6a033]">m</span>
+            <span className="text-[#2fbae4]">ba</span>
           </p>
           <p className="mt-10 text-[#212529] text-xl text-left">
             {translations.showcase_message}
