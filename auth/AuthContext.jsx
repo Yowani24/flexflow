@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (isLoading && !data) {
+    if (isLoading) {
       return;
     }
 
@@ -50,11 +50,11 @@ export const AuthProvider = ({ children }) => {
     const user = JSON.parse(userJSON);
     const { uid, email } = user;
 
-    // if (!data) {
-    //   return;
-    // }
+    if (!data) {
+      return;
+    }
 
-    const hasAccess = data.some(
+    const hasAccess = data?.some(
       (entry) =>
         entry.enterprise_uid.includes(uid) || entry.responsibles.includes(email)
     );

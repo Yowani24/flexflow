@@ -43,7 +43,7 @@ export default function ClientsTable() {
           </Typography>
 
           {data?.some(
-            (enterpriseData) => enterpriseData.email !== user.email
+            (enterpriseData) => enterpriseData?.email !== user?.email
           ) ? (
             ""
           ) : (
