@@ -47,18 +47,20 @@ export default function Showcase() {
         {translations.hello} {user?.displayName} 👋
       </p>
       <div className="mt-10 md:mt-20 flex gap-5 items-center justify-center flex-wrap">
-        <div className="flex flex-col items-center px-5 w-[500px]">
-          <p className="text-[#212529] font-bold text-4xl md:text-[70px] leading-none text-left">
-            {translations.innovate_with}{" "}
+        <div className="flex flex-col items-start md:items-start px-5 w-[500px]">
+          <p className="text-[#212529] font-bold text-5xl md:text-[70px] leading-none text-left md:text-left">
+            {translations.innovate_with}
+          </p>
+          <Typography className="flex items-center text-7xl font-bold leading-none justify-center flex-wrap">
             <span className="text-[#556df1]">Se</span>
             <span className="text-[#d6a033]">m</span>
             <span className="text-[#2fbae4]">ba</span>
-          </p>
-          <p className="mt-10 text-[#212529] text-xl text-left">
+          </Typography>
+          <p className="mt-6 text-[#212529] text-lg md:text-xl text-left">
             {translations.showcase_message}
           </p>
-          <Link to="/entry" className="flex self-start">
-            <Button className="self-start mt-5 text-[#dadef1]">
+          <Link to="/entry" className="flex self-start mt-5">
+            <Button className="self-start text-[#dadef1]">
               {translations.get_started}
             </Button>
           </Link>
@@ -69,7 +71,7 @@ export default function Showcase() {
           alt="nature image"
         />
       </div>
-      <div className="absolute hidden md:flex left-[2%] bottom-[.8%] items-end gap-2">
+      <div className="absolute hidden md:flex left-[2%] bottom-[6%] items-end gap-2">
         <Typography
           variant="small"
           className="text-white text-xs flex items-end gap-2"
