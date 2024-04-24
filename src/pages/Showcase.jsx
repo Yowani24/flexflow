@@ -47,20 +47,20 @@ export default function Showcase() {
         {translations.hello} {user?.displayName} 👋
       </p>
       <div className="mt-10 md:mt-20 flex gap-5 items-center justify-center flex-wrap">
-        <div className="flex flex-col items-start md:items-start px-5 w-[500px]">
-          <p className="text-[#212529] font-bold text-5xl md:text-[70px] leading-none text-left md:text-left">
+        <div className="flex flex-col items-center md:items-start px-5 w-[500px]">
+          <Typography className="text-[#212529] font-bold text-6xl md:text-[70px] leading-none text-left md:text-left">
             {translations.innovate_with}
-          </p>
+          </Typography>
           <Typography className="flex items-center text-7xl font-bold leading-none justify-center flex-wrap">
             <span className="text-[#556df1]">Se</span>
             <span className="text-[#d6a033]">m</span>
             <span className="text-[#2fbae4]">ba</span>
           </Typography>
-          <p className="mt-6 text-[#212529] text-lg md:text-xl text-left">
+          <p className="mt-6 text-[#212529] text-md md:text-xl text-center md:text-left">
             {translations.showcase_message}
           </p>
-          <Link to="/entry" className="flex self-start mt-5">
-            <Button className="self-start text-[#dadef1]">
+          <Link to="/entry" className="flex self-center md:self-start mt-5">
+            <Button className="self-start text-[#dadef1] text-sm normal-case py-2 tracking-normal">
               {translations.get_started}
             </Button>
           </Link>
