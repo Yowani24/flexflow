@@ -17,6 +17,7 @@ import Protected from "../Protected.jsx";
 import SessionExpired from "./pages/SessionExpired.jsx";
 import DataInconsistency from "./pages/DataInconsistency.jsx";
 import RecreateAccount from "./pages/RecreateAccount.jsx";
+import ThemeTeste from "./pages/ThemeTeste.jsx";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,10 @@ const router = createBrowserRouter(
       </Route>
       <Route path="/" element={<Protected />}>
         <Route path="/recreate_account" element={<RecreateAccount />} />
+      </Route>
+
+      <Route path="/" element={<Protected />}>
+        <Route path="/themeteste" element={<ThemeTeste />} />
       </Route>
 
       <Route path="/session_expired" element={<SessionExpired />} />

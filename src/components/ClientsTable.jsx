@@ -5,17 +5,17 @@ import {
   CardBody,
   Typography,
   Button,
-  Chip,
   Avatar,
   Input,
 } from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { UserPlusIcon } from "@heroicons/react/24/solid";
 import { FiEdit } from "react-icons/fi";
-import MemberEditComponent from "./MemberEditComponent";
 import AnimatedDialog from "./AnimatedDialog";
 import { useLang } from "../../hook/LangContext";
 import useFetchData from "../../hook/useFetchData";
+
+import { useSnackbar } from "notistack";
 
 export default function ClientsTable() {
   const { data, allClients } = useFetchData();
@@ -27,11 +27,28 @@ export default function ClientsTable() {
 
   const TABLE_HEAD = [translations.name, translations.cnpj, ""];
 
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleClick = () => {
+    enqueueSnackbar("This is a snackbar message!", {
+      variant: "success",
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "center",
+      },
+    });
+  };
+
   return (
     <Card
-      className={`h-full w-full p-2 shadow-sm bg-white mt-3
+      className={`h-full w-full p-2 shadow-sm gradientBg mt-3
         }`}
     >
+      <div>
+        <Button onClick={handleClick}>Show Snackbar</Button>
+      </div>
+
       <CardHeader
         floated={false}
         shadow={false}
@@ -68,7 +85,7 @@ export default function ClientsTable() {
       <CardBody className="relative w-full participants_scrollBarStyles overflow-scroll overflow-x-hidden max-h-[400px] px-0">
         <div className="relative overflow-x-auto w-full">
           <table className="relative mt-0 w-full table-auto text-left">
-            <thead className="w-full flex items-center justify-between z-50 bg-white rounded-lg">
+            <thead className="w-full flex items-center justify-between z-50 gradientBg h-12 rounded-lg">
               <tr className="ClientsHeadetR w-full flex justify-between items-center">
                 {TABLE_HEAD.map((head, index) => (
                   <th key={index} className="border-none">
@@ -125,7 +142,8 @@ export default function ClientsTable() {
 
                     <td className="py-2 border-none w-[100px] flex justify-end mr-2 text-md">
                       {data?.some(
-                        (enterpriseData) => enterpriseData.email !== user.email
+                        (enterpriseData) =>
+                          enterpriseData?.email !== user?.email
                       ) ? (
                         ""
                       ) : (

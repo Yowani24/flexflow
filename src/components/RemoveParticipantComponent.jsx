@@ -15,9 +15,21 @@ export default function RemoveParticipantComponent({
   responsibles,
   task_status,
   closeModal,
+  subtasks,
 }) {
-  const { handleUpdateTaskResponsibles, handleUpdateTaskStatus, allMembers } =
-    useFetchData();
+  const {
+    handleUpdateTaskResponsibles,
+    handleUpdateTaskStatus,
+    allMembers,
+    refetch,
+  } = useFetchData();
+
+  const handleSuccess = () => {
+    if (responsibles.length === 0) {
+      closeModal();
+    }
+    refetch();
+  };
 
   const handleRemoveResponsibles = (user) => {
     handleUpdateTaskResponsibles.mutate({
@@ -25,14 +37,25 @@ export default function RemoveParticipantComponent({
       responsible: [...responsibles.filter((email) => email !== user.email)],
     });
 
+    // handleUpdateTaskStatus.mutate(
+    //   {
+    //     id: taskId,
+    //     status: responsibles.length === 0,
+    //     progressStatus:
+    //       task_status && responsibles.length < 0 ? "ongoing" : "paused",
+    //   },
+    //   responsibles.length === 0 ? closeModal() : ""
+    // );
+
     handleUpdateTaskStatus.mutate(
       {
         id: taskId,
-        status: responsibles.length === 0,
-        progressStatus:
-          task_status && responsibles.length < 0 ? "ongoing" : "paused",
+        status: responsibles.length === 0 && false,
+        progressStatus: !task_status && responsibles.length === 0 && "paused",
       },
-      responsibles.length === 0 ? closeModal() : ""
+      {
+        onSuccess: handleSuccess,
+      }
     );
   };
   return (
@@ -55,31 +78,43 @@ export default function RemoveParticipantComponent({
           onChange={(e) => setFilteredMember(e.target.value)}
         /> */}
 
-        {responsibles.map((responsible) => (
-          <div key={responsible}>
+        {responsibles.map((responsibleEmail) => (
+          <div key={responsibleEmail}>
+            {" "}
             {allMembers
-              .filter((member) => member.email === responsible)
-              .map((user) => (
-                <MenuItem
-                  key={user.id}
-                  className="flex bg-white gap-2 hover:bg-red-50 border-none"
-                  onClick={() => handleRemoveResponsibles(user)}
-                >
-                  <Avatar
-                    variant="circular"
-                    alt={user.name}
-                    size="xs"
-                    src={user.photo_url}
-                  />
-                  <div className="flex flex-col">
-                    <span className="text-black">{user.name}</span>{" "}
-                    <span className="text-[11px] text-gray-500">
-                      {user.role}
-                    </span>
-                  </div>
-                  <IoIosRemoveCircleOutline color="red" size={20} />
-                </MenuItem>
-              ))}
+              .filter((member) => member.email === responsibleEmail)
+              .map((user) => {
+                if (!user.id) {
+                  return null;
+                }
+
+                const isDisabled = subtasks?.some((subtask) =>
+                  subtask?.user_created?.includes(user.email)
+                );
+
+                return (
+                  <MenuItem
+                    key={user.id}
+                    disabled={isDisabled}
+                    className="flex bg-white gap-2 hover:bg-red-50 border-none"
+                    onClick={() => handleRemoveResponsibles(user)}
+                  >
+                    <Avatar
+                      variant="circular"
+                      alt={user.name ?? "User"}
+                      size="xs"
+                      src={user.photo_url}
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-black">{user.name ?? "N/A"}</span>{" "}
+                      <span className="text-[11px] text-gray-500">
+                        {user.role ?? "No role"}{" "}
+                      </span>
+                    </div>
+                    <IoIosRemoveCircleOutline color="red" size={20} />{" "}
+                  </MenuItem>
+                );
+              })}
           </div>
         ))}
       </MenuList>

@@ -44,10 +44,14 @@ export default function ProjectsTable({ data }) {
   };
   return (
     <Card
-      className={`h-full w-full p-2 shadow-sm mt-3
+      className={`h-full w-full p-2 shadow-sm mt-3 gradientBg
 }`}
     >
-      <CardHeader floated={false} shadow={false} className="rounded-none pb-5">
+      <CardHeader
+        floated={false}
+        shadow={false}
+        className="rounded-none pb-5 gradientBg"
+      >
         <div className="flex items-center justify-between mb-4 md:mb-0 gap-8">
           <Typography variant="h6" color="blue-gray">
             {translations.projects}
@@ -67,11 +71,12 @@ export default function ProjectsTable({ data }) {
           />
         </div>
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <div className="w-full md:w-72">
-            <Input
-              label={translations.find_a_project}
-              icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+          <div className="w-full md:w-fit rounded-full flex items-center">
+            <MagnifyingGlassIcon className="h-4 w-4 absolute ml-2" />
+            <input
+              placeholder={translations.find_a_project}
               onChange={(e) => setTargetName(e.target.value)}
+              className="rounded-full w-full md:w-72 border-none outline-none pl-7 text-sm h-8 shadow-sm"
             />
           </div>
         </div>
@@ -112,7 +117,7 @@ export default function ProjectsTable({ data }) {
           <CardBody className="relative participants_scrollBarStyles overflow-scroll overflow-x-hidden h-[400px] px-0">
             <div className="overflow-x-auto">
               <table className="relative mt-0 w-full min-w-max table-auto text-left">
-                <thead className="w-full flex items-center justify-between z-50 bg-white rounded-lg">
+                <thead className="w-full flex items-center justify-between z-50 gradientBg rounded-lg">
                   <tr className="headetR w-full flex justify-between items-center">
                     {TABLE_HEAD.map((head, index) => (
                       <th key={index} className="border-none p-4">
@@ -129,17 +134,17 @@ export default function ProjectsTable({ data }) {
                 </thead>
 
                 <tbody className="w-full flex flex-col items-center justify-center p-2">
-                  {data
-                    .filter((targetItem) =>
-                      targetItem.name
-                        .toLowerCase()
-                        .startsWith(targetName.toLocaleLowerCase())
-                    )
-                    ?.flatMap((item) =>
-                      item.projects.map((project) => (
+                  {data?.flatMap((item) =>
+                    item.projects
+                      .filter((targetItem) =>
+                        targetItem.name
+                          .toLowerCase()
+                          .startsWith(targetName.toLowerCase())
+                      )
+                      .map((project) => (
                         <tr
                           key={project.id}
-                          className="boxShadow hover:bg-blue-gray-50 transition-all w-full bg-white flex items-center justify-between mt-2 rounded-lg overflow-hidden"
+                          className="boxShadow hover:bg-blue-gray-50 transition-all w-full bg-white flex items-center justify-between mt-2 rounded-lg h-12 overflow-hidden"
                         >
                           <td className="py-2 border-none w-[260px] pl-4">
                             <div className="flex items-center gap-3">
@@ -218,7 +223,7 @@ export default function ProjectsTable({ data }) {
                           <td className="py-2 border-none w-[100px] flex justify-end mr-2 text-md">
                             {data.some(
                               (enterpriseData) =>
-                                enterpriseData.email !== user.email
+                                enterpriseData?.email !== user?.email
                             ) ? (
                               ""
                             ) : (
@@ -275,7 +280,7 @@ export default function ProjectsTable({ data }) {
                           </td>
                         </tr>
                       ))
-                    )}
+                  )}
                 </tbody>
               </table>
             </div>

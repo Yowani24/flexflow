@@ -22,6 +22,8 @@ import { LuCalendarClock } from "react-icons/lu";
 export default function Participants({ projectData }) {
   const { data, allMembers } = useFetchData();
   const { translations } = useLang();
+  const userString = localStorage.getItem("user");
+  const user = userString && JSON.parse(userString);
 
   return (
     <Card className="h-full w-full p-5 pb-4 shadow-sm">
@@ -29,9 +31,18 @@ export default function Participants({ projectData }) {
         {translations.activities}
       </Typography>
       <CardBody className="relative flex gap-5 flex-wrap participants_scrollBarStyles overflow-scroll overflow-x-hidden max-h-[500px] px-0 items-start">
-        {projectData.map((project) =>
+        {projectData?.map((project) =>
           project.tasks
-            .filter((task) => task.responsibles.length !== 0)
+            .filter((task) => {
+              const taskResponsibles = task?.responsibles.includes(user?.email);
+              const enterpriseEmailMatch = data?.some((enterprise) =>
+                enterprise.email.includes(user?.email)
+              );
+              return (
+                task?.responsibles?.length !== 0 &&
+                (taskResponsibles || enterpriseEmailMatch)
+              );
+            })
             .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
             .map((task) => (
               <Card className="rounded-xl overflow-hidden hover:shadow-lg p-2 items-center w-[300px] max-w-[300px] gap-4">
@@ -75,8 +86,8 @@ export default function Participants({ projectData }) {
                       variant="h6"
                       className="text-gray-800 normal-case first-letter:uppercase"
                     >
-                      {task.title.length > 60
-                        ? task.title.substring(0, 30) + "..."
+                      {task.title.length > 32
+                        ? task.title.substring(0, 32) + "..."
                         : task.title.toLowerCase()}
                     </Typography>
                   </div>
@@ -150,10 +161,25 @@ export default function Participants({ projectData }) {
                   </div>
                 </div>
                 <Typography className="self-start">
-                  {translations.assigned_to}
+                  {translations.assigned_to}{" "}
+                  {data?.some(
+                    (enterprise) => !enterprise.email.includes(user?.email)
+                  ) &&
+                    task?.responsibles?.length > 1 && (
+                      <span className="text-xs">
+                        {`(Eu + ${task?.responsibles?.length - 1})`}
+                      </span>
+                    )}
                 </Typography>
                 <div className="flex flex-col gap-2 w-full">
                   {task.responsibles
+                    .filter(
+                      (responsible) =>
+                        responsible.includes(user?.email) ||
+                        data?.some((enterprise) =>
+                          enterprise.email.includes(user?.email)
+                        )
+                    )
                     .sort(
                       (a, b) => new Date(a.created_at) - new Date(b.created_at)
                     )
@@ -172,13 +198,10 @@ export default function Participants({ projectData }) {
                                 <div className="border-[1px] ml-2 border-gray-100 bg-white w-fit p-1 rounded-md">
                                   <Avatar
                                     variant="rounded"
-                                    alt={user.name}
+                                    alt={user?.name}
                                     size="sm"
                                     className="hover:z-10 focus:z-10"
-                                    // src={user.photo_url}
-                                    src={
-                                      "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                    }
+                                    src={user?.photo_url}
                                   />
                                 </div>
                                 <div>

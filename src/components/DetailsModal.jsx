@@ -238,7 +238,7 @@ const DetailsModal = ({
               </div>
               <div className="w-full shadow-sm flex flex-col md:flex-row items-center md:items-start gap-5 rounded-md mt-5 p-4">
                 <Avatar
-                  src="https://docs.material-tailwind.com/img/face-2.jpg"
+                  src={memberData?.photo_url}
                   alt="avatar"
                   size="xxl"
                   variant="rounded"

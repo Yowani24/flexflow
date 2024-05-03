@@ -48,6 +48,12 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.gradientBg {
+  background-size: 100% 100%;
+  background-position: 0px 0px;
+  background-image: linear-gradient(90deg, #71c4ff1f 0%, #71a0ff1f 99%);
+}
+
 .participants_scrollBarStyles::-webkit-scrollbar {
   display: none;
 }
@@ -144,19 +150,35 @@ button:focus-visible {
 }
 
 .conaheader {
-  /* background: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%); */
-  /* background-image: linear-gradient(45deg, #93a5cf 0%, #a3e6fa 100%); */
   background-image: linear-gradient(45deg, #aab4cdad 0%, #ffffff 100%);
 }
 .showcase_bg {
-  /* background-image: linear-gradient(
-    -225deg,
-    #22e1ff 0%,
-    #1d8fe1 48%,
-    #625eb1 100%
-  ); */
-  background-image: linear-gradient(45deg, #93a5cf 0%, #e4efe9 100%);
-  /* background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%); */
+  /* background-image: linear-gradient(45deg, #14203d 0%, #1b1558 100%); */
+  background: #667db6; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #667db6,
+    #0082c8,
+    #0082c8,
+    #667db6
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #667db6,
+    #0082c8,
+    #0082c8,
+    #667db6
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.gradientBtn {
+  background: #5c258d;
+  background: -webkit-linear-gradient(to right, #5c258d, #4349a2);
+  background: linear-gradient(to right, #5c258d, #4349a2);
+}
+.gradientBtn:hover {
+  background: #5c258d;
+  background: -webkit-linear-gradient(to right, #692c9e, #5960c7);
+  background: linear-gradient(to right, #692c9e, #5960c7);
 }
 
 .dinacolor {

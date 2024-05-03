@@ -43,6 +43,12 @@ export default function useFetchData() {
     localStorage.getItem("enterprise_referenceId") || null
   );
 
+  //---------------THEME--------------------
+  const [isDarkTheme, setIsDarkTheme] = useState(() => {
+    return localStorage.getItem("isDarkTheme") === false;
+  });
+  //----------------------------------------
+
   const [user_enterprise_referenceId, setUser_enterprise_referenceId] =
     useState(localStorage.getItem("user_enterprise_referenceId") || null);
 
@@ -359,6 +365,30 @@ export default function useFetchData() {
     },
   });
 
+  const handleCreateRole = useMutation({
+    mutationFn: async (values) => {
+      return await axios.post(`${api_url}/role`, values);
+    },
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const handleDeleteRole = useMutation({
+    mutationFn: async (roleId) => {
+      return await axios.delete(`${api_url}/role/${roleId}`);
+    },
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   return {
     data,
     error,
@@ -366,6 +396,10 @@ export default function useFetchData() {
     isLoading,
     allClients,
     allMembers,
+    isDarkTheme,
+    setIsDarkTheme,
+    handleCreateRole,
+    handleDeleteRole,
     handleDeleteTask,
     handleCreateTask,
     handleCreateSubtask,

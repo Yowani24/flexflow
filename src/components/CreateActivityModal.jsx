@@ -15,7 +15,7 @@ import { IoMdCheckmark } from "react-icons/io";
 import useFetchData from "../../hook/useFetchData";
 import { useLang } from "../../hook/LangContext";
 import AudioTranscription from "./AudioTranscription";
-import toast, { Toaster } from "react-hot-toast";
+import { useSnackbar } from "notistack";
 
 const prioridade = [
   { id: "1", label: "Alta", value: "high" },
@@ -31,6 +31,7 @@ const CreateActivityModal = ({ projectId }) => {
   const [showDialog, setShowDialog] = useState(false);
   const [deadlineTime, setDeadlineTime] = useState(new Date());
   const [selectedOption, setSelectedOption] = useState("");
+  const { enqueueSnackbar } = useSnackbar();
 
   // ==========================================
   const [title, setTitle] = useState("");
@@ -44,6 +45,17 @@ const CreateActivityModal = ({ projectId }) => {
     setPriority(value);
   };
   const [addList, setAddList] = useState([]);
+
+  // const handleShowNotification = () => {
+  //   enqueueSnackbar("This is a snackbar message!", {
+  //     variant: "success",
+  //     autoHideDuration: 2000,
+  //     anchorOrigin: {
+  //       vertical: "top",
+  //       horizontal: "center",
+  //     },
+  //   });
+  // };
 
   const handleItemClick = (value, id, email) => {
     setAddList([...addList, value]);
@@ -92,7 +104,14 @@ const CreateActivityModal = ({ projectId }) => {
       });
       handleresetForm();
       refetch();
-      // toast.success("Atividade criada com sucesso!");
+      enqueueSnackbar("Atividade criada com sucesso!", {
+        variant: "success",
+        autoHideDuration: 2000,
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "center",
+        },
+      });
     } catch (error) {
       console.error(error.message);
     }

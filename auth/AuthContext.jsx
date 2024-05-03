@@ -8,8 +8,11 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const auth = getAuth();
-  const [session, setSession] = useState(null);
-  const { data, isLoading, error, setEnterprise_referenceId } = useFetchData();
+  const [session, setSession] = useState(
+    localStorage.getItem("session") || null
+  );
+  const { data, isLoading, error, refetch, setEnterprise_referenceId } =
+    useFetchData();
   const navigate = useNavigate();
   let logoutTimer;
 
@@ -18,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     await signOut(auth);
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    setSession(null);
+    localStorage.removeItem("session");
     localStorage.removeItem("enterprise_referenceId");
     setEnterprise_referenceId([]);
     localStorage.removeItem("selectedProject");
@@ -51,7 +54,8 @@ export const AuthProvider = ({ children }) => {
     const { uid, email } = user;
 
     if (!data) {
-      return;
+      // return;
+      refetch();
     }
 
     const hasAccess = data?.some(

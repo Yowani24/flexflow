@@ -775,6 +775,7 @@ const TaskDetails = ({
                             responsibles={responsibles}
                             allResponsibles={allMembers}
                             task_status={task_status}
+                            subtasks={subtasks}
                             taskId={taskId}
                             closeModal={closeModal}
                           />
