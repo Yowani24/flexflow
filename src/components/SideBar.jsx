@@ -27,6 +27,8 @@ export default function SideBar({ data }) {
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
 
+  console.log("ddd:", user);
+
   const handleSignout = () => {
     handleLogout();
     navigate("/login");
@@ -76,10 +78,11 @@ export default function SideBar({ data }) {
             children={
               <ProfileEditComponent
                 showButtonProps={setShowButton}
-                photoRUL={user?.photoRUL}
-                name={user?.displayName}
-                email={user?.email}
-                role={user?.role}
+                userData={user}
+                // photoURL={user?.photoURL}
+                // name={user?.displayName}
+                // email={user?.email}
+                // role={user?.role}
               />
             }
           />

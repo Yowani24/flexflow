@@ -25,7 +25,7 @@ import { doc, deleteDoc, collection } from "firebase/firestore";
 import { db } from "../firebase";
 import { deleteUser, getAuth } from "firebase/auth";
 
-const DetailsModal = ({
+const MemberDetailsModal = ({
   enterpriseId,
   buttonProps,
   memberData,
@@ -478,4 +478,4 @@ const DetailsModal = ({
   );
 };
 
-export default DetailsModal;
+export default MemberDetailsModal;

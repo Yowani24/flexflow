@@ -18,6 +18,8 @@ import CreateProjectComponent from "./CreateProjectComponent";
 import { BsBuildingFillAdd } from "react-icons/bs";
 import no_data_Icon from "../assets/no_data3.png";
 import no_data_found from "../assets/no_data_found.png";
+import ProjectDetailsModal from "./ProjectDetailsModal";
+import { AiOutlineFullscreen } from "react-icons/ai";
 
 export default function ProjectsTable({ data }) {
   const { handleDeleteProject, allClients } = useFetchData();
@@ -42,6 +44,11 @@ export default function ProjectsTable({ data }) {
       console.error(error.message);
     }
   };
+
+  const hasPermissionToEdit = data?.some(
+    (enterpriseData) => enterpriseData?.email === user?.email
+  );
+
   return (
     <Card
       className={`h-full w-full p-2 shadow-sm mt-3 gradientBg
@@ -221,7 +228,7 @@ export default function ProjectsTable({ data }) {
                           </td>
 
                           <td className="py-2 border-none w-[100px] flex justify-end mr-2 text-md">
-                            {data.some(
+                            {/* {data.some(
                               (enterpriseData) =>
                                 enterpriseData?.email !== user?.email
                             ) ? (
@@ -276,7 +283,17 @@ export default function ProjectsTable({ data }) {
                                   />
                                 }
                               />
-                            )}
+                            )} */}
+                            <ProjectDetailsModal
+                              buttonProps={
+                                hasPermissionToEdit && (
+                                  <div className="bg-gray-300 w-8 h-8 rounded-full flex items-center justify-center hover:bg-indigo-300 hover:text-white transition-all">
+                                    <AiOutlineFullscreen size={20} />
+                                  </div>
+                                )
+                              }
+                              projectData={project}
+                            />
                           </td>
                         </tr>
                       ))

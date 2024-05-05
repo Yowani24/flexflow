@@ -12,7 +12,7 @@ import { UserPlusIcon } from "@heroicons/react/24/solid";
 import { useLang } from "../../hook/LangContext";
 import CreateMemberComponent from "./CreateMemberComponent";
 import useFetchData from "../../hook/useFetchData";
-import DetailsModal from "./DetailsModal";
+import MemberDetailsModal from "./MemberDetailsModal";
 import no_data_Icon from "../assets/no_data2.png";
 import AddRoles from "./AddRoles";
 
@@ -85,7 +85,7 @@ export default function MembersTable() {
               .map((responsible) => {
                 return (
                   <div className="">
-                    <DetailsModal
+                    <MemberDetailsModal
                       enterpriseId={data?.map((item) => item.id)}
                       memberData={responsible}
                       enterpriseResponsibles={data?.flatMap(
