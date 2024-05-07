@@ -27,8 +27,6 @@ export default function SideBar({ data }) {
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
 
-  console.log("ddd:", user);
-
   const handleSignout = () => {
     handleLogout();
     navigate("/login");

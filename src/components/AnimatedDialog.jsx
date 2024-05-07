@@ -20,7 +20,15 @@ const AnimatedDialog = ({
   paddingProps,
   handleDelete,
 }) => {
+  const { data } = useFetchData();
   const [isVisible, setIsVisible] = useState(false);
+
+  const userString = localStorage.getItem("user");
+  const user = userString ? JSON.parse(userString) : null;
+
+  const hasPermissionToEdit = data?.some(
+    (enterpriseData) => enterpriseData?.email === user?.email
+  );
 
   const openDialog = () => {
     setIsVisible(true);
@@ -91,40 +99,35 @@ const AnimatedDialog = ({
                     />
                   </div>
                 )}
-                {/* <div
-                  onClick={handleDeleteItem}
-                  className="bg-red-200 hover:bg-red-500 group transition-all min-w-8 h-8 flex items-center justify-center rounded-full cursor-pointer"
-                >
-                  <MdDeleteForever
-                    size={18}
-                    className="text-white transition-all"
-                  />
-                </div> */}
-                <Menu>
-                  <MenuHandler>
-                    <div className="bg-red-200 hover:bg-red-500 group transition-all min-w-8 h-8 flex items-center justify-center rounded-full cursor-pointer">
-                      <MdDeleteForever
-                        size={18}
-                        className="text-white transition-all"
-                      />
-                    </div>
-                  </MenuHandler>
-                  <MenuList className="flex flex-col items-center">
-                    <Typography className="text-sm">
-                      Deseja continuar
-                    </Typography>
-                    <div className="flex items-center gap-5 mt-5">
-                      <MenuItem className="text-xs">Cancelar</MenuItem>
-                      <MenuItem
-                        className="text-xs"
-                        color="red"
-                        onClick={handleDeleteItem}
-                      >
-                        Continuar
-                      </MenuItem>
-                    </div>
-                  </MenuList>
-                </Menu>
+
+                {hasPermissionToEdit && (
+                  <Menu>
+                    <MenuHandler>
+                      <div className="bg-red-200 hover:bg-red-500 group transition-all min-w-8 h-8 flex items-center justify-center rounded-full cursor-pointer">
+                        <MdDeleteForever
+                          size={18}
+                          className="text-white transition-all"
+                        />
+                      </div>
+                    </MenuHandler>
+                    <MenuList className="flex flex-col items-center">
+                      <Typography className="text-sm">
+                        Deseja continuar
+                      </Typography>
+                      <div className="flex items-center gap-5 mt-5">
+                        <MenuItem className="text-xs">Cancelar</MenuItem>
+                        <MenuItem
+                          className="text-xs"
+                          color="red"
+                          onClick={handleDeleteItem}
+                        >
+                          Continuar
+                        </MenuItem>
+                      </div>
+                    </MenuList>
+                  </Menu>
+                )}
+
                 <div
                   onClick={onClose}
                   className="bg-gray-200 group transition-all hover:bg-[rgb(122,114,219)] min-w-8 h-8 flex items-center justify-center rounded-full cursor-pointer"

@@ -138,19 +138,15 @@ const MemberDetailsModal = ({
   //     );
 
   //     deleteDoc(userRef).then(() => {
-  //       console.log("User collection deleted!");
   //       setShowDialog(false);
   //     });
 
   //     deleteUser(JSON.parse(memberData.user_uid))
   //       .then(() => {
-  //         console.log("User account deleted!");
   //       })
   //       .catch((error) => {
-  //         console.log(error.message);
   //       });
   //   } catch (error) {
-  //     console.log(error);
   //   }
   // };
 

@@ -122,7 +122,6 @@ const CreateMemberComponent = ({
   //     });
 
   //     await updateProfile(auth.currentUser, { displayName: name });
-  //     console.log("User registration successful!");
   //     setLoading(false);
   //     // onClose();
   //     resetValues();

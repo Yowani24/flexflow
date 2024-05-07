@@ -82,7 +82,6 @@ export default function AddRoles() {
         <input
           type="text"
           name="name"
-          autoComplete={false}
           placeholder="add role..."
           className="w-full md:w-[250px] bg-white px-2 h-8 border-[1px] rounded-md border-[#11BEF4]"
           onChange={(e) => {

@@ -36,7 +36,6 @@ const ProjectMapView = ({ projectData, projectName }) => {
   // const today = Math.floor(Date.now() / day) * day;
   const today = Math.floor(Date.now());
   // const today = new Date();
-  // console.log("DATA:", today);
 
   const startD = "2024-01-22T15:00:58.580Z";
   const projendD = "2024-06-30T15:00:58.580Z";
