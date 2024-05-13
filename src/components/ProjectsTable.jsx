@@ -6,12 +6,8 @@ import {
   Typography,
   Button,
   Chip,
-  Input,
 } from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { FiEdit } from "react-icons/fi";
-import AnimatedDialog from "./AnimatedDialog";
-import ProjectEditComponent from "./ProjectEditComponent";
 import useFetchData from "../../hook/useFetchData";
 import { useLang } from "../../hook/LangContext";
 import CreateProjectComponent from "./CreateProjectComponent";
@@ -24,7 +20,6 @@ import { AiOutlineFullscreen } from "react-icons/ai";
 export default function ProjectsTable({ data }) {
   const { handleDeleteProject, allClients } = useFetchData();
   const { translations } = useLang();
-  const [showButton, setShowButton] = useState(false);
   const [targetName, setTargetName] = useState("");
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
@@ -83,7 +78,7 @@ export default function ProjectsTable({ data }) {
             <input
               placeholder={translations.find_a_project}
               onChange={(e) => setTargetName(e.target.value)}
-              className="rounded-full w-full md:w-72 border-none outline-none pl-7 text-sm h-8 shadow-sm"
+              className="rounded-full bg-white w-full md:w-72 border-none outline-none pl-7 text-sm h-8 shadow-sm"
             />
           </div>
         </div>
@@ -184,7 +179,8 @@ export default function ProjectsTable({ data }) {
                                 ? allClients
                                     .filter(
                                       (client) =>
-                                        client.cnpj === project.client_name
+                                        client.client_registration_id ===
+                                        project.client_name
                                     )
                                     .map((currentClient) => currentClient.name)
                                 : translations.no_atribuition}
@@ -228,62 +224,6 @@ export default function ProjectsTable({ data }) {
                           </td>
 
                           <td className="py-2 border-none w-[100px] flex justify-end mr-2 text-md">
-                            {/* {data.some(
-                              (enterpriseData) =>
-                                enterpriseData?.email !== user?.email
-                            ) ? (
-                              ""
-                            ) : (
-                              <AnimatedDialog
-                                title={"Editing project"}
-                                paddingProps={true}
-                                showButtonProps={showButton}
-                                handleDelete={() => handleDelete(project.id)}
-                                customButtonProps={
-                                  <Button
-                                    variant="text"
-                                    className="rounded-full p-2 flex items-center justify-center hover:bg-gray-400 border-none transition-all"
-                                  >
-                                    <FiEdit size={16} color="gray" />
-                                  </Button>
-                                }
-                                children={
-                                  <ProjectEditComponent
-                                    showButtonProps={setShowButton}
-                                    name={project.name}
-                                    budget={"45.000,89"}
-                                    reference_code={"P4875"}
-                                    status={
-                                      project.tasks.filter((task) =>
-                                        task.progressStatus.includes("paused")
-                                      )
-                                        ? "On Hold"
-                                        : project.tasks.filter((task) =>
-                                            task.progressStatus.includes(
-                                              "inprogress"
-                                            )
-                                          )
-                                        ? "In progress"
-                                        : project.tasks.filter((task) =>
-                                            task.progressStatus.includes(
-                                              "completed"
-                                            )
-                                          )
-                                        ? "Completed"
-                                        : ""
-                                    }
-                                    client_name={allClients
-                                      .filter(
-                                        (client) =>
-                                          client.cnpj === item.client_name
-                                      )
-                                      .map(
-                                        (currentClient) => currentClient.name
-                                      )}
-                                  />
-                                }
-                              />
-                            )} */}
                             <ProjectDetailsModal
                               buttonProps={
                                 hasPermissionToEdit && (
@@ -293,6 +233,7 @@ export default function ProjectsTable({ data }) {
                                 )
                               }
                               projectData={project}
+                              handleDelete={() => handleDelete(project.id)}
                             />
                           </td>
                         </tr>

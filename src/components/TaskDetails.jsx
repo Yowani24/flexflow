@@ -83,6 +83,10 @@ const TaskDetails = ({
   const currentUser = userString ? JSON.parse(userString) : null;
   const refetchData = () => {};
 
+  const hasPermissionToEdit = data?.some(
+    (enterpriseData) => enterpriseData?.email === user?.email
+  );
+
   const closeModal = () => {
     setShowDialog(false);
   };
@@ -546,9 +550,11 @@ const TaskDetails = ({
                     }`}
                   >
                     <span>{translations.no_subactivities}</span>
-                    <span className="text-xs bg-[#f0f0f0] rounded-md p-2">
-                      {translations.no_subactivity_message}
-                    </span>
+                    {!hasPermissionToEdit && (
+                      <span className="text-xs bg-[#f0f0f0] rounded-md p-2">
+                        {translations.no_subactivity_message}
+                      </span>
+                    )}
                   </div>
                 ) : (
                   <>

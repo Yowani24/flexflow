@@ -32,6 +32,7 @@ const ProjectDetailsModal = ({
   enterpriseId,
   buttonProps,
   projectData,
+  handleDelete,
   enterpriseResponsibles,
 }) => {
   const { data, allClients } = useFetchData();
@@ -50,12 +51,17 @@ const ProjectDetailsModal = ({
     },
   });
 
-  const deleteMember = async (e) => {};
+  const handleDeleteItem = () => {
+    handleDelete();
+    setShowDialog(false);
+  };
 
   const clientLogo = projectData?.client_name
     ? allClients
-        .filter((client) => client.cnpj === projectData?.client_name)
-        .map((currentClient) => currentClient.logo)
+        .filter(
+          (client) => client.client_registration_id === projectData?.client_name
+        )
+        .map((currentClient) => currentClient.photo_url)
     : "";
 
   return (
@@ -123,7 +129,7 @@ const ProjectDetailsModal = ({
                               <MenuItem
                                 className="text-xs"
                                 color="red"
-                                onClick={deleteMember}
+                                onClick={handleDeleteItem}
                               >
                                 Continuar
                               </MenuItem>
@@ -159,7 +165,8 @@ const ProjectDetailsModal = ({
                           ? allClients
                               .filter(
                                 (client) =>
-                                  client.cnpj === projectData?.client_name
+                                  client.client_registration_id ===
+                                  projectData?.client_name
                               )
                               .map((currentClient) => currentClient.name)
                           : translations.no_atribuition}

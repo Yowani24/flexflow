@@ -10,45 +10,27 @@ import {
 } from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { UserPlusIcon } from "@heroicons/react/24/solid";
-import { FiEdit } from "react-icons/fi";
-import AnimatedDialog from "./AnimatedDialog";
 import { useLang } from "../../hook/LangContext";
 import useFetchData from "../../hook/useFetchData";
-
-import { useSnackbar } from "notistack";
+import { AiOutlineFullscreen } from "react-icons/ai";
+import CreateClientComponent from "./CreateClientComponent";
 
 export default function ClientsTable() {
   const { data, allClients } = useFetchData();
   const { translations } = useLang();
-  const [showButton, setShowButton] = useState(false);
   const [targetName, setTargetName] = useState("");
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
 
-  const TABLE_HEAD = [translations.name, translations.cnpj, ""];
-
-  const { enqueueSnackbar } = useSnackbar();
-
-  const handleClick = () => {
-    enqueueSnackbar("This is a snackbar message!", {
-      variant: "success",
-      autoHideDuration: 2000,
-      anchorOrigin: {
-        vertical: "top",
-        horizontal: "center",
-      },
-    });
-  };
+  const hasPermissionToEdit = data?.some(
+    (enterpriseData) => enterpriseData?.email === user?.email
+  );
 
   return (
     <Card
       className={`h-full w-full p-2 shadow-sm gradientBg mt-3
         }`}
     >
-      <div>
-        <Button onClick={handleClick}>Show Snackbar</Button>
-      </div>
-
       <CardHeader
         floated={false}
         shadow={false}
@@ -64,115 +46,81 @@ export default function ClientsTable() {
           ) ? (
             ""
           ) : (
-            <Button className="flex items-center gap-3 rounded-full" size="sm">
-              <UserPlusIcon strokeWidth={2} className="h-4 w-4" />{" "}
-              <span className="normal-case tracking-wide">
-                {translations.add_client}
-              </span>
-            </Button>
+            <CreateClientComponent
+              customButtonProps={
+                <Button
+                  onClick={() =>
+                    document.getElementById("create_client_modal").showModal()
+                  }
+                  className="flex items-center gap-3 rounded-full"
+                  size="sm"
+                >
+                  <UserPlusIcon strokeWidth={2} className="h-4 w-4" />{" "}
+                  <span className="normal-case tracking-wide">
+                    {translations.add_client}
+                  </span>
+                </Button>
+              }
+            />
           )}
         </div>
+
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <div className="w-full md:w-72">
-            <Input
-              label={translations.find_a_client}
-              icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+          <div className="w-full md:w-fit rounded-full flex items-center">
+            <MagnifyingGlassIcon className="h-4 w-4 absolute ml-2" />
+            <input
+              placeholder={translations.find_a_client}
               onChange={(e) => setTargetName(e.target.value)}
+              className="rounded-full bg-white w-full md:w-72 border-none outline-none pl-7 text-sm h-8 shadow-sm"
             />
           </div>
         </div>
       </CardHeader>
-      <CardBody className="relative w-full participants_scrollBarStyles overflow-scroll overflow-x-hidden max-h-[400px] px-0">
-        <div className="relative overflow-x-auto w-full">
-          <table className="relative mt-0 w-full table-auto text-left">
-            <thead className="w-full flex items-center justify-between z-50 gradientBg h-12 rounded-lg">
-              <tr className="ClientsHeadetR w-full flex justify-between items-center">
-                {TABLE_HEAD.map((head, index) => (
-                  <th key={index} className="border-none">
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal leading-none opacity-70"
-                    >
-                      {head}
-                    </Typography>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="w-full flex flex-col items-center justify-center p-2">
-              {allClients
-                .filter((targetItem) =>
-                  targetItem.name
-                    .toLowerCase()
-                    .startsWith(targetName.toLocaleLowerCase())
-                )
-                ?.map((client) => (
-                  <tr
-                    key={client.id}
-                    className="boxShadow hover:bg-blue-gray-50 transition-all w-full bg-white flex items-center justify-between mt-2 rounded-lg overflow-hidden"
-                  >
-                    <td className="py-2 border-none w-[230px] pl-4">
-                      <div className="flex items-center gap-3">
-                        <Avatar
-                          src={client.logo}
-                          alt={client.name}
-                          size="sm"
-                          className="min-w-9 min-h-9"
-                        />
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {client.name}
-                        </Typography>
-                      </div>
-                    </td>
-
-                    <td className="py-2 border-none w-[220px]">
+      <CardBody className="relative w-full participants_scrollBarStyles overflow-scroll overflow-x-hidden h-[400px] px-0">
+        <div className="flex flex-wrap items-center gap-4 md:pl-4 justify-center md:justify-start">
+          {allClients
+            .filter((targetItem) =>
+              targetItem.name
+                .toLowerCase()
+                .startsWith(targetName.toLocaleLowerCase())
+            )
+            ?.map((client) => (
+              <Card className="w-64 h-32 p-3 group transition-all hover:shadow-lg">
+                <div className="flex justify-between items-start">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-white rounded-md shadow-md">
+                      <Avatar
+                        src={client?.photo_url}
+                        alt={client?.name}
+                        size="sm"
+                        className="w-9 h-9 p-1"
+                        variant="rounded"
+                      />
+                    </div>
+                    <div className="flex flex-col">
                       <Typography
                         variant="small"
                         color="blue-gray"
-                        className="font-normal"
+                        className="font-normal p-0"
                       >
-                        <span className="">{client.cnpj}</span>
+                        {client?.name}
                       </Typography>
-                    </td>
-
-                    <td className="py-2 border-none w-[100px] flex justify-end mr-2 text-md">
-                      {data?.some(
-                        (enterpriseData) =>
-                          enterpriseData?.email !== user?.email
-                      ) ? (
-                        ""
-                      ) : (
-                        <AnimatedDialog
-                          title={"Editing client"}
-                          paddingProps={true}
-                          showButtonProps={showButton}
-                          customButtonProps={
-                            <Button
-                              variant="text"
-                              className="rounded-full p-2 flex items-center justify-center hover:bg-gray-400 border-none transition-all"
-                            >
-                              <FiEdit size={16} color="gray" />
-                            </Button>
-                          }
-                          // children={
-                          //   <MemberEditComponent
-                          //     showButtonProps={setShowButton}
-                          //     name={client.name}
-                          //     cnpj={client.cnpj}
-                          //   />
-                          // }
-                        />
-                      )}
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+                      <span className="text-[10px] p-0">
+                        {client?.client_registration_id}
+                      </span>
+                    </div>
+                  </div>
+                  {hasPermissionToEdit && (
+                    <div className="hidden bg-gray-300 w-8 h-8 rounded-full group-hover:flex items-center justify-center hover:bg-indigo-300 hover:text-white transition-all">
+                      <AiOutlineFullscreen size={18} />
+                    </div>
+                  )}
+                </div>
+                <Typography className="text-sm mt-3 text-gray-500">
+                  {client?.clientDescription?.substring(0, 70)}
+                </Typography>
+              </Card>
+            ))}
         </div>
       </CardBody>
     </Card>

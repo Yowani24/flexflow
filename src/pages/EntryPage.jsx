@@ -58,6 +58,7 @@ export default function EntryPage() {
   }
 
   return (
+    // <div data-theme={localStorage.getItem("isdark") ? "padrao" : "padrao"}>
     <Tabs value="dashboard" orientation="vertical">
       {isLoading ? (
         <div className="backdrop-blur-sm bg-black/30 fixed flex items-center justify-center w-full h-screen z-50">
@@ -88,5 +89,6 @@ export default function EntryPage() {
         </div>
       </div>
     </Tabs>
+    // </div>
   );
 }

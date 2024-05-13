@@ -87,8 +87,8 @@ export default function KanbanView() {
       .filter(
         (project) =>
           project.tasks?.some((task) =>
-            task.responsibles.includes(user.email)
-          ) || project.user_created === user.email
+            task.responsibles.includes(user?.email)
+          ) || project.user_created === user?.email
       )
   );
 
@@ -101,7 +101,7 @@ export default function KanbanView() {
               {translations.create_projects_and_track_them_here}
             </Typography>
             {data?.some(
-              (enterpriseData) => enterpriseData.email !== user.email
+              (enterpriseData) => enterpriseData?.email !== user?.email
             ) ? (
               "Nemhuma atividade atribuída à você no momento."
             ) : (
@@ -123,7 +123,7 @@ export default function KanbanView() {
         ) : (
           <>
             {data?.map((enterprise) =>
-              enterprise.email === user.email ? (
+              enterprise?.email === user?.email ? (
                 ""
               ) : (
                 <>
@@ -156,8 +156,8 @@ export default function KanbanView() {
                 .filter(
                   (project) =>
                     project.tasks?.some((task) =>
-                      task.responsibles.includes(user.email)
-                    ) || project.user_created === user.email
+                      task.responsibles.includes(user?.email)
+                    ) || project.user_created === user?.email
                 )
                 .map((item) => (
                   <div
@@ -182,7 +182,7 @@ export default function KanbanView() {
                     </div>
                     <div className="flex items-center justify-between pr-2 bg-white w-full rounded-lg overflow-hidden">
                       <Breadcrumbs className="bg-white">
-                        <SiOnlyoffice />
+                        <SiOnlyoffice className="text-indigo-400" />
                         <span className="text-gray-700">
                           <span>{item.name}</span>
                         </span>
@@ -190,7 +190,9 @@ export default function KanbanView() {
                           <span>
                             {allClients
                               .filter(
-                                (client) => client.cnpj === item.client_name
+                                (client) =>
+                                  client?.client_registration_id ===
+                                  item.client_name
                               )
                               .map((currentClient) => currentClient.name)}
                           </span>
@@ -225,7 +227,7 @@ export default function KanbanView() {
                       <div className="flex items-center gap-5">
                         {data?.some(
                           (enterpriseData) =>
-                            enterpriseData.email !== user.email
+                            enterpriseData?.email !== user?.email
                         ) ? (
                           ""
                         ) : (
@@ -257,11 +259,13 @@ export default function KanbanView() {
                       {priority === "over_view" ? (
                         <>
                           {data?.map((enterpriseData) =>
-                            enterpriseData.responsibles.includes(user.email) ? (
+                            enterpriseData.responsibles.includes(
+                              user?.email
+                            ) ? (
                               <>
                                 {item.tasks
                                   .filter((item) =>
-                                    item.responsibles.includes(user.email)
+                                    item.responsibles.includes(user?.email)
                                   )
                                   .sort(
                                     (a, b) =>
@@ -323,7 +327,7 @@ export default function KanbanView() {
                             .filter(
                               (filtered_task) =>
                                 filtered_task.priority === priority &&
-                                responsibles.includes(user.email)
+                                responsibles.includes(user?.email)
                             )
                             .sort(
                               (a, b) =>

@@ -6,49 +6,40 @@ import {
   Avatar,
   Button,
   Input,
-  Option,
-  Select,
+  Textarea,
   Typography,
 } from "@material-tailwind/react";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
-import { auth, db, imageDb } from "../firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { db, imageDb } from "../firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
 import user_photo_url from "../assets/photo_url.png";
 import useFetchData from "../../hook/useFetchData";
 import { FaCheck } from "react-icons/fa";
+import { BsCheck } from "react-icons/bs";
 
-const rolesList = [
-  "Frontend developer",
-  "DevOps developer",
-  "Designer",
-  "RH",
-  "FullStack developer",
-  "Backend developer",
-];
-const permissionsList = ["admin", "operator"];
-
-const CreateMemberComponent = ({
+const CreateClientComponent = ({
   customButtonProps,
   showButtonProps,
   paddingProps,
-  currentResponsibles,
+  currentClientsList,
 }) => {
-  const { data, handleUpdateEnterpriseMembers } = useFetchData();
+  const { data } = useFetchData();
   const [isVisible, setIsVisible] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [isValid, setIsValid] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
-  const [responsibles, setResponsibles] = useState([]);
-  const [userPermission, setUserPermission] = useState("operator");
+  const [client_registration_id, setClient_registration_id] = useState("");
+  const [clientPhoneNumber, setClientPhoneNumber] = useState("");
+  const [clientDescription, setClientDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [isEmailAlreadyExist, setIsEmailAlreadyExist] = useState(false);
+  const [isClientAlreadyExist, setIsClientAlreadyExist] = useState(false);
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
-  const password = "admin@123";
-  const [userCreatedSuccessfully, setUserCreatedSuccessfully] = useState(false);
+  const [clientCreatedSuccessfully, setClientCreatedSuccessfully] =
+    useState(false);
   const [imageFile, setImageFile] = useState(null);
 
   const enterpriseId = data?.map((item) => item.id);
@@ -60,7 +51,7 @@ const CreateMemberComponent = ({
   const onClose = () => {
     setIsVisible(false);
     resetValues();
-    setUserCreatedSuccessfully(false);
+    setClientCreatedSuccessfully(false);
   };
 
   const { opacity, transform } = useSpring({
@@ -76,13 +67,8 @@ const CreateMemberComponent = ({
   const resetValues = () => {
     setName("");
     setEmail("");
-    setRole("");
+    setClient_registration_id("");
     setImageFile(null);
-  };
-
-  const handleItemClick = (email) => {
-    setEmail(email);
-    setResponsibles([...currentResponsibles.flat(), email]);
   };
 
   const fileInputRef = useRef();
@@ -100,13 +86,6 @@ const CreateMemberComponent = ({
     e.preventDefault();
     setLoading(true);
     try {
-      const credential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const userId = credential?.user.uid;
-
       const enterpriseData = localStorage.getItem("user");
       if (!enterpriseData) {
         throw new Error("Enterprise reference ID not found in localStorage.");
@@ -117,40 +96,25 @@ const CreateMemberComponent = ({
       if (imageFile) {
         const imageRef = ref(
           imageDb,
-          `user_photos_${enterpriseReferenceId}/${userId}`
+          `client_photos_${enterpriseReferenceId}/${client_registration_id}`
         );
         await uploadBytes(imageRef, imageFile);
         photoUrl = await getDownloadURL(imageRef);
       }
 
-      const userRef = collection(db, `members_${enterpriseReferenceId}`);
+      const userRef = collection(db, `clients_${enterpriseReferenceId}`);
 
       await addDoc(userRef, {
         enterprise_referenceId: enterpriseReferenceId,
         name,
         email,
-        role,
+        client_registration_id,
+        clientPhoneNumber,
+        clientDescription,
         photo_url: photoUrl ? photoUrl : user_photo_url,
-        permission: userPermission,
-        user_credential: userId,
       });
 
-      await updateProfile(auth.currentUser, {
-        displayName: name,
-        photoURL: photoUrl ? photoUrl : user_photo_url,
-      });
-
-      const enterpriseIdParsed = parseInt(enterpriseId.join(""));
-      if (isNaN(enterpriseIdParsed)) {
-        throw new Error("Invalid enterprise ID.");
-      }
-
-      handleUpdateEnterpriseMembers.mutate({
-        id: enterpriseIdParsed,
-        responsibles,
-      });
-
-      setUserCreatedSuccessfully(true);
+      setClientCreatedSuccessfully(true);
     } catch (error) {
       setErrorMessage(error.message);
     } finally {
@@ -159,15 +123,66 @@ const CreateMemberComponent = ({
   };
 
   useEffect(() => {
-    if (currentResponsibles?.flat().includes(email)) {
-      setIsEmailAlreadyExist(true);
+    if (currentClientsList?.flat().includes(email)) {
+      setIsClientAlreadyExist(true);
     } else {
-      setIsEmailAlreadyExist(false);
+      setIsClientAlreadyExist(false);
     }
-  }, [email, currentResponsibles]);
+  }, [email, currentClientsList]);
 
   const handleResetErrorMessage = () => {
     setErrorMessage("");
+  };
+
+  const handleChange = (e) => {
+    const { value } = e.target;
+
+    let formattedValue = value.replace(/[^\d]/g, "");
+
+    if (formattedValue.length <= 11) {
+      formattedValue = formattedValue.replace(
+        /^(\d{3})(\d{1,3})?(\d{1,3})?(\d{1,2})?/,
+        (match, group1, group2, group3, group4) => {
+          let result = group1;
+          if (group2) result += `.${group2}`;
+          if (group3) result += `.${group3}`;
+          if (group4) result += `-${group4}`;
+          return result;
+        }
+      );
+    } else {
+      formattedValue = formattedValue.replace(
+        /^(\d{2})(\d{1,3})?(\d{1,3})?(\d{1,4})?(\d{1,2})?/,
+        (match, group1, group2, group3, group4, group5) => {
+          let result = group1;
+          if (group2) result += `.${group2}`;
+          if (group3) result += `.${group3}`;
+          if (group4) result += `/${group4}`;
+          if (group5) result += `-${group5}`;
+          return result;
+        }
+      );
+    }
+
+    setClient_registration_id(formattedValue);
+  };
+
+  const handleChangePhoneNumber = (event) => {
+    const { value } = event.target;
+
+    let formattedValue = value.replace(/[^\d]/g, "");
+
+    formattedValue = formattedValue.replace(
+      /^(\d{2})(\d{4,5})(\d{4})$/,
+      (match, group1, group2, group3) => {
+        let result = `(${group1}) `;
+        if (group2) result += `${group2}-`;
+        if (group3) result += `${group3}`;
+        return result;
+      }
+    );
+
+    setClientPhoneNumber(formattedValue);
   };
 
   return (
@@ -197,13 +212,13 @@ const CreateMemberComponent = ({
         >
           <form
             onSubmit={handleSubmit}
-            className={`bg-white p-4 rounded-lg flex flex-col w-[90%] md:w-[400px] h-[400px] z-50 ${
+            className={`bg-white p-4 rounded-lg flex flex-col w-[90%] md:w-[400px] h-[540px] z-50 ${
               paddingProps ? "pt-20" : "pt-5"
             } absolute`}
           >
             <div className="relative flex items-center justify-end mb-5">
-              {!loading && !userCreatedSuccessfully && (
-                <h6 className="left-0 absolute">Criando membro</h6>
+              {!loading && !clientCreatedSuccessfully && (
+                <h6 className="left-0 absolute">Criando cliente</h6>
               )}
               {!loading && (
                 <div className="flex items-center gap-2 self-end">
@@ -218,7 +233,7 @@ const CreateMemberComponent = ({
                       />
                     </div>
                   )}
-                  {!loading && !userCreatedSuccessfully && (
+                  {!loading && !clientCreatedSuccessfully && (
                     <Button
                       loading={loading}
                       type="submit"
@@ -247,12 +262,12 @@ const CreateMemberComponent = ({
               <div className="flex flex-col w-full h-full items-center justify-center">
                 <div className="flex flex-col w-full h-full items-center justify-center transition-all">
                   <Button variant="text" loading={loading} />
-                  <Typography className="text-sm">Criando membro</Typography>
+                  <Typography className="text-sm">Criando cliente</Typography>
                 </div>
               </div>
             ) : (
               <>
-                {userCreatedSuccessfully ? (
+                {clientCreatedSuccessfully ? (
                   <div className="flex flex-col items-center justify-center h-full">
                     <FaCheck size={24} className="text-green-400" />
                     <Typography className="text-sm">Pronto!</Typography>
@@ -261,7 +276,7 @@ const CreateMemberComponent = ({
                   <div className="flex flex-col gap-4 mt-5">
                     <div className="w-full">
                       <Input
-                        label="Username"
+                        label="Nome do Cliente"
                         name="name"
                         required
                         value={name}
@@ -279,48 +294,86 @@ const CreateMemberComponent = ({
                         value={email}
                         onChange={(e) => {
                           if (!/^\s+$/.test(e.target.value)) {
-                            handleItemClick(e.target.value);
+                            setEmail(e.target.value);
                           }
                         }}
                         onInput={handleResetErrorMessage}
                         className={`${
-                          isEmailAlreadyExist ? "text-orange-500" : ""
+                          isClientAlreadyExist ? "text-orange-500" : ""
                         }`}
                       />
                       <Typography
                         variant="small"
                         className="text-xs text-red-400 ml-3 mt-1"
                       >
-                        {isEmailAlreadyExist ? "Email já cadastrado!" : ""}
+                        {isClientAlreadyExist ? "Email já cadastrado!" : ""}
                       </Typography>
                     </div>
+                    <div className="w-full">
+                      <Input
+                        type="text"
+                        label="cnpj ou cpf"
+                        name="cnpj"
+                        value={client_registration_id}
+                        maxLength={18}
+                        minLength={11}
+                        required
+                        className="bg-white"
+                        onChange={handleChange}
+                      />
+                      {client_registration_id.length === 0 ? (
+                        ""
+                      ) : client_registration_id.length === 14 ? (
+                        <Typography
+                          variant="small"
+                          className="text-[10px] text-green-700 mt-2 flex"
+                        >
+                          CPF <BsCheck size={15} className="text-green-700" />
+                        </Typography>
+                      ) : client_registration_id.length === 18 ? (
+                        <Typography
+                          variant="small"
+                          className="text-[10px] text-green-700 mt-2 flex"
+                        >
+                          CNPJ <BsCheck size={15} className="text-green-700" />
+                        </Typography>
+                      ) : (
+                        ""
+                      )}
+                      <Typography
+                        variant="small"
+                        className="text-xs text-red-400 ml-3 mt-1"
+                      >
+                        {isClientAlreadyExist ? "Email já cadastrado!" : ""}
+                      </Typography>
+                    </div>
+                    <div className="w-full">
+                      <Input
+                        label="Phone number"
+                        required
+                        value={clientPhoneNumber}
+                        maxLength={15}
+                        onChange={handleChangePhoneNumber}
+                        onInput={handleResetErrorMessage}
+                      />
+                      <Typography
+                        variant="small"
+                        className="text-xs text-red-400 ml-3 mt-1"
+                      >
+                        {isClientAlreadyExist ? "Email já cadastrado!" : ""}
+                      </Typography>
+                    </div>
+
                     <div className="flex flex-col items-start gap-5 w-full">
-                      <Select
-                        label="Role"
-                        name="role"
-                        value={role}
-                        onChange={(val) => setRole(val)}
-                      >
-                        {data?.flatMap((enterprise) =>
-                          enterprise.roles?.flatMap((role) => (
-                            <Option key={role.id} value={role.name}>
-                              {role.name}
-                            </Option>
-                          ))
-                        )}
-                      </Select>
-                      <Select
-                        label="User permission"
-                        name="userPermission"
-                        value={userPermission}
-                        onChange={(val) => setUserPermission(val)}
-                      >
-                        {permissionsList.map((item, index) => (
-                          <Option key={index} value={item}>
-                            {item}
-                          </Option>
-                        ))}
-                      </Select>
+                      <Textarea
+                        value={clientDescription}
+                        onChange={(e) => {
+                          if (!/^\s+$/.test(e.target.value)) {
+                            setClientDescription(e.target.value);
+                          }
+                        }}
+                        placeholder="Enter description..."
+                      />
                       <div className="flex items-center w-full justify-end">
                         {imageFile && (
                           <Avatar
@@ -374,4 +427,4 @@ const CreateMemberComponent = ({
   );
 };
 
-export default CreateMemberComponent;
+export default CreateClientComponent;

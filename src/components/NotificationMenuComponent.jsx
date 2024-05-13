@@ -47,7 +47,7 @@ export default function NotificationMenuComponent() {
         )}
       </MenuHandler>
       <MenuList className="flex flex-col gap-2">
-        <MenuItem className="flex items-center gap-4 py-2 pl-2 pr-8">
+        <MenuItem className="flex items-center gap-4 py-2 pl-2 pr-8 bg-white">
           <Avatar
             variant="circular"
             alt="tania andrew"
@@ -65,46 +65,6 @@ export default function NotificationMenuComponent() {
             <Typography className="flex items-center gap-1 text-xs font-medium text-blue-gray-500">
               <ClockIcon />
               13 minutes ago
-            </Typography>
-          </div>
-        </MenuItem>
-        <MenuItem className="flex items-center gap-4 py-2 pl-2 pr-8">
-          <Avatar
-            variant="circular"
-            alt="natali craig"
-            size="sm"
-            src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1061&q=80"
-          />
-          <div className="flex flex-col gap-1">
-            <Typography
-              variant="small"
-              color="gray"
-              className="font-semibold text-xs"
-            >
-              Natali replied to your email.
-            </Typography>
-            <Typography className="flex items-center gap-1 text-xs font-medium text-blue-gray-500">
-              <ClockIcon />1 hour ago
-            </Typography>
-          </div>
-        </MenuItem>
-        <MenuItem className="flex items-center gap-4 py-2 pl-2 pr-8">
-          <Avatar
-            variant="circular"
-            alt="paypal"
-            size="sm"
-            src="https://dwglogo.com/wp-content/uploads/2016/08/PayPal_Logo_Icon.png"
-          />
-          <div className="flex flex-col gap-1">
-            <Typography
-              variant="small"
-              color="gray"
-              className="font-semibold text-xs"
-            >
-              You&apos;ve received a payment.
-            </Typography>
-            <Typography className="flex items-center gap-1 text-xs font-medium text-blue-gray-500">
-              <ClockIcon />5 hours ago
             </Typography>
           </div>
         </MenuItem>

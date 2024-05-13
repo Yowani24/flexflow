@@ -6,48 +6,12 @@ import { db } from "../src/firebase";
 
 const api_url = "http://localhost:3001";
 
-const allClients = [
-  {
-    id: 1,
-    name: "Chevron",
-    cnpj: "33.337.122/0001-27",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Chevron_Logo.svg/1836px-Chevron_Logo.svg.png",
-    daedline: 30,
-  },
-  {
-    id: 2,
-    name: "Maersk",
-    cnpj: "30.259.220/0002-86",
-    logo: "https://i.pinimg.com/originals/b0/8c/ca/b08cca4d6dc653cbfe0ae419101a1bee.png",
-    daedline: 24,
-  },
-  {
-    id: 3,
-    name: "Google",
-    cnpj: "06.947.284/0001-04",
-    logo: "https://logopng.com.br/logos/google-37.png",
-    daedline: 28,
-  },
-  {
-    id: 4,
-    name: "TotalEnergies",
-    cnpj: "08.976.181/0001-06",
-    logo: "https://logodownload.org/wp-content/uploads/2015/05/total-sa-logo-energia-8.png",
-    daedline: 27,
-  },
-];
-
 export default function useFetchData() {
   const [allMembers, setAllMembers] = useState([]);
+  const [allClients, setAllClients] = useState([]);
   const [enterprise_referenceId, setEnterprise_referenceId] = useState(
     localStorage.getItem("enterprise_referenceId") || null
   );
-
-  //---------------THEME--------------------
-  const [isDarkTheme, setIsDarkTheme] = useState(() => {
-    return localStorage.getItem("isDarkTheme") === false;
-  });
-  //----------------------------------------
 
   const [user_enterprise_referenceId, setUser_enterprise_referenceId] =
     useState(localStorage.getItem("user_enterprise_referenceId") || null);
@@ -100,7 +64,7 @@ export default function useFetchData() {
   }, [data, setCurrent_user_enterprise_referenceId]);
 
   useEffect(() => {
-    const colRef = collection(
+    const membersColRef = collection(
       db,
       `members_${
         current_user_enterprise_referenceId?.length == 0
@@ -109,7 +73,16 @@ export default function useFetchData() {
       }`
     );
 
-    const unsubscribe = onSnapshot(colRef, (snapshot) => {
+    const clientsColRef = collection(
+      db,
+      `clients_${
+        current_user_enterprise_referenceId?.length == 0
+          ? enterprise_referenceId
+          : current_user_enterprise_referenceId
+      }`
+    );
+
+    const unsubscribeMembers = onSnapshot(membersColRef, (snapshot) => {
       let dados = [];
       snapshot.docs.forEach((doc) => {
         dados.push({ ...doc.data(), id: doc.id });
@@ -117,8 +90,17 @@ export default function useFetchData() {
       setAllMembers(dados);
     });
 
+    const unsubscribeClients = onSnapshot(clientsColRef, (snapshot) => {
+      let dados = [];
+      snapshot.docs.forEach((doc) => {
+        dados.push({ ...doc.data(), id: doc.id });
+      });
+      setAllClients(dados);
+    });
+
     return () => {
-      unsubscribe();
+      unsubscribeMembers();
+      unsubscribeClients();
     };
   }, [current_user_enterprise_referenceId, enterprise_referenceId]);
 
@@ -396,8 +378,8 @@ export default function useFetchData() {
     isLoading,
     allClients,
     allMembers,
-    isDarkTheme,
-    setIsDarkTheme,
+    // isdark,
+    // setIsdark,
     handleCreateRole,
     handleDeleteRole,
     handleDeleteTask,

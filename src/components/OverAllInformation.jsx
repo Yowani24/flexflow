@@ -1,5 +1,5 @@
 import React from "react";
-import { CardBody } from "@material-tailwind/react";
+import { CardBody, Typography } from "@material-tailwind/react";
 import { TbProgress } from "react-icons/tb";
 import { MdOutlineMotionPhotosPaused } from "react-icons/md";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
@@ -9,9 +9,10 @@ import useFetchData from "../../hook/useFetchData";
 import { FaUsers } from "react-icons/fa6";
 import { useLang } from "../../hook/LangContext";
 import CircularProgressComponent from "./CircularProgressComponent";
+import { MdOutlinePersonOff } from "react-icons/md";
 
 export default function OverAllInformation({ projectData, projectName }) {
-  const { allClients } = useFetchData();
+  const { data, allClients, allMembers } = useFetchData();
   const { translations } = useLang();
 
   const inProgressTasks = projectData.map(
@@ -58,6 +59,16 @@ export default function OverAllInformation({ projectData, projectName }) {
     },
   ];
 
+  const currentProjectUsers = projectData?.flatMap((project) =>
+    project.tasks?.flatMap((task) => task.responsibles)
+  );
+  const uniqueResponsibles = [...new Set(currentProjectUsers)];
+
+  // Find all matching users from the list of all members based on the unique responsibles
+  const projectParticipants = allMembers?.filter((member) =>
+    uniqueResponsibles.includes(member?.email)
+  );
+
   return (
     <CardBody className="flex bg-white flex-col items-center justify-between">
       <div className="flex flex-col md:flex-row items-center justify-between w-full">
@@ -65,6 +76,35 @@ export default function OverAllInformation({ projectData, projectName }) {
           <p>{translations.participants}</p>
 
           <div className="border-2 border-cyan-200 w-fit h-12 rounded-full flex items-center justify-between gap-5 px-4">
+            {projectParticipants?.length === 0 ? (
+              <MdOutlinePersonOff size={20} className="text-orange-500" />
+            ) : (
+              <div className="avatar-group -space-x-4 rtl:space-x-reverse transition-all">
+                {projectParticipants?.slice(0, 3)?.map((user) => (
+                  <div
+                    key={user?.email}
+                    className="avatar hover:z-50 shadow-sm opacity-80 hover:shadow-md hover:opacity-100 border-[2px] transition-all"
+                  >
+                    <div className="w-8">
+                      <img
+                        src={user?.photo_url}
+                        alt={`Avatar of ${user?.email}`}
+                      />
+                    </div>
+                  </div>
+                ))}
+                {projectParticipants?.length > 3 && (
+                  <div className="avatar placeholder w-7 h-7 self-center border-[2px] shadow-sm">
+                    <div className=" bg-neutral text-neutral-content">
+                      <span className="text-[10px]">
+                        + {projectParticipants?.length - 3}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
             <FaUsers size={20} />
           </div>
         </div>
@@ -143,7 +183,10 @@ export default function OverAllInformation({ projectData, projectName }) {
                 <>
                   {item.client_name
                     ? allClients
-                        .filter((client) => client.cnpj === item.client_name)
+                        ?.filter(
+                          (client) =>
+                            client.client_registration_id === item.client_name
+                        )
                         .map((currentClient) => (
                           <div
                             key={currentClient.id}
@@ -151,11 +194,11 @@ export default function OverAllInformation({ projectData, projectName }) {
                           >
                             <img
                               className="w-5 object-cover object-center"
-                              src={currentClient.logo}
-                              alt={currentClient.name}
+                              src={currentClient?.photo_url}
+                              alt={currentClient?.name}
                             />
                             <span className="text-xl">
-                              {currentClient.name}
+                              {currentClient?.name}
                             </span>
                           </div>
                         ))

@@ -5,6 +5,7 @@ import { PiDotsNineBold } from "react-icons/pi";
 import useFetchData from "../../hook/useFetchData";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { FaUserTie } from "react-icons/fa";
 
 export default function AddRoles() {
   const { data, handleCreateRole, handleDeleteRole } = useFetchData();
@@ -72,9 +73,17 @@ export default function AddRoles() {
       </div>
     );
   };
+
+  const alreadyExists = data?.flatMap((enterprise) =>
+    enterprise.roles.map((item) => item?.name.toLowerCase())
+  );
   return (
     <div className="mt-10">
-      <Typography className="mb-2 font-semibold">Add role</Typography>
+      <div className="flex items-start gap-1 mb-2">
+        <FaUserTie size={18} />
+        <Typography className="font-semibold">Add role</Typography>
+      </div>
+
       <form
         onSubmit={Formik.handleSubmit}
         className="flex items-center gap-4 w-72"
@@ -93,7 +102,12 @@ export default function AddRoles() {
         />
         <Button
           type="submit"
-          disabled={Formik.values.name.length === 0}
+          disabled={
+            Formik.values.name.length === 0 ||
+            JSON.stringify(alreadyExists).includes(
+              Formik.values.name.toLowerCase().trimEnd()
+            )
+          }
           variant="outlined"
           className="text-lg p-0 min-w-8 min-h-8 border-[#11BEF4] font-normal"
         >

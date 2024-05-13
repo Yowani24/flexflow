@@ -41,7 +41,7 @@ const CreateProjectComponent = ({
     initialValues: {
       name: "",
       client_name: "",
-      user_created: enterprise_referenceId.email,
+      user_created: enterprise_referenceId?.email,
       enterpriseId: parseInt(enterpriseId?.join("")),
     },
     validationSchema: Yup.object({
@@ -74,7 +74,7 @@ const CreateProjectComponent = ({
       <div className="" onClick={openDialog}>
         {data?.some(
           (enterpriseData) =>
-            enterpriseData.email !== enterprise_referenceId.email
+            enterpriseData?.email !== enterprise_referenceId?.email
         ) ? (
           ""
         ) : (
@@ -172,7 +172,7 @@ const CreateProjectComponent = ({
                 value={Formik.values.client_name}
               >
                 {allClients.map((item) => (
-                  <Option key={item.id} value={item.cnpj}>
+                  <Option key={item.id} value={item.client_registration_id}>
                     {item.name}
                   </Option>
                 ))}

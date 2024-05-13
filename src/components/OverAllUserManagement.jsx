@@ -18,7 +18,6 @@ import MembersTable from "./MembersTable";
 import ProjectsTable from "./ProjectsTable";
 import { useLang } from "../../hook/LangContext";
 import ClientsTable from "./ClientsTable";
-import AddRoles from "./AddRoles";
 
 export default function OverAllUserManagement() {
   const { data, isLoading, allMembers, allClients } = useFetchData();
@@ -50,16 +49,6 @@ export default function OverAllUserManagement() {
     },
   ];
 
-  // async function handleSubmit(e) {
-  //   e.preventDefault();
-  //   // set loading...
-
-  //   await fetch("/api/email", {
-  //     method: "POST",
-  //     body: JSON.stringify(),
-  //   });
-  // }
-
   return (
     <div className="px-2 md:pr-10 mb-16 z-50">
       <Tabs value="members">
@@ -80,9 +69,6 @@ export default function OverAllUserManagement() {
           {tabsData.map(({ value, component }) => (
             <TabPanel key={value} value={value} className="">
               {component}
-              {/* <div>
-                <AddRoles />
-              </div> */}
             </TabPanel>
           ))}
         </TabsBody>

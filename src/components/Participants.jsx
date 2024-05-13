@@ -86,8 +86,8 @@ export default function Participants({ projectData }) {
                       variant="h6"
                       className="text-gray-800 normal-case first-letter:uppercase"
                     >
-                      {task.title.length > 32
-                        ? task.title.substring(0, 32) + "..."
+                      {task.title.length > 29
+                        ? task.title.substring(0, 29) + "..."
                         : task.title.toLowerCase()}
                     </Typography>
                   </div>

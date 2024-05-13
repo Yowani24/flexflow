@@ -57,7 +57,7 @@ export default function MembersTable() {
               <input
                 placeholder={translations.find_a_member}
                 onChange={(e) => setTargetName(e.target.value)}
-                className="rounded-full w-full md:w-72 border-none outline-none pl-7 text-sm h-8 shadow-sm"
+                className="rounded-full bg-white w-full md:w-72 border-none outline-none pl-7 text-sm h-8 shadow-sm"
               />
             </div>
           </div>
@@ -94,7 +94,7 @@ export default function MembersTable() {
                       buttonProps={
                         <Card
                           className={`w-[140px] min-h-40 max-h-40 bg-white p-2 border-t-2 border-gray-50 ${
-                            user.email === responsible.email ||
+                            user?.email === responsible?.email ||
                             data?.some(
                               (enterprise) =>
                                 enterprise?.email === user?.email &&
@@ -139,9 +139,9 @@ export default function MembersTable() {
           </CardBody>
         )}
       </Card>
-      {data?.some((enterpriseData) => enterpriseData.email === user?.email) && (
-        <AddRoles />
-      )}
+      {data?.some(
+        (enterpriseData) => enterpriseData?.email === user?.email
+      ) && <AddRoles />}
     </div>
   );
 }

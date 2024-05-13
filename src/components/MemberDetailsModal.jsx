@@ -14,16 +14,15 @@ import {
 import { FaUserTie } from "react-icons/fa6";
 import { MdDeleteForever, MdEmail, MdMotionPhotosPause } from "react-icons/md";
 import { MdEngineering } from "react-icons/md";
-import { FaTasks } from "react-icons/fa";
 import { GoTasklist } from "react-icons/go";
 import { SiOnlyoffice } from "react-icons/si";
 import useFetchData from "../../hook/useFetchData";
 import { LiaHourglassStartSolid } from "react-icons/lia";
 import { IoMdDoneAll } from "react-icons/io";
 import { CiNoWaitingSign } from "react-icons/ci";
-import { doc, deleteDoc, collection } from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import { deleteUser, getAuth } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 const MemberDetailsModal = ({
   enterpriseId,
@@ -90,8 +89,6 @@ const MemberDetailsModal = ({
           "enterprise_credential information not found in local storage."
         );
       }
-
-      // Delete the member document
       const userRef = doc(
         db,
         `members_${enterprise_credential.uid}`,
@@ -99,16 +96,6 @@ const MemberDetailsModal = ({
       );
       await deleteDoc(userRef);
       console.log("User collection deleted!");
-
-      // Delete the corresponding user from Firebase Authentication
-      // const auth = getAuth();
-      // const userToDelete = (auth, memberData?.user_credential);
-      // await deleteUser(userToDelete);
-      // deleteUserAccount();
-
-      // responsible: [
-      //   ...enterpriseResponsibles.filter((email) => email !== user.email),
-      // ],
       handleUpdateEnterpriseMembers.mutate({
         id: parseInt(enterpriseId.join("")),
         responsibles: [
@@ -125,41 +112,16 @@ const MemberDetailsModal = ({
     }
   };
 
-  // const deleteMember = (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const enterprise_referenceId = JSON.parse(
-  //       localStorage.getItem("user")
-  //     ).uid;
-  //     const userRef = doc(
-  //       db,
-  //       `members_${enterprise_referenceId}`,
-  //       memberData.id
-  //     );
-
-  //     deleteDoc(userRef).then(() => {
-  //       setShowDialog(false);
-  //     });
-
-  //     deleteUser(JSON.parse(memberData.user_uid))
-  //       .then(() => {
-  //       })
-  //       .catch((error) => {
-  //       });
-  //   } catch (error) {
-  //   }
-  // };
-
   return (
     <>
       <div
         className="rounded-full"
         onClick={() =>
-          memberData.email === user.email ||
-          data.some(
+          memberData.email === user?.email ||
+          data?.some(
             (enterprise) =>
-              enterprise.email === user.email &&
-              enterprise.responsibles.includes(memberData.email)
+              enterprise.email === user?.email &&
+              enterprise.responsibles.includes(memberData?.email)
           )
             ? setShowDialog(true)
             : {}
@@ -193,10 +155,10 @@ const MemberDetailsModal = ({
                   <Typography>Member details</Typography>
                 </p>
                 <div className="flex items-center gap-2">
-                  {data.map(
+                  {data?.map(
                     (enterprise) =>
-                      enterprise.email === user.email && (
-                        <Menu key={enterprise.id}>
+                      enterprise?.email === user?.email && (
+                        <Menu key={enterprise?.id}>
                           <MenuHandler>
                             <div className="bg-red-200 hover:bg-red-500 group transition-all min-w-8 h-8 flex items-center justify-center rounded-full cursor-pointer">
                               <MdDeleteForever
@@ -294,7 +256,7 @@ const MemberDetailsModal = ({
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <SiOnlyoffice />{" "}
+                      <SiOnlyoffice className="text-yellow-800" />{" "}
                       <Typography
                         variant="small"
                         className="text-light-blue-800"
@@ -311,7 +273,7 @@ const MemberDetailsModal = ({
                       </Typography>
                     </div>
                     <div className="flex items-center gap-2">
-                      <GoTasklist size={22} />{" "}
+                      <GoTasklist className="text-green-600" size={22} />{" "}
                       <Typography
                         variant="small"
                         className="text-light-blue-800"
@@ -352,7 +314,7 @@ const MemberDetailsModal = ({
                             variant="h6"
                             className="text-sm py-1 flex items-start gap-2"
                           >
-                            <SiOnlyoffice className="mt-[2px]" />
+                            <SiOnlyoffice className="mt-[2px] text-yellow-800" />
                             {item.name}
                           </Typography>
                         </div>
@@ -367,7 +329,10 @@ const MemberDetailsModal = ({
                                   variant="paragraph"
                                   className="flex items-center gap-2 px-2 text-sm font-semibold rounded-md bg-gray-200"
                                 >
-                                  <GoTasklist size={22} />
+                                  <GoTasklist
+                                    size={22}
+                                    className="text-green-600"
+                                  />
                                   {taskData.title}
                                 </Typography>
                               </div>
@@ -377,7 +342,7 @@ const MemberDetailsModal = ({
                                   (subtask) =>
                                     subtask.user_created === memberData.email
                                 ).length === 0 ? (
-                                  <span className="text-xs text-orange-600">
+                                  <span className="text-xs text-gray-500">
                                     Sem subtarefas
                                   </span>
                                 ) : (
