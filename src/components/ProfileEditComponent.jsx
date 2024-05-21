@@ -7,6 +7,13 @@ import useFetchData from "../../hook/useFetchData";
 export default function ProfileEditComponent({ userData }) {
   const { data, allMembers } = useFetchData();
   const { translations } = useLang();
+  const userString = localStorage.getItem("user");
+  const user = userString ? JSON.parse(userString) : null;
+
+  const hasPermissionToEdit = data?.some(
+    (enterpriseData) => enterpriseData?.email === user?.email
+  );
+
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
     showButtonProps(inputValue !== userData?.name);
@@ -40,6 +47,7 @@ export default function ProfileEditComponent({ userData }) {
         className=""
         value={userData?.displayName}
         onChange={handleInputChange}
+        disabled
       />
       <Typography
         className="mb-2 text-start mt-4 text-gray-800"
@@ -62,43 +70,47 @@ export default function ProfileEditComponent({ userData }) {
       </Typography>
       <Input label={translations.role} size="md" value={userRole} disabled />
 
-      <Typography className="mb-2 text-start mt-4" variant="small">
-        {translations.change_password}
-      </Typography>
-      <div className="bg-gray-100 rounded-md flex flex-col gap-2 w-full p-5 z-50">
-        <div>
-          <Typography
-            className="mb-2 text-start mt-4 text-gray-800"
-            variant="small"
-          >
-            {translations.current_password}
+      {hasPermissionToEdit && (
+        <>
+          <Typography className="mb-2 text-start mt-4" variant="small">
+            {translations.change_password}
           </Typography>
-          <input
-            placeholder={translations.current_password}
-            type="password"
-            className="w-full h-8 bg-white border-light-blue-200 outline-light-blue-200 rounded-md text-xs pl-2"
-          />
-        </div>
-        <div>
-          <Typography
-            className="mb-2 text-start mt-4 text-gray-800"
-            variant="small"
-          >
-            {translations.new_password}
-          </Typography>
-          <input
-            placeholder={translations.new_password}
-            type="password"
-            className="w-full h-8 bg-white border-light-blue-200 outline-light-blue-200 rounded-md text-xs pl-2"
-          />
-        </div>
-        <Button
-          className="py-2 border-none outline-none normal-case tracking-wide mt-6"
-          color="green"
-        >
-          {translations.comfirm}
-        </Button>
-      </div>
+          <div className="bg-gray-100 rounded-md flex flex-col gap-2 w-full p-5 z-50">
+            <div>
+              <Typography
+                className="mb-2 text-start mt-4 text-gray-800"
+                variant="small"
+              >
+                {translations.current_password}
+              </Typography>
+              <input
+                placeholder={translations.current_password}
+                type="password"
+                className="w-full h-8 bg-white border-light-blue-200 outline-light-blue-200 rounded-md text-xs pl-2"
+              />
+            </div>
+            <div>
+              <Typography
+                className="mb-2 text-start mt-4 text-gray-800"
+                variant="small"
+              >
+                {translations.new_password}
+              </Typography>
+              <input
+                placeholder={translations.new_password}
+                type="password"
+                className="w-full h-8 bg-white border-light-blue-200 outline-light-blue-200 rounded-md text-xs pl-2"
+              />
+            </div>
+            <Button
+              className="py-2 border-none outline-none normal-case tracking-wide mt-6"
+              color="green"
+            >
+              {translations.comfirm}
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -97,7 +97,7 @@ export default function ProjectsTable({ data }) {
             />
 
             {data?.some(
-              (enterpriseData) => enterpriseData.email !== user.email
+              (enterpriseData) => enterpriseData?.email !== user?.email
             ) ? (
               <div className="text-gray-500 text-sm flex flex-col  items-center gap-2">
                 <img
@@ -139,13 +139,13 @@ export default function ProjectsTable({ data }) {
                   {data?.flatMap((item) =>
                     item.projects
                       .filter((targetItem) =>
-                        targetItem.name
+                        targetItem?.name
                           .toLowerCase()
                           .startsWith(targetName.toLowerCase())
                       )
                       .map((project) => (
                         <tr
-                          key={project.id}
+                          key={project?.id}
                           className="boxShadow hover:bg-blue-gray-50 transition-all w-full bg-white flex items-center justify-between mt-2 rounded-lg h-12 overflow-hidden"
                         >
                           <td className="py-2 border-none w-[260px] pl-4">
@@ -155,7 +155,7 @@ export default function ProjectsTable({ data }) {
                                 color="blue-gray"
                                 className="font-normal"
                               >
-                                {project.name}
+                                {project?.name}
                               </Typography>
                             </div>
                           </td>

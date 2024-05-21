@@ -6,8 +6,8 @@ import { MdDeleteForever, MdMotionPhotosPause, MdRemove } from "react-icons/md";
 import { IoMdDoneAll } from "react-icons/io";
 import { HiStatusOnline, HiOutlineStatusOffline } from "react-icons/hi";
 import { BiSolidLock } from "react-icons/bi";
-import { FiEdit3 } from "react-icons/fi";
 import { FaCircleUser } from "react-icons/fa6";
+
 import {
   TbFlag3Filled,
   TbCalendarTime,
@@ -35,13 +35,12 @@ import { MdEditCalendar } from "react-icons/md";
 import { FaLink } from "react-icons/fa";
 import PriorityComponent from "./PriorityComponent";
 import useFetchData from "../../hook/useFetchData";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 import { useLang } from "../../hook/LangContext";
 import RemoveParticipantComponent from "./RemoveParticipantComponent";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CommentPopover from "./CommentPopover";
+import MicrophoneAudioToText from "./MicrophoneAudioToText";
 
 const TaskDetails = ({
   taskId,
@@ -63,7 +62,6 @@ const TaskDetails = ({
     data,
     allMembers,
     handleDeleteTask,
-    handleCreateSubtask,
     handleDeleteSubtask,
     handleUpdateTaskStatus,
     handleUpdateSubtaskStart,
@@ -72,7 +70,6 @@ const TaskDetails = ({
     handleUpdateTaskProgress,
     handleUpdateProjectProgress,
     handleUpdateTaskPriority,
-    handleUpdateTaskResponsibles,
     handleUpdateTaskDeadline,
   } = useFetchData();
   const { translations } = useLang();
@@ -150,26 +147,6 @@ const TaskDetails = ({
       console.error(error.message);
     }
   };
-
-  const Formik = useFormik({
-    initialValues: {
-      title: "",
-      user_created: user.email,
-      taskId: taskId,
-      projectId: projectId,
-    },
-    validationSchema: Yup.object({
-      title: Yup.string().required("Required"),
-    }),
-    onSubmit: async (values, { resetForm }) => {
-      try {
-        handleCreateSubtask.mutate(values);
-        resetForm();
-      } catch (error) {
-        console.error(error.message);
-      }
-    },
-  });
 
   useEffect(() => {
     if (subtasks && subtasks.length > 0) {
@@ -516,30 +493,12 @@ const TaskDetails = ({
                   <span className="text-gray-600">
                     {translations.add_subactivities}
                   </span>
-                  <form
-                    onSubmit={Formik.handleSubmit}
-                    className="w-full flex items-center gap-4 mt-2 flex-col md:flex-row flex-wrap"
-                  >
-                    <input
-                      type="text"
-                      placeholder={translations.fragment_your_activity}
-                      name="title"
-                      className="w-full md:w-[250px] bg-white px-2 h-9 border-2 rounded-md border-[#11BEF4]"
-                      onChange={(e) => {
-                        if (!/^\s+$/.test(e.target.value)) {
-                          Formik.handleChange(e);
-                        }
-                      }}
-                      value={Formik.values.title}
-                    />
-                    <Button
-                      type="submit"
-                      disabled={Formik.values.title.length === 0}
-                      className="w-full md:w-[100px] h-9 px-2 py-0 bg-[#11BEF4] text-xs capitalize transition-all"
-                    >
-                      {translations.add}
-                    </Button>
-                  </form>
+
+                  <MicrophoneAudioToText
+                    projectId={projectId}
+                    user={user}
+                    taskId={taskId}
+                  />
                 </div>
               </div>
               <Card className="scrollBarStyles w-full mb-14 flex flex-row gap-2 p-2 flex-wrap shadow-none overflow-auto transition-all">
@@ -571,12 +530,14 @@ const TaskDetails = ({
                       .map((item) => (
                         <div
                           key={item.id}
-                          className={`flex flex-col justify-between shadow-${
-                            disabledProps || item.user_created !== user.email
-                              ? "none"
+                          className={`flex flex-col justify-between 
+                          shadow-${
+                            disabledProps || item?.user_created !== user?.email
+                              ? "md"
                               : "md"
-                          } bg-[${
-                            disabledProps || item.user_created !== user.email
+                          } 
+                          bg-[${
+                            disabledProps || item?.user_created !== user?.email
                               ? "#f0f0f0"
                               : "#ffffff"
                           }] h-fit ${
@@ -683,20 +644,24 @@ const TaskDetails = ({
                           </div>
                           {allMembers
                             .filter((member) =>
-                              member.email.includes(item.user_created)
+                              member?.email.includes(item?.user_created)
                             )
                             .map((user) => (
-                              <div className="flex items-center gap-1 ml-2">
-                                <Avatar
-                                  src={user.photo_url}
-                                  alt="avatar"
-                                  size="xs"
-                                  className="w-5 h-5"
-                                />
-                                <Typography className="text-[10px]">
-                                  {user.name}
-                                </Typography>
-                              </div>
+                              <>
+                                {hasPermissionToEdit && (
+                                  <div className="flex items-center gap-1 ml-2">
+                                    <Avatar
+                                      src={user?.photo_url}
+                                      alt="avatar"
+                                      size="xs"
+                                      className="w-5 h-5"
+                                    />
+                                    <Typography className="text-[10px]">
+                                      {user?.name}
+                                    </Typography>
+                                  </div>
+                                )}
+                              </>
                             ))}
                         </div>
                       ))}

@@ -10,6 +10,14 @@ import { FaUserTie } from "react-icons/fa";
 export default function AddRoles() {
   const { data, handleCreateRole, handleDeleteRole } = useFetchData();
 
+  const speech = new SpeechSynthesisUtterance();
+  speech.text = "Olá!, Seja bem-vindo ao Samba workflow";
+  speech.lang = "en-US";
+
+  const handleSpeech = () => {
+    window.speechSynthesis.speak(speech);
+  };
+
   const Formik = useFormik({
     initialValues: {
       name: "",
@@ -79,6 +87,7 @@ export default function AddRoles() {
   );
   return (
     <div className="mt-10">
+      {/* <button onClick={handleSpeech}>Speak</button> */}
       <div className="flex items-start gap-1 mb-2">
         <FaUserTie size={18} />
         <Typography className="font-semibold">Add role</Typography>

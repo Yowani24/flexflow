@@ -163,7 +163,7 @@ const CreateActivityModal = ({ projectId }) => {
             <div className="fixed inset-0 bg-black opacity-50 w-full"></div>
             <form
               onSubmit={handleSubmit}
-              className="relative flex flex-col bg-white p-5 rounded-lg z-10 w-[90%] md:w-[60%] h-[80%]"
+              className="relative flex flex-col bg-white p-5 rounded-lg z-10 w-[90%] md:w-[30%] h-[80%]"
             >
               <div className="flex items-start justify-between border-b-2 pb-4 border-gray-20 w-full">
                 <p className="text-gray-600 font-medium text-xl">

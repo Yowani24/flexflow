@@ -4,12 +4,12 @@ import {
   MenuHandler,
   MenuList,
   MenuItem,
-  IconButton,
   Avatar,
   Typography,
   Badge,
 } from "@material-tailwind/react";
 import { GoBellFill } from "react-icons/go";
+import useFetchData from "../../hook/useFetchData";
 
 function ClockIcon() {
   return (
@@ -31,6 +31,8 @@ function ClockIcon() {
 }
 
 export default function NotificationMenuComponent() {
+  const { notificationEvents } = useFetchData();
+
   return (
     <Menu>
       <MenuHandler>
@@ -47,27 +49,32 @@ export default function NotificationMenuComponent() {
         )}
       </MenuHandler>
       <MenuList className="flex flex-col gap-2">
-        <MenuItem className="flex items-center gap-4 py-2 pl-2 pr-8 bg-white">
-          <Avatar
-            variant="circular"
-            alt="tania andrew"
-            size="sm"
-            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-          />
-          <div className="flex flex-col gap-1">
-            <Typography
-              variant="small"
-              color="gray"
-              className="font-semibold text-xs"
-            >
-              Tania send you a message
-            </Typography>
-            <Typography className="flex items-center gap-1 text-xs font-medium text-blue-gray-500">
-              <ClockIcon />
-              13 minutes ago
-            </Typography>
-          </div>
-        </MenuItem>
+        {/* {notificationEvents.map((event, index) => (
+          <MenuItem
+            key={index}
+            className="flex items-center gap-4 py-2 pl-2 pr-8 bg-white"
+          >
+            <Avatar
+              variant="circular"
+              alt="tania andrew"
+              size="sm"
+              src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+            />
+            <div className="flex flex-col gap-1">
+              <Typography
+                variant="small"
+                color="gray"
+                className="font-semibold text-xs"
+              >
+                {event.message}
+              </Typography>
+              <Typography className="flex items-center gap-1 text-xs font-medium text-blue-gray-500">
+                <ClockIcon />
+                13 minutes ago
+              </Typography>
+            </div>
+          </MenuItem>
+        ))} */}
       </MenuList>
     </Menu>
   );

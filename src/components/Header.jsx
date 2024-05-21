@@ -100,7 +100,7 @@ const LanguageChangeComponent = ({
           <div className="bg-gray-600 w-full h-full rounded-l-md text-white flex items-center justify-center">
             <IoLanguageSharp size={18} />
           </div>
-          <div className="bg-white w-full h-full rounded-r-md text-gray-600 flex items-center justify-center text-sm lowercase">
+          <div className="bg-white w-full h-full rounded-r-md text-gray-600 flex items-center justify-center text-xs uppercase">
             {language}
           </div>
         </Button>

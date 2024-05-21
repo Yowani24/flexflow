@@ -13,6 +13,8 @@ export default function useFetchData() {
     localStorage.getItem("enterprise_referenceId") || null
   );
 
+  const [notificationEvents, setNotificationEvents] = useState([]);
+
   const [user_enterprise_referenceId, setUser_enterprise_referenceId] =
     useState(localStorage.getItem("user_enterprise_referenceId") || null);
 
@@ -378,12 +380,11 @@ export default function useFetchData() {
     isLoading,
     allClients,
     allMembers,
-    // isdark,
-    // setIsdark,
     handleCreateRole,
     handleDeleteRole,
     handleDeleteTask,
     handleCreateTask,
+    notificationEvents,
     handleCreateSubtask,
     handleDeleteSubtask,
     handleCreateProject,

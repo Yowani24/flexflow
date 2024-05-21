@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { useSpring, animated } from "@react-spring/web";
 import {
@@ -23,6 +23,7 @@ import { CiNoWaitingSign } from "react-icons/ci";
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { getAuth } from "firebase/auth";
+import { format } from "date-fns";
 
 const MemberDetailsModal = ({
   enterpriseId,
@@ -34,6 +35,56 @@ const MemberDetailsModal = ({
   const [showDialog, setShowDialog] = useState(false);
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
+
+  const DeadlineCounter = ({ deadline }) => {
+    const [deadlineMessage, setDeadlineMessage] = useState("");
+    useEffect(() => {
+      const calculateTimeRemaining = () => {
+        const now = new Date();
+        const deadlineDate = new Date(deadline);
+        const timeDifference = deadlineDate - now;
+
+        if (timeDifference <= 0) {
+          setDeadlineMessage("It's over");
+          return;
+        }
+
+        const oneDay = 24 * 60 * 60 * 1000;
+        const oneMonth = 30 * oneDay;
+
+        const monthsRemaining = Math.floor(timeDifference / oneMonth);
+        const daysRemaining = Math.floor(timeDifference / oneDay);
+
+        if (monthsRemaining > 0) {
+          setDeadlineMessage(
+            `${monthsRemaining} month${
+              monthsRemaining <= 1 ? "" : "s"
+            } left until the final deadline.`
+          );
+        } else {
+          setDeadlineMessage(
+            `${daysRemaining} day${
+              daysRemaining <= 1 ? "" : "s"
+            } left until the final deadline.`
+          );
+        }
+      };
+
+      calculateTimeRemaining();
+
+      const interval = setInterval(calculateTimeRemaining, 60000);
+
+      return () => clearInterval(interval);
+    }, [deadline]);
+
+    return (
+      <div
+        className={`text-${deadlineMessage === "It's over" ? "red-500" : ""}`}
+      >
+        {deadlineMessage}
+      </div>
+    );
+  };
 
   const { opacity, transform } = useSpring({
     opacity: showDialog ? 1 : 0,
@@ -47,7 +98,7 @@ const MemberDetailsModal = ({
 
   let totalSubTasks = 0;
   let completedSubTasks = 0;
-  data.flatMap((enterprise) =>
+  data?.flatMap((enterprise) =>
     enterprise.projects
       .flatMap((project) =>
         project.tasks.filter((task) =>
@@ -262,11 +313,11 @@ const MemberDetailsModal = ({
                         className="text-light-blue-800"
                       >
                         Projects:{" "}
-                        {data.flatMap(
+                        {data?.flatMap(
                           (enterprise) =>
                             enterprise.projects.filter((project) =>
                               project.tasks.some((task) =>
-                                task.responsibles.includes(memberData.email)
+                                task.responsibles.includes(memberData?.email)
                               )
                             ).length
                         )}
@@ -279,7 +330,7 @@ const MemberDetailsModal = ({
                         className="text-light-blue-800"
                       >
                         Tasks:{" "}
-                        {data.flatMap(
+                        {data?.flatMap(
                           (enterprise) =>
                             enterprise.projects
                               .flatMap((project) =>
@@ -299,7 +350,7 @@ const MemberDetailsModal = ({
                 </div>
               </div>
               <div className="participants_scrollBarStyles overflow-y-scroll px-4">
-                {data.flatMap((enterprise) =>
+                {data?.flatMap((enterprise) =>
                   enterprise.projects
                     .filter((project) =>
                       project.tasks.some((task) =>
@@ -335,9 +386,15 @@ const MemberDetailsModal = ({
                                   />
                                   {taskData.title}
                                 </Typography>
+                                <span className="font-medium flex items-center gap-2 text-xs ml-5 text-gray-500">
+                                  <DeadlineCounter
+                                    deadline={taskData?.deadline}
+                                  />
+                                  <b>{format(taskData?.deadline, "MMM dd")}</b>
+                                </span>
                               </div>
 
-                              <div className="flex items-center gap-4 mt-2">
+                              <div className="flex flex-wrap items-center gap-4 mt-2">
                                 {taskData.sub_tasks.filter(
                                   (subtask) =>
                                     subtask.user_created === memberData.email
@@ -360,7 +417,7 @@ const MemberDetailsModal = ({
                                     .map((subtask) => (
                                       <Card
                                         htmlFor="item-1"
-                                        className="flex flex-row items-center gap-2 p-2"
+                                        className="flex flex-row items-start justify-between max-w-56 gap-2 p-2"
                                       >
                                         <Typography className="text-xs">
                                           {subtask.title}
