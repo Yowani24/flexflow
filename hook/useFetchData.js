@@ -120,6 +120,18 @@ export default function useFetchData() {
     },
   });
 
+  const handleDeleteEnterprise = useMutation({
+    mutationFn: async (enterprise_uid) => {
+      return await axios.delete(`${api_url}/enterprise/${enterprise_uid}`);
+    },
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   const handleUpdateEnterpriseMembers = useMutation({
     mutationFn: async ({ id, responsibles }) => {
       return await axios.patch(`${api_url}/enterprise/${id}`, {
@@ -389,6 +401,7 @@ export default function useFetchData() {
     handleDeleteSubtask,
     handleCreateProject,
     handleDeleteProject,
+    handleDeleteEnterprise,
     handleCreateEnterprise,
     handleUpdateTaskStatus,
     handleUpdateTaskDeadline,

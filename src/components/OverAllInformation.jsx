@@ -83,7 +83,7 @@ export default function OverAllInformation({ projectData, projectName }) {
                 {projectParticipants?.slice(0, 3)?.map((user) => (
                   <div
                     key={user?.email}
-                    className="avatar hover:z-50 shadow-sm opacity-80 hover:shadow-md hover:opacity-100 border-[2px] transition-all"
+                    className="avatar hover:z-50 shadow-sm opacity-95 hover:shadow-md hover:opacity-100 border-[2px] transition-all"
                   >
                     <div className="w-8">
                       <img

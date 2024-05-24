@@ -4,6 +4,8 @@
   "select_project": "Select project",
   "project": "Project",
   "projects": "Projects",
+  "task": "Task",
+  "tasks": "Tasks",
   "overall_project_information": "Overall Project Information",
   "participants": "Participants",
   "activities": "Activities",
@@ -98,5 +100,15 @@
   "change_password": "Change password",
   "current_password": "Current password",
   "new_password": "New password",
-  "comfirm": "Comfirm"
+  "comfirm": "Comfirm",
+  "today_is_the_deadline": "Today is the deadline",
+  "member_details": "Member Details",
+  "total_subtasks_completed": "Total subtasks completed",
+  "days_remaining_until_the_deadline": "days remaining until the deadline",
+  "day_remaining_until_the_deadline": "day remaining until the deadline",
+  "months_remaining_until_the_deadline": "months remaining until the deadline",
+  "month_remaining_until_the_deadline": "month remaining until the deadline",
+  "do_you_wish_to_continue": "Do you wish to continue",
+  "deadline_is_over": "It's over",
+  "deadline_is_getting_over": "Tomorrow is the deadline"
 }

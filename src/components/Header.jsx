@@ -15,8 +15,28 @@ import { IoLanguageSharp } from "react-icons/io5";
 import useFetchData from "../../hook/useFetchData";
 import { RxGear } from "react-icons/rx";
 import NotificationMenuComponent from "./NotificationMenuComponent";
+import { useAuthContext } from "../../auth/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { deleteUser, getAuth } from "firebase/auth";
 
-const DeleteAccountDialog = ({ enterpriseId }) => {
+const auth = getAuth();
+const user = auth.currentUser;
+
+const DeleteAccountDialog = ({ enterprise_uid, enterpriseId }) => {
+  const { handleDeleteEnterprise } = useFetchData();
+  const { handleLogout } = useAuthContext();
+  const navigate = useNavigate();
+
+  const handleDeleteEnterpriseFn = () => {
+    try {
+      handleDeleteEnterprise.mutate(enterpriseId);
+      deleteUser(user);
+      handleLogout();
+      navigate("/login");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <div className="">
       <Typography
@@ -41,7 +61,7 @@ const DeleteAccountDialog = ({ enterpriseId }) => {
             Insira o ID da empresa para confirmar a exclusão dela:{" "}
           </p>
           <span className="font-semibold text-gray-600 bg-gray-100 p-1 rounded-sm">
-            {enterpriseId}
+            {enterprise_uid}
           </span>
           <div className="w-72">
             <input
@@ -55,8 +75,11 @@ const DeleteAccountDialog = ({ enterpriseId }) => {
               <button className="border-none outline-none text-gray-500 bg-gray-100">
                 Cancelar
               </button>
-              <button className="border-none outline-none text-red-500 bg-red-50">
-                Excluir
+              <button
+                onClick={handleDeleteEnterpriseFn}
+                className="border-none outline-none text-red-500 bg-red-50"
+              >
+                Excluir empresa
               </button>
             </form>
           </div>
@@ -66,7 +89,7 @@ const DeleteAccountDialog = ({ enterpriseId }) => {
   );
 };
 
-const SettingsComponent = ({ enterpriseId }) => {
+const SettingsComponent = ({ enterprise_uid, enterpriseId }) => {
   return (
     <div className="dropdown dropdown-end ">
       <div
@@ -79,7 +102,10 @@ const SettingsComponent = ({ enterpriseId }) => {
         tabIndex={0}
         className="dropdown-content z-[1] menu px-4 shadow-lg rounded-md w-32 mt-5 bg-white"
       >
-        <DeleteAccountDialog enterpriseId={enterpriseId} />
+        <DeleteAccountDialog
+          enterprise_uid={enterprise_uid}
+          enterpriseId={enterpriseId}
+        />
       </div>
     </div>
   );
@@ -122,7 +148,8 @@ export default function Header() {
   const { language, switchLanguage, translations } = useLang();
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
-  const enterpriseIdCode = data?.[0]?.registrationId;
+  const enterpriseIdCode = data?.[0]?.id;
+  const enterprise_uid = data?.[0]?.enterprise_uid;
 
   const getInitialDarkMode = () => {
     const storedValue = localStorage.getItem("isdark");
@@ -196,7 +223,10 @@ export default function Header() {
                   )}
                 </>
               ) : null}
-              <SettingsComponent enterpriseId={enterpriseIdCode} />
+              <SettingsComponent
+                enterprise_uid={enterprise_uid}
+                enterpriseId={enterpriseIdCode}
+              />
             </div>
           </div>
           <Typography className="text-end text-[10px] text-gray-600 my-1">

@@ -4,6 +4,8 @@
   "select_project": "Selecionar projeto",
   "project": "Projeto",
   "projects": "Projetos",
+  "task": "Tarefa",
+  "tasks": "Tarefas",
   "overall_project_information": "Informações gerais do projeto",
   "participants": "Participantes",
   "activities": "Atividades",
@@ -98,5 +100,15 @@
   "change_password": "Mudar palavra-passe",
   "current_password": "Palavra-passe atual",
   "new_password": "Nova palavra-passe",
-  "comfirm": "Comfirmar"
+  "comfirm": "Comfirmar",
+  "today_is_the_deadline": "Hoje é o prazo",
+  "member_details": "Detalhes do membro",
+  "total_subtasks_completed": "Total de subtarefas concluídas",
+  "days_remaining_until_the_deadline": "dias restantes até o prazo",
+  "day_remaining_until_the_deadline": "dia restante até o prazo",
+  "months_remaining_until_the_deadline": "meses restantes até o prazo",
+  "month_remaining_until_the_deadline": "mês restante até o prazo",
+  "do_you_wish_to_continue": "Deseja continuar",
+  "deadline_is_over": "prazo esgotado",
+  "deadline_is_getting_over": "O prazo é até amanhã"
 }

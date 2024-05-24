@@ -13,6 +13,7 @@ import {
 } from "@material-tailwind/react";
 import { FaUserTie } from "react-icons/fa6";
 import { MdDeleteForever, MdEmail, MdMotionPhotosPause } from "react-icons/md";
+import { BsExclamation } from "react-icons/bs";
 import { MdEngineering } from "react-icons/md";
 import { GoTasklist } from "react-icons/go";
 import { SiOnlyoffice } from "react-icons/si";
@@ -24,6 +25,7 @@ import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { getAuth } from "firebase/auth";
 import { format } from "date-fns";
+import { useLang } from "../../hook/LangContext";
 
 const MemberDetailsModal = ({
   enterpriseId,
@@ -32,46 +34,37 @@ const MemberDetailsModal = ({
   enterpriseResponsibles,
 }) => {
   const { data, handleUpdateEnterpriseMembers } = useFetchData();
+  const { translations } = useLang();
   const [showDialog, setShowDialog] = useState(false);
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
 
   const DeadlineCounter = ({ deadline }) => {
     const [deadlineMessage, setDeadlineMessage] = useState("");
+
     useEffect(() => {
       const calculateTimeRemaining = () => {
         const now = new Date();
         const deadlineDate = new Date(deadline);
         const timeDifference = deadlineDate - now;
 
-        if (timeDifference <= 0) {
-          setDeadlineMessage("It's over");
-          return;
-        }
-
         const oneDay = 24 * 60 * 60 * 1000;
-        const oneMonth = 30 * oneDay;
+        const daysRemaining = Math.ceil(timeDifference / oneDay);
 
-        const monthsRemaining = Math.floor(timeDifference / oneMonth);
-        const daysRemaining = Math.floor(timeDifference / oneDay);
-
-        if (monthsRemaining > 0) {
-          setDeadlineMessage(
-            `${monthsRemaining} month${
-              monthsRemaining <= 1 ? "" : "s"
-            } left until the final deadline.`
-          );
+        if (daysRemaining < 0) {
+          setDeadlineMessage(`${translations.deadline_is_over}`);
+        } else if (daysRemaining === 0) {
+          setDeadlineMessage(`${translations.today_is_the_deadline}`);
+        } else if (daysRemaining === 1) {
+          setDeadlineMessage(`${translations.deadline_is_getting_over}`);
         } else {
           setDeadlineMessage(
-            `${daysRemaining} day${
-              daysRemaining <= 1 ? "" : "s"
-            } left until the final deadline.`
+            `${daysRemaining} ${translations.days_remaining_until_the_deadline}`
           );
         }
       };
 
       calculateTimeRemaining();
-
       const interval = setInterval(calculateTimeRemaining, 60000);
 
       return () => clearInterval(interval);
@@ -79,9 +72,27 @@ const MemberDetailsModal = ({
 
     return (
       <div
-        className={`text-${deadlineMessage === "It's over" ? "red-500" : ""}`}
+        className={`${
+          (deadlineMessage === "It's over" ||
+            deadlineMessage === "prazo esgotado") &&
+          "text-red-500 bg-red-50 rounded-md px-2"
+        }`}
       >
-        {deadlineMessage}
+        <div
+          className={`${
+            (deadlineMessage === "Today is the deadline" ||
+              deadlineMessage === "Hoje é o prazo" ||
+              deadlineMessage === "Tomorrow is the deadline" ||
+              deadlineMessage === "O prazo é até amanhã") &&
+            "bg-orange-50 text-orange-500 rounded-md px-2 flex items-center"
+          }`}
+        >
+          {deadlineMessage}
+          {(deadlineMessage === "Today is the deadline" ||
+            deadlineMessage === "Hoje é o prazo") && (
+            <BsExclamation size={20} className="text-orange-500" />
+          )}
+        </div>
       </div>
     );
   };
@@ -203,7 +214,7 @@ const MemberDetailsModal = ({
             <div className="relative flex flex-col justify-start bg-white p-5 rounded-lg z-50 w-[90%] md:w-[60%] h-[80%] transition-all">
               <div className="flex items-start justify-between w-full transition-all">
                 <p className="text-gray-600 font-medium text-xl">
-                  <Typography>Member details</Typography>
+                  <Typography>{translations.member_details}</Typography>
                 </p>
                 <div className="flex items-center gap-2">
                   {data?.map(
@@ -220,16 +231,18 @@ const MemberDetailsModal = ({
                           </MenuHandler>
                           <MenuList className="flex flex-col items-center">
                             <Typography className="text-sm">
-                              Deseja continuar
+                              {translations.do_you_wish_to_continue}
                             </Typography>
                             <div className="flex items-center gap-5 mt-5">
-                              <MenuItem className="text-xs">Cancelar</MenuItem>
+                              <MenuItem className="text-xs">
+                                {translations.cancel}
+                              </MenuItem>
                               <MenuItem
                                 className="text-xs"
                                 color="red"
                                 onClick={deleteMember}
                               >
-                                Continuar
+                                {translations.continue}
                               </MenuItem>
                             </div>
                           </MenuList>
@@ -257,7 +270,7 @@ const MemberDetailsModal = ({
                     <div>
                       <span className="flex items-ende gap-1">
                         <FaUserTie size={12} className="" />
-                        <p className="text-xs">name</p>
+                        <p className="text-xs">{translations.name}</p>
                       </span>
                       <Typography className="text-light-blue-800">
                         {memberData.name}
@@ -267,7 +280,7 @@ const MemberDetailsModal = ({
                     <div>
                       <span className="flex items-ende gap-1">
                         <MdEmail size={12} className="mt-[2px]" />
-                        <p className="text-xs">email</p>
+                        <p className="text-xs">{translations.email}</p>
                       </span>
                       <Typography className="text-light-blue-800">
                         {memberData.email}
@@ -277,7 +290,7 @@ const MemberDetailsModal = ({
                     <div>
                       <span className="flex items-ende gap-1">
                         <MdEngineering size={15} className="" />
-                        <p className="text-xs ">role</p>
+                        <p className="text-xs ">{translations.role}</p>
                       </span>
                       <Typography className="text-light-blue-800">
                         {memberData.role}
@@ -286,7 +299,9 @@ const MemberDetailsModal = ({
                   </div>
                   <div className="flex items-end justify-between flex-wrap md:flex-nowrap w-full gap-5 md:gap-0">
                     <div className="w-full md:w-fit">
-                      <Typography>Total subtasks completed</Typography>
+                      <Typography>
+                        {translations.total_subtasks_completed}
+                      </Typography>
                       <div className="flex items-center gap-1">
                         <div className="w-full md:w-80 bg-gray-300 shadow-sm h-[6px] rounded-full">
                           <div
@@ -312,7 +327,7 @@ const MemberDetailsModal = ({
                         variant="small"
                         className="text-light-blue-800"
                       >
-                        Projects:{" "}
+                        {translations.projects}:{" "}
                         {data?.flatMap(
                           (enterprise) =>
                             enterprise.projects.filter((project) =>
@@ -329,7 +344,7 @@ const MemberDetailsModal = ({
                         variant="small"
                         className="text-light-blue-800"
                       >
-                        Tasks:{" "}
+                        {translations.tasks}:{" "}
                         {data?.flatMap(
                           (enterprise) =>
                             enterprise.projects
@@ -378,13 +393,13 @@ const MemberDetailsModal = ({
                               <div className="flex items-center">
                                 <Typography
                                   variant="paragraph"
-                                  className="flex items-center gap-2 px-2 text-sm font-semibold rounded-md bg-gray-200"
+                                  className="flex items-center gap-2 px-2 normal-case text-sm font-semibold rounded-md bg-gray-200"
                                 >
                                   <GoTasklist
-                                    size={22}
+                                    size={20}
                                     className="text-green-600"
                                   />
-                                  {taskData.title}
+                                  {taskData?.title}
                                 </Typography>
                                 <span className="font-medium flex items-center gap-2 text-xs ml-5 text-gray-500">
                                   <DeadlineCounter
@@ -394,13 +409,13 @@ const MemberDetailsModal = ({
                                 </span>
                               </div>
 
-                              <div className="flex flex-wrap items-center gap-4 mt-2">
+                              <div className="flex flex-wrap items-start gap-4 mt-2">
                                 {taskData.sub_tasks.filter(
                                   (subtask) =>
                                     subtask.user_created === memberData.email
                                 ).length === 0 ? (
                                   <span className="text-xs text-gray-500">
-                                    Sem subtarefas
+                                    {translations.no_subtasks}
                                   </span>
                                 ) : (
                                   taskData.sub_tasks

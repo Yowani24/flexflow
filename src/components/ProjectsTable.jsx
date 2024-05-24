@@ -24,6 +24,10 @@ export default function ProjectsTable({ data }) {
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
 
+  const hasPermissionToEdit = data?.some(
+    (enterpriseData) => enterpriseData?.email === user?.email
+  );
+
   const TABLE_HEAD = [
     translations.name,
     translations.budget,
@@ -39,10 +43,6 @@ export default function ProjectsTable({ data }) {
       console.error(error.message);
     }
   };
-
-  const hasPermissionToEdit = data?.some(
-    (enterpriseData) => enterpriseData?.email === user?.email
-  );
 
   return (
     <Card
@@ -166,7 +166,7 @@ export default function ProjectsTable({ data }) {
                               color="blue-gray"
                               className="font-normal text-green-500"
                             >
-                              45.000,89
+                              {hasPermissionToEdit ? "45.000,89" : "******"}
                             </Typography>
                           </td>
                           <td className="py-2 border-none w-[180px] pl-4">
